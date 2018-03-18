@@ -1,0 +1,48 @@
+﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowAddShow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:local="clr-namespace:SeriesTracker"
+		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+		Title="Add a show"
+		Height="350" Width="610"
+		ShowInTaskbar="False" ResizeMode="NoResize"
+		Loaded="MetroWindow_Loaded"
+		Style="{StaticResource MetroWindow}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="10" />
+			<RowDefinition />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Row="0" Orientation="Horizontal">
+			<TextBox x:Name="txt_Search" Margin="0" KeyUp="txt_Search_KeyUp">
+				<local:WatermarkService.Watermark>
+					<Label VerticalAlignment="Center" Margin="6,0" Content="Enter a series..."/>
+				</local:WatermarkService.Watermark>
+			</TextBox>
+			<Button x:Name="btn_Search" Style="{StaticResource btn-default-top-left}" Content="Search" Margin="10,0,0,0" Click="btn_Search_Click" />
+		</StackPanel>
+
+		<ListView Grid.Row="2" x:Name="lv_SearchResults" Margin="0,0,0,0" SelectionMode="Single" SelectionChanged="lv_SearchResults_SelectionChanged" ItemsSource="{Binding SearchResults}">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Tvdb ID" Width="75" DisplayMemberBinding="{Binding Id}"/>
+					<GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding SeriesName}"/>
+					<GridViewColumn Header="Year" Width="100" DisplayMemberBinding="{Binding YearDisplay}"/>
+					<GridViewColumn Header="Network" Width="100" DisplayMemberBinding="{Binding Network}"/>
+					<GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+
+		<Label Grid.Row="4" x:Name="lbl_Info" Style="{StaticResource lbl-default-center-left}" Content="" />
+
+		<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button x:Name="btn_Accept" Style="{StaticResource btn-default-bottom-right}" Content="Add" Click="btn_Accept_Click" IsDefault="True" IsEnabled="False" />
+			<Button x:Name="btn_Cancel" Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="10,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
+		</StackPanel>
+	</Grid>
+</Controls:MetroWindow>

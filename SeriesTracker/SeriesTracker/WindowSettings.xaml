@@ -1,0 +1,83 @@
+﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+		Title="Settings"
+		Height="450" Width="800"
+		ShowInTaskbar="False" ResizeMode="NoResize"
+		BorderThickness="2"
+		GlowBrush="{DynamicResource AccentBaseColorBrush}" Loaded="MetroWindow_Loaded">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		
+		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<GroupBox Grid.Column="0" Margin="0,0,5,0" Header="General">
+				<StackPanel Margin="10">
+					<CheckBox x:Name="cb_IgnoreBrackets" Content="Ignore brackets in names" IsChecked="{Binding IgnoreBrackets}" />
+
+					<CheckBox x:Name="cb_ListedName" Content="Place 'The' at end of names" Margin="0,10,0,0" IsChecked="{Binding UseListedName}" />
+
+					<Label Content="Date Format" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
+						<ComboBox x:Name="cmb_DateFormat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" SelectionChanged="cmb_DateFormat_SelectionChanged" SelectedIndex="{Binding DateFormatIndex, Mode=OneTime}" ItemsSource="{Binding DateFormats}" />
+						<Label Content="{Binding ExampleDate}" Margin="10,0,0,0" VerticalAlignment="Center" />
+					</StackPanel>
+
+					<Label Content="View Default Sorting" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
+						<ComboBox x:Name="cmb_DefaultSorting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" SelectedIndex="{Binding DefaultSortingIndex, Mode=OneTime}" ItemsSource="{Binding ColumnHeadings}" />
+						<RadioButton Content="Asc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortAsc}" />
+						<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" />
+					</StackPanel>
+
+					<Label Content="Theme" Margin="0,10,0,0" Visibility="Collapsed" />
+					<ComboBox x:Name="cmb_Theme" Margin="0,5,0,0" Width="165" SelectionChanged="cmb_Theme_SelectionChanged" SelectedIndex="{Binding ThemeIndex, Mode=OneTime}" ItemsSource="{Binding Themes}" Visibility="Collapsed" />
+
+					<Label Content="Accent" Margin="0,10,0,0" />
+					<ComboBox x:Name="cmb_Accent" Margin="0,5,0,0" Width="165" SelectionChanged="cmb_Theme_SelectionChanged" SelectedIndex="{Binding AccentIndex, Mode=OneTime}" ItemsSource="{Binding Accents}" />
+				</StackPanel>
+			</GroupBox>
+
+			<GroupBox Grid.Column="1" Margin="5,0,0,0" Header="Extra">
+				<StackPanel Margin="10">
+					<Label Content="Local Series Folder" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<TextBox x:Name="txt_SeriesFolder" LostFocus="txt_SeriesFolder_LostFocus"/>
+						<Button Style="{StaticResource btn-default-top-right}" Content="Browse" Margin="10,0,0,0" Click="btn_SeriesBrowse_Click"/>
+					</StackPanel>
+
+					<Label Content="User Lists" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<TextBox x:Name="txt_Category" KeyDown="txt_Category_KeyPress" />
+						<Button Style="{StaticResource btn-default-top-right}" Content="Add" Margin="10,0,0,0" Click="btn_AddCategory_Click" />
+					</StackPanel>
+
+					<ListBox x:Name="lb_Categories" Height="125" Margin="0,5,0,0" ContextMenuOpening="lb_Categories_ContextMenuOpening" ItemsSource="{Binding Categories}" SelectedValuePath="CategoryID" DisplayMemberPath="Name">
+						<ListBox.ContextMenu>
+							<ContextMenu>
+								<MenuItem x:Name="cm_Remove" Header="Remove" Click="cm_Remove_Click"/>
+							</ContextMenu>
+						</ListBox.ContextMenu>
+					</ListBox>
+				</StackPanel>
+			</GroupBox>
+		</Grid>
+
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+			<Button Style="{StaticResource btn-default-bottom-right}" Content="Save" Margin="0,0,5,0" Click="btn_Accept_Click" IsDefault="True" />
+			<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="5,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
+		</StackPanel>
+	</Grid>
+</Controls:MetroWindow>

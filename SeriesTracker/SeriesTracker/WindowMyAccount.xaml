@@ -1,0 +1,64 @@
+﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowMyAccount"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+		Title="Set Category"
+		Height="310" Width="425"
+		ShowInTaskbar="False" ResizeMode="NoResize"
+		Style="{StaticResource MetroWindow}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		
+		<StackPanel Grid.Row="0">
+			<StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+				<Label Style="{StaticResource lbl-default-center-left}" Content="Username" Width="125" />
+				<TextBox x:Name="txt_Username" IsEnabled="false" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Margin="0,2">
+				<Label Style="{StaticResource lbl-default-center-left}" Content="Email" Width="125" />
+				<TextBox x:Name="txt_Email" IsEnabled="false" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Margin="0,2">
+				<Label Style="{StaticResource lbl-default-center-left}" Content="Name" Width="125" />
+				<TextBox x:Name="txt_Name" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Margin="0,2">
+				<Label Style="{StaticResource lbl-default-center-left}" Content="Surname" Width="125" />
+				<TextBox x:Name="txt_Surname" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Margin="0,2">
+				<Label Style="{StaticResource lbl-default-center-left}" Content="Date of Birth" Width="125" />
+				<DatePicker x:Name="dp_DateOfBirth" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Margin="0,2">
+				<Label Style="{StaticResource lbl-default-center-left}" Content="Password" Width="125" />
+				<PasswordBox x:Name="txt_Password" />
+			</StackPanel>
+		</StackPanel>
+
+		<Button Grid.Row="2" Style="{StaticResource btn-default-bottom-left}" Content="Delete Account" Click="btn_DeleteAccount_Click" />
+
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+			<Button Style="{StaticResource btn-default-bottom-right}" Content="Save" Click="btn_Accept_Click" IsDefault="True" />
+			<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="10,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
+		</StackPanel>
+
+		<!--<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<Button Style="{StaticResource btn-default-bottom-left}" Content="Delete Account" Click="btn_DeleteAccount_Click" />
+			
+			<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" >
+				<Button Style="{StaticResource btn-default-bottom-right}" Content="Save" Click="btn_Accept_Click" IsDefault="True" />
+				<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="10,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
+			</StackPanel>
+		</Grid>-->
+	</Grid>
+</Controls:MetroWindow>

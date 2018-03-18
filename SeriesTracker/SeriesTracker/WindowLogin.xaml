@@ -1,0 +1,82 @@
+﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowLogin"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+		Title="Login or Register"
+		Icon="Resources/mainIcon.ico"
+		Height="350" Width="500"
+		Initialized="Window_Initialized" MouseDown="MetroWindow_MouseDown"
+		WindowStartupLocation="CenterScreen" ShowInTaskbar="True" ShowCloseButton="True" Visibility="Hidden"
+		Style="{StaticResource MetroWindowNoTitle}">
+	<Grid Margin="10">
+		<Controls:MetroTabControl x:Name="tc" Controls:TabControlHelper.Underlined="TabPanel">
+			<TabItem Header="Login">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="10" />
+						<RowDefinition Height="35" />
+						<RowDefinition Height="35" />
+						<RowDefinition Height="25" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="135" />
+						<ColumnDefinition Width="20" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<Label Grid.Row="1" Grid.Column="0" Content="Username/Email" VerticalAlignment="Center" HorizontalAlignment="Right" />
+					<TextBox Grid.Row="1" Grid.Column="2" x:Name="txt_Login_UsernameOrEmail" Text="" KeyDown="Login_KeyPress" VerticalAlignment="Center"/>
+
+					<Label Grid.Row="2" Grid.Column="0" Content="Password" HorizontalAlignment="Right" VerticalAlignment="Center" />
+					<PasswordBox Grid.Row="2" Grid.Column="2" x:Name="txt_Login_Password" KeyDown="Login_KeyPress" VerticalAlignment="Center" />
+
+					<CheckBox Grid.Row="3" Grid.Column="2" x:Name="cb_RememberMe" Content="Remember me" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="CB_RememberMe_CheckChange" Unchecked="CB_RememberMe_CheckChange" />
+
+					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+						<Label x:Name="lbl_Login_Info" Content="Label" Margin="0,0,0,10" HorizontalAlignment="Center" />
+						<Button x:Name="btn_Login" Style="{StaticResource btn-default-bottom-center}" Content="Login" Click="Btn_Login_Click" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Register">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="10" />
+						<RowDefinition Height="35" />
+						<RowDefinition Height="35" />
+						<RowDefinition Height="35" />
+						<RowDefinition Height="35" />
+						<RowDefinition Height="35" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="135" />
+						<ColumnDefinition Width="20" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<Label Grid.Row="1" Grid.Column="0" Content="Username*" HorizontalAlignment="Right" VerticalAlignment="Center" />
+					<TextBox Grid.Row="1" Grid.Column="2" x:Name="txt_Register_Username" KeyDown="Register_KeyPress" VerticalAlignment="Center"/>
+
+					<Label Grid.Row="2" Grid.Column="0" Content="Email*" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+					<TextBox Grid.Row="2" Grid.Column="2" x:Name="txt_Register_Email" KeyDown="Register_KeyPress" VerticalAlignment="Center" />
+
+					<Label Grid.Row="3" Grid.Column="0" Content="Name" VerticalAlignment="Center" HorizontalAlignment="Right" />
+					<TextBox Grid.Row="3" Grid.Column="3" x:Name="txt_Register_Name" KeyDown="Register_KeyPress" VerticalAlignment="Center" />
+
+					<Label Grid.Row="4" Grid.Column="0" Content="Password*" VerticalAlignment="Center" HorizontalAlignment="Right" />
+					<PasswordBox Grid.Row="4" Grid.Column="3" x:Name="txt_Register_Password" KeyDown="Register_KeyPress" VerticalAlignment="Center" />
+
+					<Label Grid.Row="5" Grid.Column="0" Content="Confirm Password*" VerticalAlignment="Center" HorizontalAlignment="Right" />
+					<PasswordBox Grid.Row="5" Grid.Column="3" x:Name="txt_Register_ConfirmPassword" KeyDown="Register_KeyPress" VerticalAlignment="Center" />
+
+					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+						<Label x:Name="lbl_Register_Info" Content="Label" Margin="0,0,0,10" HorizontalAlignment="Center" />
+						<Button x:Name="btn_Register" Style="{StaticResource btn-default-bottom-center}" Content="Register" Click="Btn_Register_Click" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
+		</Controls:MetroTabControl>
+	</Grid>
+</Controls:MetroWindow>

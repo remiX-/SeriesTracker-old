@@ -1,0 +1,199 @@
+﻿<Application
+	x:Class="SeriesTracker.App"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+	StartupUri="WindowLogin.xaml" Startup="Application_Startup">
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+				<!-- Accent and AppTheme setting -->
+				<!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml" />-->
+				<!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />-->
+			</ResourceDictionary.MergedDictionaries>
+
+			<Style x:Key="MetroWindow" TargetType="{x:Type mah:MetroWindow}">
+				<Setter Property="BorderThickness" Value="2" />
+				<Setter Property="GlowBrush" Value="{DynamicResource AccentBaseColorBrush}" />
+				<Setter Property="TitleCaps" Value="False" />
+			</Style>
+
+			<Style x:Key="MetroWindowNoTitle" TargetType="{x:Type mah:MetroWindow}">
+				<Setter Property="BorderThickness" Value="2" />
+				<Setter Property="GlowBrush" Value="{DynamicResource AccentBaseColorBrush}" />
+				<Setter Property="ShowInTaskbar" Value="False" />
+				<Setter Property="ShowTitleBar" Value="False" />
+				<Setter Property="ShowCloseButton" Value="False" />
+				<Setter Property="ResizeMode" Value="NoResize" />
+			</Style>
+
+			<!--#region Buttons -->
+			<!-- Types -->
+			<Style x:Key="btn-default" TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+				<Setter Property="Height" Value="26"/>
+				<Setter Property="Width" Value="100"/>
+			</Style>
+
+			<!-- Top -->
+			<Style x:Key="btn-default-top-left" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style x:Key="btn-default-top-center" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Center" />
+			</Style>
+			<Style x:Key="btn-default-top-right" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+			</Style>
+
+			<!-- Center -->
+			<Style x:Key="btn-default-center-left" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style x:Key="btn-default-center-center" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Center" />
+			</Style>
+			<Style x:Key="btn-default-center-right" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+			</Style>
+
+			<!-- Bottom -->
+			<Style x:Key="btn-default-bottom-left" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Bottom" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style x:Key="btn-default-bottom-center" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Bottom" />
+				<Setter Property="HorizontalAlignment" Value="Center" />
+			</Style>
+			<Style x:Key="btn-default-bottom-right" TargetType="{x:Type Button}" BasedOn="{StaticResource btn-default}">
+				<Setter Property="VerticalAlignment" Value="Bottom" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+			</Style>
+			<!--#endregion-->
+
+			<!--#region Labels-->
+			<!-- Types -->
+			<Style x:Key="lbl-default" TargetType="{x:Type Label}" BasedOn="{StaticResource MetroLabel}">
+				<Setter Property="Padding" Value="0" />
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+
+			<Style x:Key="lbl-heading" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="Foreground" Value="#FF22A4FF" />
+				<Setter Property="FontSize" Value="36" />
+			</Style>
+
+			<Style x:Key="lbl-subheading" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="Foreground" Value="#FFFF6800" />
+				<Setter Property="FontSize" Value="20" />
+			</Style>
+
+			<!-- Top -->
+			<Style x:Key="lbl-default-top-left" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style x:Key="lbl-default-top-center" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Center" />
+			</Style>
+			<Style x:Key="lbl-default-top-right" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+			</Style>
+
+			<!-- Center -->
+			<Style x:Key="lbl-default-center-left" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style x:Key="lbl-default-center-center" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Center" />
+			</Style>
+			<Style x:Key="lbl-default-center-right" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+			</Style>
+
+			<!-- Bottom -->
+			<Style x:Key="lbl-default-bottom-left" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Bottom" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style x:Key="lbl-default-bottom-center" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Bottom" />
+				<Setter Property="HorizontalAlignment" Value="Center" />
+			</Style>
+			<Style x:Key="lbl-default-bottom-right" TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}">
+				<Setter Property="VerticalAlignment" Value="Bottom" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+			</Style>
+
+			<!-- Required to apply lbl-default to all labels without needing to specify the style on each individual label -->
+			<Style TargetType="{x:Type Label}" BasedOn="{StaticResource lbl-default}"></Style>
+			<!--#endregion-->
+
+			<!--#region Textboxes-->
+			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MetroTextBox}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+				<Setter Property="Height" Value="26" />
+				<Setter Property="Width" Value="200" />
+			</Style>
+
+			<Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MetroPasswordBox}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+				<Setter Property="Height" Value="26" />
+				<Setter Property="Width" Value="200" />
+			</Style>
+
+			<Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource MetroDatePicker}">
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+				<Setter Property="Height" Value="26" />
+				<Setter Property="Width" Value="200" />
+			</Style>
+			<!--#endregion-->
+
+			<!--#region General Controls-->
+			<Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MetroListBox}">
+				<Setter Property="BorderBrush" Value="#fff" />
+				<Setter Property="BorderThickness" Value="2" />
+			</Style>
+
+			<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
+				<!--<Setter Property="BorderBrush" Value="#fff" />-->
+				<!--<Setter Property="BorderThickness" Value="2" /-->
+				<Setter Property="VerticalAlignment" Value="Top" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<!--#endregion -->
+
+			<!--#region ListView -->
+			<Style TargetType="{x:Type ListView}" BasedOn="{StaticResource MetroListView}">
+				<Setter Property="BorderThickness" Value="1" />
+			</Style>
+			<Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource MetroDataGrid}">
+				<Setter Property="BorderThickness" Value="1" />
+			</Style>
+			<Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource MetroGridViewColumnHeader}">
+				<Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+			</Style>
+			<!--#endregion -->
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>
