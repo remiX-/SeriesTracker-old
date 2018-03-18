@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

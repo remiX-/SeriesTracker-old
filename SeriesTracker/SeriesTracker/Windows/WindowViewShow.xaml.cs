@@ -1,21 +1,16 @@
-﻿using CsQuery;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
-using SeriesTracker.Views;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowViewShow : MetroWindow
 	{

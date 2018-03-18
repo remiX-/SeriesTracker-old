@@ -1,11 +1,9 @@
 ﻿using MahApps.Metro.Controls;
-using Prism.Mvvm;
 using SeriesTracker.ViewModels;
-using SeriesTracker.Views;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowTest : MetroWindow
 	{

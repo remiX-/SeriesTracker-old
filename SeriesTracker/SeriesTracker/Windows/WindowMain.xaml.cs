@@ -22,7 +22,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using WinForms = System.Windows.Forms;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowMain : MetroWindow
 	{

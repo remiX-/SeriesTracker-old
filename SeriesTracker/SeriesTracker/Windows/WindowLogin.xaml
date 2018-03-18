@@ -1,15 +1,16 @@
-﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowLogin"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-		Title="Login or Register"
-		Icon="Resources/mainIcon.ico"
-		Height="350" Width="500"
-		Initialized="Window_Initialized" MouseDown="MetroWindow_MouseDown"
-		WindowStartupLocation="CenterScreen" ShowInTaskbar="True" ShowCloseButton="True" Visibility="Hidden"
-		Style="{StaticResource MetroWindowNoTitle}">
+﻿<mah:MetroWindow
+	x:Class="SeriesTracker.Windows.WindowLogin"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+	Title="Login or Register"
+	Icon="../Resources/mainIcon.ico"
+	Height="350" Width="500"
+	Initialized="Window_Initialized" MouseDown="MetroWindow_MouseDown"
+	WindowStartupLocation="CenterScreen" ShowInTaskbar="True" ShowCloseButton="True" Visibility="Hidden"
+	Style="{StaticResource MetroWindowNoTitle}">
 	<Grid Margin="10">
-		<Controls:MetroTabControl x:Name="tc" Controls:TabControlHelper.Underlined="TabPanel">
+		<mah:MetroTabControl x:Name="tc" mah:TabControlHelper.Underlined="TabPanel">
 			<TabItem Header="Login">
 				<Grid>
 					<Grid.RowDefinitions>
@@ -77,6 +78,6 @@
 					</StackPanel>
 				</Grid>
 			</TabItem>
-		</Controls:MetroTabControl>
+		</mah:MetroTabControl>
 	</Grid>
-</Controls:MetroWindow>
+</mah:MetroWindow>

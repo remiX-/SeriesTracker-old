@@ -1,11 +1,12 @@
-﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowMyAccount"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-		Title="Set Category"
-		Height="310" Width="425"
-		ShowInTaskbar="False" ResizeMode="NoResize"
-		Style="{StaticResource MetroWindow}">
+﻿<mah:MetroWindow
+	x:Class="SeriesTracker.Windows.WindowMyAccount"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+	Title="Set Category"
+	Height="310" Width="425"
+	ShowInTaskbar="False" ResizeMode="NoResize"
+	Style="{StaticResource MetroWindow}">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition />
@@ -61,4 +62,4 @@
 			</StackPanel>
 		</Grid>-->
 	</Grid>
-</Controls:MetroWindow>
+</mah:MetroWindow>

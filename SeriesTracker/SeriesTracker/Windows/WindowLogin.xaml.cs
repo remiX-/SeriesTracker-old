@@ -1,15 +1,13 @@
-﻿using MahApps.Metro;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowLogin : MetroWindow
 	{

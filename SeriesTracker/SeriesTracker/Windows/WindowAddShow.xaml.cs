@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowAddShow : MetroWindow
 	{

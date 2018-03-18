@@ -173,7 +173,7 @@
     <Compile Include="ProgressDialog\ProgressDialogContext.cs" />
     <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
     <Compile Include="ProgressDialog\ProgressDialogSettings.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Properties\Settings.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
     <Compile Include="ViewModels\TestMenuItem.cs" />
     <Compile Include="ViewModels\ViewShowMenuItem.cs" />
@@ -195,22 +195,19 @@
     <Compile Include="Views\Overview.xaml.cs">
       <DependentUpon>Overview.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowMyAccount.xaml.cs">
+    <Compile Include="Windows\WindowMyAccount.xaml.cs">
       <DependentUpon>WindowMyAccount.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowSetCategory.xaml.cs">
+    <Compile Include="Windows\WindowSetCategory.xaml.cs">
       <DependentUpon>WindowSetCategory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowSettings.xaml.cs">
+    <Compile Include="Windows\WindowSettings.xaml.cs">
       <DependentUpon>WindowSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowTest.xaml.cs">
+    <Compile Include="Windows\WindowTest.xaml.cs">
       <DependentUpon>WindowTest.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowView.xaml.cs">
-      <DependentUpon>WindowView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowViewShow.xaml.cs">
+    <Compile Include="Windows\WindowViewShow.xaml.cs">
       <DependentUpon>WindowViewShow.xaml</DependentUpon>
     </Compile>
     <Page Include="ProgressDialog\ProgressDialog.xaml">
@@ -233,19 +230,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowAddShow.xaml">
+    <Page Include="Windows\WindowAddShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowLoggingIn.xaml">
+    <Page Include="Windows\WindowLoggingIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowLogin.xaml">
+    <Page Include="Windows\WindowLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowMain.xaml">
+    <Page Include="Windows\WindowMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -260,40 +257,36 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\MethodCollection.cs" />
-    <Compile Include="WindowAddShow.xaml.cs">
+    <Compile Include="Windows\WindowAddShow.xaml.cs">
       <DependentUpon>WindowAddShow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowLoggingIn.xaml.cs">
+    <Compile Include="Windows\WindowLoggingIn.xaml.cs">
       <DependentUpon>WindowLoggingIn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowLogin.xaml.cs">
+    <Compile Include="Windows\WindowLogin.xaml.cs">
       <DependentUpon>WindowLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowMain.xaml.cs">
+    <Compile Include="Windows\WindowMain.xaml.cs">
       <DependentUpon>WindowMain.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WindowMyAccount.xaml">
+    <Page Include="Windows\WindowMyAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowSetCategory.xaml">
+    <Page Include="Windows\WindowSetCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowSettings.xaml">
+    <Page Include="Windows\WindowSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowTest.xaml">
+    <Page Include="Windows\WindowTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WindowViewShow.xaml">
+    <Page Include="Windows\WindowViewShow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

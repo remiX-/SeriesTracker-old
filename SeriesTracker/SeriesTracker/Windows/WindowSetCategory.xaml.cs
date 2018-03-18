@@ -5,7 +5,7 @@ using SeriesTracker.ViewModels;
 using System.Linq;
 using System.Windows;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowSetCategory : MetroWindow
 	{

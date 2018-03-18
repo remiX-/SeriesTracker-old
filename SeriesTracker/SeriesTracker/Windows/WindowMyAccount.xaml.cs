@@ -4,7 +4,7 @@ using SeriesTracker.Models;
 using System.Windows;
 using System.Windows.Input;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowMyAccount : MetroWindow
 	{

@@ -2,7 +2,7 @@
 using SeriesTracker.ViewModels;
 using System.Windows.Input;
 
-namespace SeriesTracker
+namespace SeriesTracker.Windows
 {
 	public partial class WindowLoggingIn : MetroWindow
 	{

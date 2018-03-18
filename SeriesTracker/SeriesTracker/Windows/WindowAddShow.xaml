@@ -1,13 +1,14 @@
-﻿<Controls:MetroWindow x:Class="SeriesTracker.WindowAddShow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:local="clr-namespace:SeriesTracker"
-		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-		Title="Add a show"
-		Height="350" Width="610"
-		ShowInTaskbar="False" ResizeMode="NoResize"
-		Loaded="MetroWindow_Loaded"
-		Style="{StaticResource MetroWindow}">
+﻿<mah:MetroWindow
+	x:Class="SeriesTracker.Windows.WindowAddShow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:SeriesTracker"
+	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+	Title="Add a show"
+	Height="350" Width="610"
+	ShowInTaskbar="False" ResizeMode="NoResize"
+	Loaded="MetroWindow_Loaded"
+	Style="{StaticResource MetroWindow}">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -45,4 +46,4 @@
 			<Button x:Name="btn_Cancel" Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="10,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
 		</StackPanel>
 	</Grid>
-</Controls:MetroWindow>
+</mah:MetroWindow>
