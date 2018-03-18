@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using System;
@@ -14,7 +13,7 @@ using System.Windows.Media;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowAddShow : MetroWindow
+	public partial class WindowAddShow : Window
 	{
 		#region Variables
 		//private ObservableCollection<Show> allShows = new ObservableCollection<Show>();

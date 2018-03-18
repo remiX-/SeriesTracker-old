@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
@@ -169,28 +168,28 @@ namespace SeriesTracker.Views
 
 		private async void EpisodeEyeToggle_Click(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				if (busy)
-					return;
+			//try
+			//{
+			//	if (busy)
+			//		return;
 
-				busy = true;
+			//	busy = true;
 
-				ToggleButton m = (ToggleButton)sender;
-				Grid p = m.TryFindParent<Grid>();
+			//	ToggleButton m = (ToggleButton)sender;
+			//	Grid p = m.TryFindParent<Grid>();
 
-				m.IsHitTestVisible = false;
+			//	m.IsHitTestVisible = false;
 
-				int episode = int.Parse(p.Tag.ToString());
-				await EpisodeWatchedToggle(episode);
+			//	int episode = int.Parse(p.Tag.ToString());
+			//	await EpisodeWatchedToggle(episode);
 
-				m.IsHitTestVisible = true;
-				busy = false;
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
+			//	m.IsHitTestVisible = true;
+			//	busy = false;
+			//}
+			//catch (Exception ex)
+			//{
+			//	ErrorMethods.LogError(ex.Message);
+			//}
 		}
 
 		private async Task<bool> EpisodeWatchedToggle(int episodeNumber)
@@ -227,73 +226,73 @@ namespace SeriesTracker.Views
 
 		private void Btn_WatchEpisode_Click(object sender, RoutedEventArgs e)
 		{
-			bool found = false;
+			//bool found = false;
 
-			try
-			{
-				if (string.IsNullOrEmpty(MyViewModel.MyShow.LocalSeriesPath)) return;
-				if (!Directory.Exists(MyViewModel.MyShow.LocalSeriesPath)) return;
+			//try
+			//{
+			//	if (string.IsNullOrEmpty(MyViewModel.MyShow.LocalSeriesPath)) return;
+			//	if (!Directory.Exists(MyViewModel.MyShow.LocalSeriesPath)) return;
 
-				Button m = (Button)sender;
-				Grid p = m.TryFindParent<Grid>();
+			//	Button m = (Button)sender;
+			//	Grid p = m.TryFindParent<Grid>();
 
-				int episodeNumber = int.Parse(p.Tag.ToString());
+			//	int episodeNumber = int.Parse(p.Tag.ToString());
 
-				string seasonPath = Path.Combine(MyViewModel.MyShow.LocalSeriesPath, "Season " + viewingSeason);
-				var dir = new DirectoryInfo(seasonPath);
+			//	string seasonPath = Path.Combine(MyViewModel.MyShow.LocalSeriesPath, "Season " + viewingSeason);
+			//	var dir = new DirectoryInfo(seasonPath);
 
-				if (!dir.Exists)
-					return;
+			//	if (!dir.Exists)
+			//		return;
 
-				var files = dir.GetFiles();
+			//	var files = dir.GetFiles();
 
-				Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
-				foreach (FileInfo file in files)
-				{
-					if (file.Name.Contains(episode.FullEpisodeString))
-					{
-						found = true;
-						var q = CommonMethods.StartProcess(file.FullName);
-						// Testing
-						//q.EnableRaisingEvents = true;
-						//q.Exited += delegate
-						//{
-						//	TimeSpan watchTime = DateTime.Now - q.StartTime;
+			//	Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
+			//	foreach (FileInfo file in files)
+			//	{
+			//		if (file.Name.Contains(episode.FullEpisodeString))
+			//		{
+			//			found = true;
+			//			var q = CommonMethods.StartProcess(file.FullName);
+			//			// Testing
+			//			//q.EnableRaisingEvents = true;
+			//			//q.Exited += delegate
+			//			//{
+			//			//	TimeSpan watchTime = DateTime.Now - q.StartTime;
 
-						//	MessageBox.Show("You watched for " + watchTime.TotalSeconds + " seconds");
-						//};
+			//			//	MessageBox.Show("You watched for " + watchTime.TotalSeconds + " seconds");
+			//			//};
 
-						break;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
+			//			break;
+			//		}
+			//	}
+			//}
+			//catch (Exception ex)
+			//{
+			//	ErrorMethods.LogError(ex.Message);
+			//}
 
-			if (!found)
-			{
-				MessageBox.Show("Failed to locate episode on local drive.", "Episode not found");
-			}
+			//if (!found)
+			//{
+			//	MessageBox.Show("Failed to locate episode on local drive.", "Episode not found");
+			//}
 		}
 
 		private async void Btn_Download_Click(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				Button m = (Button)sender;
-				Grid p = m.TryFindParent<Grid>();
+			//try
+			//{
+			//	Button m = (Button)sender;
+			//	Grid p = m.TryFindParent<Grid>();
 
-				int episodeNumber = int.Parse(p.Tag.ToString());
-				Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
+			//	int episodeNumber = int.Parse(p.Tag.ToString());
+			//	Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
 
-				await MethodCollection.DownloadEpisode(MyViewModel.MyShow, episode);
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
+			//	await MethodCollection.DownloadEpisode(MyViewModel.MyShow, episode);
+			//}
+			//catch (Exception ex)
+			//{
+			//	ErrorMethods.LogError(ex.Message);
+			//}
 		}
 	}
 }

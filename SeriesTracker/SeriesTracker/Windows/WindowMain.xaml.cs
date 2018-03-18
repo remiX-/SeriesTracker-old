@@ -1,7 +1,4 @@
-﻿using MahApps.Metro;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SeriesTracker.Comparers;
 using SeriesTracker.Core;
@@ -24,7 +21,7 @@ using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowMain : MetroWindow
+	public partial class WindowMain : Window
 	{
 		#region Variables
 		// ViewModel
@@ -69,24 +66,24 @@ namespace SeriesTracker.Windows
 		{
 			await Startup();
 
-			if (AppGlobal.User.Shows.Count == 0)
-			{
-				var result = await this.ShowMessageAsync("Hello!", "Your list looks a bit empty there!\nWould you like to add your first series now?",
-					MessageDialogStyle.AffirmativeAndNegative,
-					new MetroDialogSettings
-					{
-						AffirmativeButtonText = "Yes please!",
-						NegativeButtonText = "Maybe later",
-						ColorScheme = MetroDialogColorScheme.Theme,
-						AnimateHide = false,
-						DefaultButtonFocus = MessageDialogResult.Affirmative
-					});
+			//if (AppGlobal.User.Shows.Count == 0)
+			//{
+			//	var result = await this.ShowMessageAsync("Hello!", "Your list looks a bit empty there!\nWould you like to add your first series now?",
+			//		MessageDialogStyle.AffirmativeAndNegative,
+			//		new MetroDialogSettings
+			//		{
+			//			AffirmativeButtonText = "Yes please!",
+			//			NegativeButtonText = "Maybe later",
+			//			ColorScheme = MetroDialogColorScheme.Theme,
+			//			AnimateHide = false,
+			//			DefaultButtonFocus = MessageDialogResult.Affirmative
+			//		});
 
-				if (result == MessageDialogResult.Affirmative)
-				{
-					Menu_Series_AddShow_Click(null, null);
-				}
-			}
+			//	if (result == MessageDialogResult.Affirmative)
+			//	{
+			//		Menu_Series_AddShow_Click(null, null);
+			//	}
+			//}
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
@@ -212,7 +209,7 @@ namespace SeriesTracker.Windows
 
 			if (changes.Contains("UpdateTheme"))
 			{
-				ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
+				//ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
 			}
 		}
 		#endregion
@@ -220,8 +217,8 @@ namespace SeriesTracker.Windows
 		#region Action events
 		private void ClearFilter_Click(object sender, RoutedEventArgs e)
 		{
-			txt_FilterText.Text = string.Empty;
-			txt_FilterText.Focus();
+			//txt_FilterText.Text = string.Empty;
+			//txt_FilterText.Focus();
 		}
 
 		private void Image_List_MouseDown(object sender, MouseButtonEventArgs e)
@@ -427,18 +424,18 @@ namespace SeriesTracker.Windows
 
 		private void DataGrid_ContextMenu_Opened(object sender, RoutedEventArgs e)
 		{
-			ContextMenu cm = (ContextMenu)sender;
+			//ContextMenu cm = (ContextMenu)sender;
 
-			if (view_DataGridView.SelectedItems.Count == 1)
-			{
-				cm.FindChild<MenuItem>("View").Visibility = Visibility.Visible;
-				cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Visible;
-			}
-			else if (view_DataGridView.SelectedItems.Count > 1)
-			{
-				cm.FindChild<MenuItem>("View").Visibility = Visibility.Collapsed;
-				cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Collapsed;
-			}
+			//if (view_DataGridView.SelectedItems.Count == 1)
+			//{
+			//	cm.FindChild<MenuItem>("View").Visibility = Visibility.Visible;
+			//	cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Visible;
+			//}
+			//else if (view_DataGridView.SelectedItems.Count > 1)
+			//{
+			//	cm.FindChild<MenuItem>("View").Visibility = Visibility.Collapsed;
+			//	cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Collapsed;
+			//}
 		}
 
 		private void DataGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
@@ -650,28 +647,28 @@ namespace SeriesTracker.Windows
 		#region Detail View
 		private void DetailView_OpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-			Button b = (Button)sender;
-			Grid p = b.TryFindParent<Grid>();
+			//Button b = (Button)sender;
+			//Grid p = b.TryFindParent<Grid>();
 
-			int userShowID = int.Parse(p.Tag.ToString());
-			Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
+			//int userShowID = int.Parse(p.Tag.ToString());
+			//Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
 
-			OpenSeriesFolder(show);
+			//OpenSeriesFolder(show);
 		}
 
 		private async void DetailView_DownloadLatest_Click(object sender, RoutedEventArgs e)
 		{
-			Button b = (Button)sender;
-			Grid p = b.TryFindParent<Grid>();
+			//Button b = (Button)sender;
+			//Grid p = b.TryFindParent<Grid>();
 
-			int userShowID = int.Parse(p.Tag.ToString());
-			Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
+			//int userShowID = int.Parse(p.Tag.ToString());
+			//Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
 
-			bool success = await MethodCollection.DownloadEpisode(show, show.LatestEpisode);
-			if (!success)
-			{
-				MessageBox.Show("Failed to find last episode for " + show.SeriesName);
-			}
+			//bool success = await MethodCollection.DownloadEpisode(show, show.LatestEpisode);
+			//if (!success)
+			//{
+			//	MessageBox.Show("Failed to find last episode for " + show.SeriesName);
+			//}
 		}
 		#endregion
 
@@ -794,7 +791,7 @@ namespace SeriesTracker.Windows
 
 			commands.Add(Key.C, CM_Copy_Click);
 
-			commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
+			//commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
 
 			foreach (var kvp in commands)
 			{
@@ -1260,7 +1257,7 @@ namespace SeriesTracker.Windows
 
 		private void Btn_Test1_Click(object sender, RoutedEventArgs e)
 		{
-			Window w = new WindowTest();
+			Window w = new WindowTestMD();
 			w.ShowDialog();
 		}
 

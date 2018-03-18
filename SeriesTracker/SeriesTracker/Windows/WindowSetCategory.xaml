@@ -1,12 +1,11 @@
-﻿<mah:MetroWindow
+﻿<Window
 	x:Class="SeriesTracker.Windows.WindowSetCategory"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 	Title="{Binding MyTitle}"
 	Height="250" Width="300"
 	Loaded="Window_Loaded"
-	Style="{StaticResource MetroWindowNoTitle}">
+	Style="{StaticResource ReWindow}">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -35,4 +34,4 @@
 			<Button x:Name="btn_Cancel" Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="5,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
 		</StackPanel>
 	</Grid>
-</mah:MetroWindow>
+</Window>

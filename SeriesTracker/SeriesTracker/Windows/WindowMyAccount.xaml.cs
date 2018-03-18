@@ -1,12 +1,11 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowMyAccount : MetroWindow
+	public partial class WindowMyAccount : Window
 	{
 		public WindowMyAccount()
 		{

@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using System.Windows.Media;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowLogin : MetroWindow
+	public partial class WindowLogin : Window
 	{
 		#region Variables
 		private WindowLoggingIn window_LoggedIn;
@@ -206,7 +205,7 @@ namespace SeriesTracker.Windows
 
 			window_LoggedIn.Close();
 
-			WindowMain Main = new WindowMain();
+			Window Main = new WindowMainNew();
 			Main.Show();
 			Application.Current.MainWindow = Main;
 

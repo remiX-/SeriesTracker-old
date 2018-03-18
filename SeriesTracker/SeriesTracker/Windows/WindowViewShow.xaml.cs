@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
@@ -12,7 +11,7 @@ using System.Windows.Navigation;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowViewShow : MetroWindow
+	public partial class WindowViewShow : Window
 	{
 		#region Variables
 		private ViewShowViewModel MyViewModel;
@@ -92,17 +91,17 @@ namespace SeriesTracker.Windows
 		#region Navi
 		private void SplitViewFrame_OnNavigated(object sender, NavigationEventArgs e)
 		{
-			HamburgerMenuControl.Content = e.Content;
+			//HamburgerMenuControl.Content = e.Content;
 		}
 
-		private void HamburgerMenuControl_OnItemClick(object sender, ItemClickEventArgs e)
-		{
-			if (e.ClickedItem is ViewShowMenuItem menuItem && menuItem.IsNavigation)
-			{
-				Navigation.Navigation.Navigate(menuItem.NavigationDestination);
-				HamburgerMenuControl.IsPaneOpen = false;
-			}
-		}
+		//private void HamburgerMenuControl_OnItemClick(object sender, ItemClickEventArgs e)
+		//{
+		//	if (e.ClickedItem is ViewShowMenuItem menuItem && menuItem.IsNavigation)
+		//	{
+		//		Navigation.Navigation.Navigate(menuItem.NavigationDestination);
+		//		HamburgerMenuControl.IsPaneOpen = false;
+		//	}
+		//}
 		#endregion
 		#endregion
 

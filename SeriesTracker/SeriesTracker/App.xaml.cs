@@ -1,5 +1,4 @@
-﻿using MahApps.Metro;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -38,7 +37,7 @@ namespace SeriesTracker
 			else
 				AppGlobal.Settings = new AppSettings(true);
 
-			ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
+			//ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
 		}
 	}
 }

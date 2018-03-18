@@ -14,14 +14,12 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
-using MahApps.Metro.Controls;
-
 namespace SeriesTracker
 {
 	/// <summary>
 	/// Interaction logic for ProgressDialog.xaml
 	/// </summary>
-	public partial class ProgressDialog : MetroWindow
+	public partial class ProgressDialog : Window
 	{
 		public static ProgressDialogContext Current { get; set; }
 

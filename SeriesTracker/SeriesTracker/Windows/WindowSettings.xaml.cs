@@ -1,6 +1,4 @@
-﻿using MahApps.Metro;
-using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
@@ -14,7 +12,7 @@ using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowSettings : MetroWindow
+	public partial class WindowSettings : Window
 	{
 		#region Variables
 		private SettingsViewModel MyViewModel;
@@ -57,7 +55,7 @@ namespace SeriesTracker.Windows
 			string theme = cmb_Theme.SelectedItem.ToString();
 			string accent = cmb_Accent.SelectedItem.ToString();
 
-			ThemeManager.ChangeAppStyle(this, ThemeManager.GetAccent(accent), ThemeManager.GetAppTheme(theme));
+			//ThemeManager.ChangeAppStyle(this, ThemeManager.GetAccent(accent), ThemeManager.GetAppTheme(theme));
 		}
 		#endregion
 
@@ -163,7 +161,7 @@ namespace SeriesTracker.Windows
 
 		private async void btn_Accept_Click(object sender, RoutedEventArgs e)
 		{
-			ShowOverlay();
+			//ShowOverlay();
 
 			List<string> changes = new List<string>();
 

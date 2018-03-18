@@ -1,17 +1,16 @@
-﻿<mah:MetroWindow
+﻿<Window
 	x:Class="SeriesTracker.Windows.WindowViewShow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
 	Title="{Binding MyTitle}"
 	Width="1024" Height="576" MinWidth="1024" MinHeight="576"
 	ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
 	Activated="Window_Activated" Loaded="Window_Loaded" Closed="Window_Closed" SizeChanged="Window_SizeChanged"
-	Style="{StaticResource MetroWindow}">
-	<mah:MetroWindow.DataContext>
+	Style="{StaticResource ReWindow}">
+	<Window.DataContext>
 		<ViewModels:ViewShowViewModel />
-	</mah:MetroWindow.DataContext>
+	</Window.DataContext>
 	<Grid>
 		<Grid.Resources>
 			<DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type ViewModels:ViewShowMenuItem}">
@@ -37,11 +36,11 @@
 			</DataTemplate>
 		</Grid.Resources>
 
-		<mah:HamburgerMenu
+		<!--<mah:HamburgerMenu
 			x:Name="HamburgerMenuControl"
 			ItemsSource="{Binding Menu}"
 			ItemTemplate="{StaticResource MenuItemTemplate}"
 			ItemClick="HamburgerMenuControl_OnItemClick"
-			DisplayMode="CompactOverlay" />
+			DisplayMode="CompactOverlay" />-->
 	</Grid>
-</mah:MetroWindow>
+</Window>

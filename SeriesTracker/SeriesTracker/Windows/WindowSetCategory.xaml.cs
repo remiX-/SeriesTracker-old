@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Windows;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowSetCategory : MetroWindow
+	public partial class WindowSetCategory : Window
 	{
 		#region Variables
 		private SetCategoryViewModel MyViewModel;

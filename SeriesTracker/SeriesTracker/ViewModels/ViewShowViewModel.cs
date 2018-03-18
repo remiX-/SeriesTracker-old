@@ -1,7 +1,5 @@
-﻿using MahApps.Metro.IconPacks;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using SeriesTracker.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -120,18 +118,18 @@ namespace SeriesTracker.ViewModels
 
 		public ViewShowViewModel()
 		{
-			Menu.Add(new ViewShowMenuItem()
-			{
-				Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.OrnamentVariant },
-				Text = "Overview",
-				NavigationDestination = new Uri("Views/Overview.xaml", UriKind.RelativeOrAbsolute)
-			});
-			Menu.Add(new ViewShowMenuItem()
-			{
-				Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.EmoticonPoop },
-				Text = "Seasons",
-				NavigationDestination = new Uri("Views/Seasons.xaml", UriKind.RelativeOrAbsolute)
-			});
+			//Menu.Add(new ViewShowMenuItem()
+			//{
+			//	Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.OrnamentVariant },
+			//	Text = "Overview",
+			//	NavigationDestination = new Uri("Views/Overview.xaml", UriKind.RelativeOrAbsolute)
+			//});
+			//Menu.Add(new ViewShowMenuItem()
+			//{
+			//	Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.EmoticonPoop },
+			//	Text = "Seasons",
+			//	NavigationDestination = new Uri("Views/Seasons.xaml", UriKind.RelativeOrAbsolute)
+			//});
 		}
 
 		public void RefreshBanner()

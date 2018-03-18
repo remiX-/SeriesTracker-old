@@ -1,4 +1,4 @@
-﻿<mah:MetroWindow
+﻿<Window
 	x:Class="SeriesTracker.Windows.WindowSettings"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,7 @@
 	Height="450" Width="800"
 	ShowInTaskbar="False" ResizeMode="NoResize"
 	BorderThickness="2"
-	GlowBrush="{DynamicResource AccentBaseColorBrush}" Loaded="MetroWindow_Loaded">
+	Loaded="MetroWindow_Loaded">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition />
@@ -81,4 +81,4 @@
 			<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="5,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
 		</StackPanel>
 	</Grid>
-</mah:MetroWindow>
+</Window>

@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.IconPacks;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
 
@@ -21,18 +20,18 @@ namespace SeriesTracker.ViewModels
 		{
 			MyTitle = "Title from VM";
 
-			Menu.Add(new TestMenuItem()
-			{
-				Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Account },
-				Text = "One",
-				NavigationDestination = new Uri("Views/PageOne.xaml", UriKind.RelativeOrAbsolute)
-			});
-			Menu.Add(new TestMenuItem()
-			{
-				Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.Alert },
-				Text = "Two",
-				NavigationDestination = new Uri("Views/PageTwo.xaml", UriKind.RelativeOrAbsolute)
-			});
+			//Menu.Add(new TestMenuItem()
+			//{
+			//	Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Account },
+			//	Text = "One",
+			//	NavigationDestination = new Uri("Views/PageOne.xaml", UriKind.RelativeOrAbsolute)
+			//});
+			//Menu.Add(new TestMenuItem()
+			//{
+			//	Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.Alert },
+			//	Text = "Two",
+			//	NavigationDestination = new Uri("Views/PageTwo.xaml", UriKind.RelativeOrAbsolute)
+			//});
 		}
 	}
 }

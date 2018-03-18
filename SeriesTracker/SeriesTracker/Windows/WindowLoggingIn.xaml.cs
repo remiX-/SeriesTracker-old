@@ -1,10 +1,10 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.ViewModels;
+﻿using SeriesTracker.ViewModels;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowLoggingIn : MetroWindow
+	public partial class WindowLoggingIn : Window
 	{
 		// ViewModel
 		private ViewLoggingInViewModel MyViewModel;
