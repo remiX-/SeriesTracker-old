@@ -33,7 +33,7 @@ namespace SeriesTracker.Windows
 			WindowStartupLocation = WindowStartupLocation.CenterOwner;
 		}
 
-		private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			DataContext = this;
 

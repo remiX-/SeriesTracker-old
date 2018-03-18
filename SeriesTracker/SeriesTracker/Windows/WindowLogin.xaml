@@ -5,7 +5,7 @@
 	Title="Login or Register"
 	Icon="../Resources/mainIcon.ico"
 	Height="350" Width="500"
-	Initialized="Window_Initialized" MouseDown="MetroWindow_MouseDown"
+	Initialized="Window_Initialized" MouseDown="Window_MouseDown"
 	WindowStartupLocation="CenterScreen" ShowInTaskbar="True" Visibility="Hidden"
 	Style="{StaticResource ReWindow}">
 	<Grid Margin="10">

@@ -2,7 +2,6 @@
 	x:Class="SeriesTracker.Windows.WindowMyAccount"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 	Title="Set Category"
 	Height="310" Width="425"
 	ShowInTaskbar="False" ResizeMode="NoResize"

@@ -64,25 +64,6 @@ namespace SeriesTracker.Windows
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			await Startup();
-
-			//if (AppGlobal.User.Shows.Count == 0)
-			//{
-			//	var result = await this.ShowMessageAsync("Hello!", "Your list looks a bit empty there!\nWould you like to add your first series now?",
-			//		MessageDialogStyle.AffirmativeAndNegative,
-			//		new MetroDialogSettings
-			//		{
-			//			AffirmativeButtonText = "Yes please!",
-			//			NegativeButtonText = "Maybe later",
-			//			ColorScheme = MetroDialogColorScheme.Theme,
-			//			AnimateHide = false,
-			//			DefaultButtonFocus = MessageDialogResult.Affirmative
-			//		});
-
-			//	if (result == MessageDialogResult.Affirmative)
-			//	{
-			//		Menu_Series_AddShow_Click(null, null);
-			//	}
-			//}
 		}
 
 		private void Window_Activated(object sender, EventArgs e)

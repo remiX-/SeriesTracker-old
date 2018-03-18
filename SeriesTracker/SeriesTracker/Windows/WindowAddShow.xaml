@@ -3,11 +3,10 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:SeriesTracker"
-	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 	Title="Add a show"
 	Height="350" Width="610"
 	ShowInTaskbar="False" ResizeMode="NoResize"
-	Loaded="MetroWindow_Loaded"
+	Loaded="Window_Loaded"
 	Style="{StaticResource ReWindow}">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
