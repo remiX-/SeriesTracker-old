@@ -17,112 +17,153 @@
 	<Window.Resources>
 		<local:VisibilityToBoolConverter x:Key="VisibilityToBoolConv"/>
 	</Window.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition />
-			<RowDefinition Height="30" />
-		</Grid.RowDefinitions>
-		
-		<materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="16">
+
+
+	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+			<materialDesign:DrawerHost.LeftDrawerContent>
+				<DockPanel MinWidth="212">
+					<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+								  DockPanel.Dock="Top"
+								  HorizontalAlignment="Right" Margin="16"
+								  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+					<ListBox x:Name="DemoItemsListBox" ItemsSource="{Binding DemoItems}" Margin="0 16 0 16">
+						<ListBox.ItemTemplate>
+							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
+								<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
+									<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
+									<TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="15 0 0 0" />
+								</StackPanel>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+				</DockPanel>
+			</materialDesign:DrawerHost.LeftDrawerContent>
+
 			<DockPanel>
-				<materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1" Margin="16 0 0 0" materialDesign:ShadowAssist.ShadowDepth="Depth1" DockPanel.Dock="Right">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="Auto" />
-						</Grid.ColumnDefinitions>
-						<Button Style="{DynamicResource MaterialDesignToolButton}">
-							<materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
-						</Button>
-						<TextBox Grid.Column="1" Margin="8 0 0 0" materialDesign:HintAssist.Hint="Build a search bar" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" />
-						<Button Style="{DynamicResource MaterialDesignToolButton}" Grid.Column="2">
-							<materialDesign:PackIcon Kind="Microphone" Opacity=".56" Margin="8 0 0 0" />
-						</Button>
-					</Grid>
-				</materialDesign:ColorZone>
-				<ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name" SelectedValuePath="CategoryID" SelectedItem="{Binding FilterCategory}" VerticalAlignment="Stretch" Width="125" DockPanel.Dock="Right">
-					<ComboBox.ToolTip>
-						<TextBlock>
+				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Top">
+					<DockPanel>
+						<materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1" Margin="16 0 0 0" materialDesign:ShadowAssist.ShadowDepth="Depth1" DockPanel.Dock="Right">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Button Style="{DynamicResource MaterialDesignToolButton}">
+									<materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
+								</Button>
+								<TextBox Grid.Column="1" x:Name="txt_FilterText" Margin="8 0 0 0"
+								 Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}"
+								 materialDesign:HintAssist.Hint="Build a search bar"
+								 materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" />
+								<Button Style="{DynamicResource MaterialDesignToolButton}" Grid.Column="2" Click="ClearFilter_Click">
+									<materialDesign:PackIcon Kind="Close" Opacity=".56" Margin="8 0 0 0" />
+								</Button>
+							</Grid>
+						</materialDesign:ColorZone>
+						<ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name" SelectedValuePath="CategoryID" SelectedItem="{Binding FilterCategory}" VerticalAlignment="Stretch" Width="125" DockPanel.Dock="Right">
+							<ComboBox.ToolTip>
+								<TextBlock>
 						Filter by user list
 						<LineBreak />Add user lists via settings
-						</TextBlock>
-					</ComboBox.ToolTip>
-				</ComboBox>
-				
-				<StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
-					<ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-				</StackPanel>
+								</TextBlock>
+							</ComboBox.ToolTip>
+						</ComboBox>
+
+						<StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
+							<ToggleButton x:Name="MenuToggleButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+							<Menu x:Name="Menu">
+								<MenuItem x:Name="menu_File" Header="_File">
+									<MenuItem x:Name="menu_File_Exit" Header="_Exit" Click="Menu_File_Exit_Click" InputGestureText="Alt+F4"/>
+								</MenuItem>
+								<MenuItem x:Name="menu_Series" Header="_Series">
+									<MenuItem x:Name="menu_Series_AddShow" Header="_Add series" Click="Menu_Series_AddShow_Click" InputGestureText="Ctrl+N"/>
+									<Separator />
+									<MenuItem x:Name="menu_Series_ForceUpdate" Header="F_orce update series" Click="Menu_Series_ForceUpdate_Click" InputGestureText="Ctrl+O"/>
+									<MenuItem x:Name="menu_Series_CheckForUpdates" Header="_Check for updates" Click="Menu_Series_CheckForUpdates_Click" InputGestureText="Ctrl+U"/>
+									<MenuItem x:Name="menu_Series_CheckShows" Header="Check for new _episodes" Click="Menu_Series_CheckForNewEpisodes_Click" InputGestureText="Ctrl+E"/>
+									<Separator />
+									<MenuItem x:Name="menu_Series_DetectLocal" Header="Detect _local series paths" Click="Menu_Series_DetectLocal_Click" InputGestureText="Ctrl+L"/>
+								</MenuItem>
+							</Menu>
+						</StackPanel>
+					</DockPanel>
+				</materialDesign:ColorZone>
+
+				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Bottom">
+					<DockPanel>
+						<Label DockPanel.Dock="Left" Style="{StaticResource lbl-default-center-left}" Content="{Binding Status}" />
+						<Label DockPanel.Dock="Right" Style="{StaticResource lbl-default-center-right}" Content="{Binding Product}" />
+					</DockPanel>
+				</materialDesign:ColorZone>
+
+				<DataGrid
+					Grid.Row="1"
+					x:Name="view_DataGridView"
+					Margin="0 0 0 0"
+					ItemsSource="{Binding Collection.View}" IsReadOnly="True"
+					CanUserSortColumns="True" CanUserResizeRows="False"
+					CanUserAddRows="False"
+					AutoGenerateColumns="False"
+					Sorting="DataGrid_Sorting"
+					materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+					materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+					<DataGrid.Columns>
+						<DataGridTextColumn Binding="{Binding Id}" Width="75" Header="Tvdb ID" />
+						<DataGridTextColumn Binding="{Binding ImdbId}" Width="75" Header="IMDb ID" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding DisplayName}" Width="250" Header="Name" />
+						<DataGridTextColumn Binding="{Binding Status}" Width="125" Header="Status" />
+						<DataGridTextColumn Binding="{Binding Network}" Width="125" Header="Network" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding Runtime}" Width="125" Header="Run Time" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding GenreDisplay}" Width="125" Header="Genre" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding AirDayDisplay}" Width="125" Header="Air Day" />
+						<DataGridTextColumn Binding="{Binding LatestEpisode.FullEpisodeString}" Width="125" Header="Latest Episode" />
+						<DataGridTextColumn Binding="{Binding LatestEpisode.FullDateString}" Width="125" Header="Latest Aired" />
+						<DataGridTextColumn Binding="{Binding NextEpisodeDisplay}" Width="125" Header="Next Episode" />
+						<DataGridTextColumn Binding="{Binding NextEpisodeDateDisplay}" Width="125" Header="Next Aired" />
+						<DataGridTextColumn Binding="{Binding HowLongDisplay}" Width="125" Header="How Long" />
+						<DataGridTextColumn Binding="{Binding LocalSeriesPath}" Width="250" Header="Local Folder" Visibility="Collapsed" />
+					</DataGrid.Columns>
+					<DataGrid.Resources>
+						<ContextMenu x:Key="cm_DataGridHeader" ItemsSource="{Binding Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" Width="200">
+							<ContextMenu.ItemTemplate>
+								<DataTemplate>
+									<MenuItem Header="{Binding Header}" IsCheckable="True" IsChecked="{Binding Visibility, Converter={StaticResource VisibilityToBoolConv}}" Margin="-30 -7" />
+								</DataTemplate>
+							</ContextMenu.ItemTemplate>
+						</ContextMenu>
+						<ContextMenu x:Key="cm_DataGridRow" Opened="DataGrid_ContextMenu_Opened">
+							<MenuItem x:Name="View" Header="View" Click="CM_View_Click" />
+							<MenuItem x:Name="Update" Header="Update">
+								<MenuItem x:Name="UpdateAll" Header="All" Click="CM_UpdateAll_Click"/>
+								<MenuItem x:Name="UpdateSelected" Header="Selected" Click="CM_UpdateSelected_Click"/>
+							</MenuItem>
+							<MenuItem x:Name="SetCategory" Header="Set Category" Click="CM_SetCategory_Click"/>
+							<Separator />
+							<MenuItem x:Name="Copy" Header="Copy" Click="CM_Copy_Click"/>
+							<MenuItem x:Name="Delete" Header="Delete" Click="CM_Delete_Click"/>
+							<Separator />
+							<MenuItem x:Name="OpenLink" Header="Open Link">
+								<MenuItem x:Name="OpenIMDB" Header="IMDB" Click="CM_OpenIMDB_Click"/>
+								<MenuItem x:Name="OpenEztv" Header="eztv.it" Click="CM_Eztv_Click"/>
+							</MenuItem>
+							<MenuItem x:Name="DownloadLastEpisode" Header="Download Last Episode" Click="CM_DownloadLastEpisode_Click"/>
+							<MenuItem x:Name="OpenFolder" Header="Open Folder" Click="CM_OpenFolder_Click"/>
+							<Separator />
+							<MenuItem x:Name="Cancel" Header="Cancel"/>
+						</ContextMenu>
+
+						<Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+							<Setter Property="ContextMenu" Value="{StaticResource cm_DataGridHeader}" />
+						</Style>
+
+						<Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+							<Setter Property="ContextMenu" Value="{StaticResource cm_DataGridRow}" />
+						</Style>
+					</DataGrid.Resources>
+				</DataGrid>
 			</DockPanel>
-		</materialDesign:ColorZone>
-
-		<DataGrid
-			Grid.Row="1"
-			x:Name="view_DataGridView"
-			Margin="0 0 0 0"
-			ItemsSource="{Binding Collection.View}" IsReadOnly="True"
-			CanUserSortColumns="True" CanUserResizeRows="False"
-			CanUserAddRows="False"
-			AutoGenerateColumns="False"
-			materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-			materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-			<DataGrid.Columns>
-				<DataGridTextColumn Binding="{Binding Id}" Width="75" Header="Tvdb ID" />
-				<DataGridTextColumn Binding="{Binding ImdbId}" Width="75" Header="IMDb ID" Visibility="Collapsed" />
-				<DataGridTextColumn Binding="{Binding DisplayName}" Width="250" Header="Name" />
-				<DataGridTextColumn Binding="{Binding Status}" Width="125" Header="Status" />
-				<DataGridTextColumn Binding="{Binding Network}" Width="125" Header="Network" Visibility="Collapsed" />
-				<DataGridTextColumn Binding="{Binding Runtime}" Width="125" Header="Run Time" Visibility="Collapsed" />
-				<DataGridTextColumn Binding="{Binding GenreDisplay}" Width="125" Header="Genre" Visibility="Collapsed" />
-				<DataGridTextColumn Binding="{Binding AirDayDisplay}" Width="125" Header="Air Day" />
-				<DataGridTextColumn Binding="{Binding LatestEpisode.FullEpisodeString}" Width="125" Header="Latest Episode" />
-				<DataGridTextColumn Binding="{Binding LatestEpisode.FullDateString}" Width="125" Header="Latest Aired" />
-				<DataGridTextColumn Binding="{Binding NextEpisodeDisplay}" Width="125" Header="Next Episode" />
-				<DataGridTextColumn Binding="{Binding NextEpisodeDateDisplay}" Width="125" Header="Next Aired" />
-				<DataGridTextColumn Binding="{Binding HowLongDisplay}" Width="125" Header="How Long" />
-				<DataGridTextColumn Binding="{Binding LocalSeriesPath}" Width="250" Header="Local Folder" Visibility="Collapsed" />
-			</DataGrid.Columns>
-			<DataGrid.Resources>
-				<ContextMenu x:Key="cm_DataGridHeader" ItemsSource="{Binding Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" Width="200">
-					<ContextMenu.ItemTemplate>
-						<DataTemplate>
-							<MenuItem Header="{Binding Header}" IsCheckable="True" IsChecked="{Binding Visibility, Converter={StaticResource VisibilityToBoolConv}}" Margin="-30 -7" />
-						</DataTemplate>
-					</ContextMenu.ItemTemplate>
-				</ContextMenu>
-				<ContextMenu x:Key="cm_DataGridRow" Opened="DataGrid_ContextMenu_Opened">
-					<MenuItem x:Name="View" Header="View" Click="CM_View_Click" />
-					<MenuItem x:Name="Update" Header="Update">
-						<MenuItem x:Name="UpdateAll" Header="All" Click="CM_UpdateAll_Click"/>
-						<MenuItem x:Name="UpdateSelected" Header="Selected" Click="CM_UpdateSelected_Click"/>
-					</MenuItem>
-					<MenuItem x:Name="SetCategory" Header="Set Category" Click="CM_SetCategory_Click"/>
-					<Separator />
-					<MenuItem x:Name="Copy" Header="Copy" Click="CM_Copy_Click"/>
-					<MenuItem x:Name="Delete" Header="Delete" Click="CM_Delete_Click"/>
-					<Separator />
-					<MenuItem x:Name="OpenLink" Header="Open Link">
-						<MenuItem x:Name="OpenIMDB" Header="IMDB" Click="CM_OpenIMDB_Click"/>
-						<MenuItem x:Name="OpenEztv" Header="eztv.it" Click="CM_Eztv_Click"/>
-					</MenuItem>
-					<MenuItem x:Name="DownloadLastEpisode" Header="Download Last Episode" Click="CM_DownloadLastEpisode_Click"/>
-					<MenuItem x:Name="OpenFolder" Header="Open Folder" Click="CM_OpenFolder_Click"/>
-					<Separator />
-					<MenuItem x:Name="Cancel" Header="Cancel"/>
-				</ContextMenu>
-
-				<Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
-					<Setter Property="ContextMenu" Value="{StaticResource cm_DataGridHeader}" />
-				</Style>
-
-				<Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
-					<Setter Property="ContextMenu" Value="{StaticResource cm_DataGridRow}" />
-				</Style>
-			</DataGrid.Resources>
-		</DataGrid>
-
-		<Label Grid.Row="2" Style="{StaticResource lbl-default-center-left}" Content="{Binding Status}" />
-		<Label Grid.Row="2" Style="{StaticResource lbl-default-center-right}" Content="{Binding Product}" />
-	</Grid>
+		</materialDesign:DrawerHost>
+	</materialDesign:DialogHost>
 </Window>

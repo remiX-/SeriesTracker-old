@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using MaterialDesignThemes.Wpf;
+using Prism.Mvvm;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using System;
@@ -13,6 +14,8 @@ namespace SeriesTracker.ViewModels
 	internal class MainNewViewModel : BindableBase
 	{
 		#region Variables
+		public HamburgerMenuItem[] DemoItems { get; }
+
 		public CollectionViewSource Collection { get; } = new CollectionViewSource();
 
 		#region Fields
@@ -73,6 +76,12 @@ namespace SeriesTracker.ViewModels
 
 		public MainNewViewModel()
 		{
+			DemoItems = new[]
+			{
+				new HamburgerMenuItem("One", PackIconKind.Account),
+				new HamburgerMenuItem("Two", PackIconKind.Settings),
+				new HamburgerMenuItem("Three", PackIconKind.Logout)
+			};
 			myTitle = AppGlobal.AssemblyTitle;
 			UserEmail = AppGlobal.User.Email;
 			Username = AppGlobal.User.Username;
@@ -115,6 +124,35 @@ namespace SeriesTracker.ViewModels
 					e.Accepted = show.HasText(FilterText);
 				}
 			}
+		}
+
+		public void ResetStatus()
+		{
+			Status = "Ready";
+		}
+	}
+
+	public class HamburgerMenuItem : BindableBase
+	{
+		private string name;
+		private PackIconKind icon;
+
+		public string Name
+		{
+			get { return name; }
+			set { SetProperty(ref name, value); }
+		}
+
+		public PackIconKind Icon
+		{
+			get { return icon; }
+			set { SetProperty(ref icon, value); }
+		}
+
+		public HamburgerMenuItem(string name, PackIconKind icon)
+		{
+			this.name = name;
+			this.icon = icon;
 		}
 	}
 }

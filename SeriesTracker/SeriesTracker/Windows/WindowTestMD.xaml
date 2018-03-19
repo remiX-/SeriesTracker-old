@@ -12,14 +12,13 @@
 	Background="{DynamicResource MaterialDesignPaper}"
 	FontFamily="{DynamicResource MaterialDesignFont}">
 	<Grid>
-		<materialDesign:Card Padding="32" Margin="16">
-			<TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
-		</materialDesign:Card>
-		<TextBox x:Name="NameTextBox" materialDesign:HintAssist.Hint="Name">
-			<TextBox.Text>
-				<Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
-				</Binding>
-			</TextBox.Text>
-		</TextBox>
+		<ListBox x:Name="DemoItemsListBox" Margin="0">
+			<ListViewItem x:Name="ItemCreate">
+				<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
+					<materialDesign:PackIcon Kind="Account" Height="30" Width="30" />
+					<TextBlock Text="Test" VerticalAlignment="Center" Margin="16 0 0 0" />
+				</StackPanel>
+			</ListViewItem>
+		</ListBox>
 	</Grid>
 </Window>

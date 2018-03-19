@@ -64,6 +64,8 @@ namespace SeriesTracker.Windows
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			await Startup();
+
+			DemoItemsListBox.SelectionChanged += DemoItemsListBox_SelectionChanged;
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
@@ -130,6 +132,145 @@ namespace SeriesTracker.Windows
 		}
 		#endregion
 
+		#region Action Events
+		private void ClearFilter_Click(object sender, RoutedEventArgs e)
+		{
+			txt_FilterText.Text = string.Empty;
+			txt_FilterText.Focus();
+		}
+		#endregion
+
+		#region Menu Events
+		private void Menu_File_Exit_Click(object sender, RoutedEventArgs e)
+		{
+			Close();
+		}
+
+		private async void Menu_Series_AddShow_Click(object sender, RoutedEventArgs e)
+		{
+			// 257655 - arrow
+			// 279121 - flash
+
+			WindowAddShow win = new WindowAddShow();
+			win.ShowDialog();
+
+			if (win.selectedShow == null)
+				return;
+
+			MyViewModel.Status = $"Loading data for {win.selectedShow.SeriesName}";
+
+			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
+
+			// Add to database
+			SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
+			show.UserShowID = result.Data.UserShowID;
+
+			AppGlobal.User.Shows.Add(show);
+
+			// Reload UI
+			MyViewModel.RefreshView();
+
+			// Notification
+			PopupNotification(show.SeriesName + " has been added");
+
+			MyViewModel.ResetStatus();
+
+			//ProgressDialogResult dialogResult = ProgressDialog.Execute(this, string.Format("Loading data for {0}", win.selectedShow.SeriesName), async () =>
+			//{
+			//	Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
+
+			//	// Add to database
+			//	SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
+			//	show.UserShowID = result.Data.UserShowID;
+
+			//	AppGlobal.User.Shows.Add(show);
+
+			//	// Reload UI
+			//	Dispatcher.Invoke(() => MyViewModel.RefreshView());
+
+			//	// Notification
+			//	PopupNotification(show.SeriesName + " has been added");
+			//}, ProgressDialogSettings.WithSubLabel);
+
+			//if (dialogResult.OperationFailed)
+			//MessageBox.Show("ProgressDialog failed.");
+		}
+
+		private async void Menu_Series_ForceUpdate_Click(object sender, RoutedEventArgs e)
+		{
+			await UpdateShows(AppGlobal.User.Shows);
+		}
+
+		private async void Menu_Series_CheckForUpdates_Click(object sender, RoutedEventArgs e)
+		{
+			await CheckForUpdates();
+		}
+
+		private async void Menu_Series_CheckForNewEpisodes_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				MyViewModel.Status = "Looking for new episodes";
+
+				string text = "Opening ";
+				int seriesFound = 0;
+
+				foreach (Show show in AppGlobal.User.Shows)
+				{
+					Episode episode = show.LatestEpisode;
+
+					if (episode == null) continue;
+					if (episode.AirDate.Value.Date != DateTime.Now.Date) continue;
+
+					await MethodCollection.DownloadEpisode(show, episode);
+
+					text += show.DisplayName + ", ";
+
+					seriesFound++;
+				}
+
+				PopupNotification(seriesFound == 0 ? "No shows found" : text.Substring(0, text.Length - 2));
+
+				MyViewModel.ResetStatus();
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+		}
+
+		private void Menu_Series_DetectLocal_Click(object sender, RoutedEventArgs e)
+		{
+			if (!string.IsNullOrWhiteSpace(AppGlobal.Paths.LocalSeriesDirectory))
+			{
+				AutoDetectLocalSeriesPaths();
+			}
+			else
+			{
+				MessageBox.Show("Enter local series folder in settings first");
+			}
+		}
+		#endregion
+
+		#region Tray Icon Events
+		private void NotifyIcon_MouseDoubleClick(object sender, WinForms.MouseEventArgs e)
+		{
+			if (e == null || e.Button == WinForms.MouseButtons.Left)
+			{
+				if (WindowState == WindowState.Normal)
+				{
+					WindowState = WindowState.Minimized;
+				}
+				else
+				{
+					Show();
+
+					WindowState = WindowState.Normal;
+				}
+			}
+		}
+		#endregion
+
 		#region Startup
 		private async Task Startup()
 		{
@@ -148,12 +289,12 @@ namespace SeriesTracker.Windows
 				LoadSeries();
 
 				MyViewModel.RefreshView();
-				//SortDataGrid(AppGlobal.Settings.DefaultSortColumn, AppGlobal.Settings.DefaultSortDirection);
+				SortDataGrid(AppGlobal.Settings.DefaultSortColumn, AppGlobal.Settings.DefaultSortDirection);
 
 				//if (await CheckForShowUpdates())
 				//	MyViewModel.RefreshView();
 
-				//HideViewOverlay();
+				MyViewModel.ResetStatus();
 			}
 			catch (Exception ex)
 			{
@@ -273,7 +414,7 @@ namespace SeriesTracker.Windows
 
 		private async Task SetupTvdbAPI()
 		{
-			//SetViewOverlayText("Contacting theTVDB api");
+			MyViewModel.Status = "Contacting TheTVDb API";
 
 			try
 			{
@@ -304,7 +445,7 @@ namespace SeriesTracker.Windows
 
 		private async Task SetupStructure()
 		{
-			//SetViewOverlayText("Setting up structure");
+			MyViewModel.Status = "Setting up Structure";
 
 			try
 			{
@@ -369,25 +510,6 @@ namespace SeriesTracker.Windows
 		}
 		#endregion
 
-		#region Tray Icon Events
-		private void NotifyIcon_MouseDoubleClick(object sender, WinForms.MouseEventArgs e)
-		{
-			if (e == null || e.Button == WinForms.MouseButtons.Left)
-			{
-				if (WindowState == WindowState.Normal)
-				{
-					WindowState = WindowState.Minimized;
-				}
-				else
-				{
-					Show();
-
-					WindowState = WindowState.Normal;
-				}
-			}
-		}
-		#endregion
-
 		#region Series
 		private async Task UpdateShows(List<Show> shows)
 		{
@@ -398,15 +520,15 @@ namespace SeriesTracker.Windows
 				int counter = 1;
 				foreach (Show show in shows)
 				{
-					string overlayText = string.Format("Updating {0}/{1} - {2}", counter++, shows.Count, show.SeriesName);
-					//SetViewOverlayText(overlayText);
+					MyViewModel.Status = $"Downloading data {counter++}/{shows.Count} - {show.SeriesName}";
+
 
 					await MethodCollection.RetrieveTvdbDataForSeriesAsync(show.Id);
 
 					show.Updating = false;
 				}
 
-				//HideViewOverlay();
+				MyViewModel.ResetStatus();
 			}
 			catch (Exception ex)
 			{
@@ -454,7 +576,7 @@ namespace SeriesTracker.Windows
 
 		private async Task CheckForMissingLocalData()
 		{
-			//SetViewOverlayText("Verifying local data");
+			MyViewModel.Status = "Verifying local data";
 
 			try
 			{
@@ -472,7 +594,7 @@ namespace SeriesTracker.Windows
 					int counter = 1;
 					foreach (Show show in missingShows)
 					{
-						//SetViewOverlayText(string.Format("Downloading data {0}/{1} - {2}", counter++, missingShows.Count, show.SeriesName));
+						MyViewModel.Status = $"Downloading data {counter++}/{missingShows.Count} - {show.SeriesName}";
 
 						await MethodCollection.RetrieveTvdbDataForSeriesAsync(show.Id);
 					}
@@ -483,8 +605,134 @@ namespace SeriesTracker.Windows
 				ErrorMethods.LogError(ex.Message);
 			}
 		}
-		#endregion
 
+		private async Task<bool> CheckForShowUpdates()
+		{
+			MyViewModel.Status = "Checking for show updates";
+
+			bool didUpdate = false;
+
+			// Check for show updates
+			string url = string.Format("https://api.thetvdb.com/updated/query?fromTime={0}", Properties.Settings.Default.TvdbUpdateEpochTime);
+			TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync("GET", url);
+
+			if (jsonData.Data != null)
+			{
+				List<TvdbUpdate> tvdbUpdates = JsonConvert.DeserializeObject<List<TvdbUpdate>>(jsonData.Data.ToString());
+
+				string _s = "Need to update {0} shows:";
+				List<Show> updates = new List<Show>();
+
+				foreach (TvdbUpdate update in tvdbUpdates)
+				{
+					Show showToUpdate = AppGlobal.User.Shows.SingleOrDefault(x => x.Id == update.Id);
+
+					if (showToUpdate != null)
+					{
+						_s += "\n" + showToUpdate.SeriesName;
+
+						updates.Add(showToUpdate);
+					}
+				}
+
+				if (updates.Count > 0)
+				{
+					didUpdate = true;
+
+					await UpdateShows(updates);
+				}
+			}
+
+			// Update last updated
+			Properties.Settings.Default.TvdbUpdateEpochTime = CommonMethods.GetEpochTime();
+			Properties.Settings.Default.Save();
+
+			MyViewModel.ResetStatus();
+
+			return didUpdate;
+		}
+
+		private async Task CheckForUpdates()
+		{
+			await CheckForMissingLocalData();
+			await CheckForShowUpdates();
+		}
+
+		private void AutoDetectLocalSeriesPaths()
+		{
+			// Try auto find local series paths for series ona ccount
+			ProgressDialogResult result = ProgressDialog.Execute(this, "Loading data", () =>
+			{
+				string seriesFolderPath = AppGlobal.Paths.LocalSeriesDirectory;
+
+				if (string.IsNullOrEmpty(seriesFolderPath))
+					return;
+
+				// Get directory information of series folder
+				DirectoryInfo dInfo = new DirectoryInfo(seriesFolderPath);
+				DirectoryInfo[] series = dInfo.GetDirectories();
+
+				try
+				{
+					if (AppGlobal.Settings.LocalSeriesPaths == null || AppGlobal.Settings.LocalSeriesPaths.Count > 0)
+					{
+						AppGlobal.Settings.ClearSeriesPaths();
+					}
+
+					int count = 1;
+					foreach (Show show in AppGlobal.User.Shows)
+					{
+						int pacent = (int)((double)count++ / AppGlobal.User.Shows.Count * 100);
+						ProgressDialog.Current.Report(pacent, "Checking {0}", show.SeriesName);
+
+						// Look for exact match first
+						DirectoryInfo showDir = series.SingleOrDefault(x => x.Name == show.SeriesName);
+
+						// Match of how shows are displayed in the list
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name == show.DisplayName);
+
+						// Match of names without brackets
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name == show.GetNameWithoutBrackets());
+
+						// Match of listed names (the at end)
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name == show.GetListedName());
+
+						// Match for ignoring case
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name.ToLower() == show.SeriesName.ToLower());
+
+						// Match for ignoring periods
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name.Replace(".", "") == show.SeriesName.Replace(".", ""));
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name.Replace(".", "") == show.DisplayName.Replace(".", ""));
+
+						// Match for ignoring '
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name.Replace("'", "") == show.SeriesName.Replace("'", ""));
+						if (showDir == null) showDir = series.SingleOrDefault(x => x.Name.Replace("'", "") == show.DisplayName.Replace("'", ""));
+
+						// Check to see if there's a directory for the show
+						if (showDir != null)
+						{
+							show.LocalSeriesPath = showDir.FullName;
+
+							// Add to settings
+							AppGlobal.Settings.AddSeriesPath(show.Id, showDir.FullName);
+						}
+
+						//Thread.Sleep(250);
+					}
+
+					AppGlobal.Settings.Save();
+				}
+				catch (Exception)
+				{
+
+				}
+
+			}, ProgressDialogSettings.WithSubLabel);
+
+			if (result.OperationFailed)
+				MessageBox.Show("ProgressDialog failed.");
+		}
+		#endregion
 
 		#region DataGrid List
 		private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
@@ -737,5 +985,29 @@ namespace SeriesTracker.Windows
 				CommonMethods.StartProcess(show.LocalSeriesPath);
 		}
 		#endregion
+
+		#region Misc
+		private void PopupNotification(string content)
+		{
+			stTrayIcon.BalloonTipText = content;
+			stTrayIcon.ShowBalloonTip(0);
+		}
+		#endregion
+
+		private void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var selected = DemoItemsListBox.SelectedItem as HamburgerMenuItem;
+			//switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+			//{
+			//	case "ItemHome":
+
+			//		break;
+			//	case "ItemCreate":
+
+			//		break;
+			//	default:
+			//		break;
+			//}
+		}
 	}
 }
