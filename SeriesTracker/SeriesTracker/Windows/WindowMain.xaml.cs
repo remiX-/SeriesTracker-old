@@ -828,7 +828,7 @@ namespace SeriesTracker.Windows
 				};
 
 				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
-				//data = await Request.ExecuteAndDeserializeAsync("POST", "https://api.thetvdb.com/login", jObject.ToString());
+				data = await Request.ExecuteAndDeserializeAsync("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
 				if (data != null && !string.IsNullOrEmpty(data.Token))
 				{
