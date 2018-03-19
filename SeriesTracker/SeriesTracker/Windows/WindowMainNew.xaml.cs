@@ -279,11 +279,11 @@ namespace SeriesTracker.Windows
 			{
 				TvdbAPI data = new TvdbAPI
 				{
-					Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjEzOTE4MjMsImlkIjoiIiwib3JpZ19pYXQiOjE1MjEzMDU0MjN9.NSjcWGyXbKtejG6aw07yr2xVtY1GKeBsZi1VO-vxScTl9-Dtjn1Fw30wlakP333yjcnxV2e_h_P7MWAls3NXaqiBv5fxfhX2kRyB5kG3mra9AVTEkIZ26LndeUcyTDtyHGldmPWRNyWCa3mHQlC2k7zQcqm2KzddA-HGMAIyjw9n0PBhbba6ZFAgJLFdFdXYL8OeZqRTojxUr-3vVPlSFMEwspzzzLohSlt2XLeUBcgY866k3Qhx9bdUFiK456-Y-kLzG0gkewknBC84bw35AO1r2mDKWX5uCqebWnlgsbzK6Kae3qcm4v-xLju_T-kCJvIp4xT9EoCmESeqKu6cuA"
+					Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NjAzMTIsImlkIjoiIiwib3JpZ19pYXQiOjE1MjE0NzM5MTJ9.2EJfa2BaDK6HELVqIiBp05os-bnvqdpNcVK-GkO2YM-cAxU3RXhHTBkvZUD02Bk9Zsby6NTxc-Tgqc3y5ftuL198BIAP5iZf_bdI9P262vBhrVwUL0a2zKhUZue3pTrNMOEiXiwu8ZOrOMuNF0qVFXd8HIO-Ax2S3K1lD4TZmujg6KGo4sW0DtSvN40spNID7DRw1cvJ7ye8xfznz1jnqg_H5Rxef1U7ASavuACX-puDZ29fADwR27ZYrb67oYqCywRhiNXuJskuFBeMuXkzofQEo9tygEN3L_cYS5S8UUxngI8InXSlNRw0_d1B7QSIYXxN7YEE5zEYO5nTpprKAg"
 				};
 
 				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
-				//data = await Request.ExecuteAndDeserializeAsync("POST", "https://api.thetvdb.com/login", jObject.ToString());
+				data = await Request.ExecuteAndDeserializeAsync("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
 				if (data != null && !string.IsNullOrEmpty(data.Token))
 				{
