@@ -25,9 +25,16 @@
 				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 			</Style>
 
+			<Style x:Key="ReWindowNoBorder" TargetType="{x:Type Window}" BasedOn="{StaticResource ReWindow}">
+				<Setter Property="WindowStyle" Value="None" />
+				<Setter Property="AllowsTransparency" Value="True" />
+				<Setter Property="BorderThickness" Value="1" />
+				<Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+			</Style>
+
 			<!--#region Buttons -->
 			<!-- Types -->
-			<Style x:Key="btn-default" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+			<Style x:Key="btn-default" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
 				<Setter Property="Height" Value="26"/>
 				<Setter Property="Width" Value="100"/>
 			</Style>

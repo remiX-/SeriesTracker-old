@@ -5,8 +5,8 @@
 	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
 	Height="100" Width="300"
 	Loaded="Window_Loaded" MouseDown="Window_MouseDown"
-	WindowStartupLocation="CenterScreen" WindowStyle="None"
-	Style="{StaticResource ReWindow}">
+	WindowStartupLocation="CenterScreen"
+	Style="{StaticResource ReWindowNoBorder}">
 	<Window.DataContext>
 		<ViewModels:ViewLoggingInViewModel/>
 	</Window.DataContext>

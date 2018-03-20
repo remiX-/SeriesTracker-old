@@ -148,6 +148,9 @@
     <Compile Include="Controllers\ModelMethods\ShowMethods.cs" />
     <Compile Include="Core\AppSettings.cs" />
     <Compile Include="Core\Request.cs" />
+    <Compile Include="Dialogs\SampleMessageDialog.xaml.cs">
+      <DependentUpon>SampleMessageDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Actor.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\UserShowWatch.cs" />
@@ -171,7 +174,9 @@
     <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
     <Compile Include="ProgressDialog\ProgressDialogSettings.cs" />
     <Compile Include="Properties\Settings.cs" />
+    <Compile Include="ViewModels\AddShowViewModel.cs" />
     <Compile Include="ViewModels\MainNewViewModel.cs" />
+    <Compile Include="ViewModels\MyAccountViewModel.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
     <Compile Include="ViewModels\TestMenuItem.cs" />
     <Compile Include="ViewModels\ViewShowMenuItem.cs" />
@@ -211,6 +216,10 @@
     <Compile Include="Windows\WindowViewShow.xaml.cs">
       <DependentUpon>WindowViewShow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\SampleMessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProgressDialog\ProgressDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

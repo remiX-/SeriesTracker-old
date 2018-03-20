@@ -6,8 +6,10 @@ namespace SeriesTracker.Windows
 {
 	public partial class WindowLoggingIn : Window
 	{
+		#region Variables
 		// ViewModel
 		private ViewLoggingInViewModel MyViewModel;
+		#endregion
 
 		public string LoginText { get; set; }
 
@@ -16,9 +18,9 @@ namespace SeriesTracker.Windows
 			InitializeComponent();
 		}
 
-		private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			MyViewModel = (ViewLoggingInViewModel)DataContext;
+			MyViewModel = DataContext as ViewLoggingInViewModel;
 			MyViewModel.LoginText += Properties.Settings.Default.UserEmail;
 		}
 

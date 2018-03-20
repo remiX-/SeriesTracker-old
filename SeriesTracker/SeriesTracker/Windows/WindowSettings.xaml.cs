@@ -35,7 +35,7 @@ namespace SeriesTracker.Windows
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			DataContext = MyViewModel = new SettingsViewModel();
+			MyViewModel = DataContext as SettingsViewModel;
 
 			txt_SeriesFolder.Text = AppGlobal.Settings.LocalSeriesFolder;
 		}

@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SeriesTracker.Comparers;
 using SeriesTracker.Core;
+using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
@@ -137,118 +139,6 @@ namespace SeriesTracker.Windows
 		{
 			txt_FilterText.Text = string.Empty;
 			txt_FilterText.Focus();
-		}
-		#endregion
-
-		#region Menu Events
-		private void Menu_File_Exit_Click(object sender, RoutedEventArgs e)
-		{
-			Close();
-		}
-
-		private async void Menu_Series_AddShow_Click(object sender, RoutedEventArgs e)
-		{
-			// 257655 - arrow
-			// 279121 - flash
-
-			WindowAddShow win = new WindowAddShow();
-			win.ShowDialog();
-
-			if (win.selectedShow == null)
-				return;
-
-			MyViewModel.Status = $"Loading data for {win.selectedShow.SeriesName}";
-
-			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
-
-			// Add to database
-			SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
-			show.UserShowID = result.Data.UserShowID;
-
-			AppGlobal.User.Shows.Add(show);
-
-			// Reload UI
-			MyViewModel.RefreshView();
-
-			// Notification
-			PopupNotification(show.SeriesName + " has been added");
-
-			MyViewModel.ResetStatus();
-
-			//ProgressDialogResult dialogResult = ProgressDialog.Execute(this, string.Format("Loading data for {0}", win.selectedShow.SeriesName), async () =>
-			//{
-			//	Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
-
-			//	// Add to database
-			//	SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
-			//	show.UserShowID = result.Data.UserShowID;
-
-			//	AppGlobal.User.Shows.Add(show);
-
-			//	// Reload UI
-			//	Dispatcher.Invoke(() => MyViewModel.RefreshView());
-
-			//	// Notification
-			//	PopupNotification(show.SeriesName + " has been added");
-			//}, ProgressDialogSettings.WithSubLabel);
-
-			//if (dialogResult.OperationFailed)
-			//MessageBox.Show("ProgressDialog failed.");
-		}
-
-		private async void Menu_Series_ForceUpdate_Click(object sender, RoutedEventArgs e)
-		{
-			await UpdateShows(AppGlobal.User.Shows);
-		}
-
-		private async void Menu_Series_CheckForUpdates_Click(object sender, RoutedEventArgs e)
-		{
-			await CheckForUpdates();
-		}
-
-		private async void Menu_Series_CheckForNewEpisodes_Click(object sender, RoutedEventArgs e)
-		{
-			try
-			{
-				MyViewModel.Status = "Looking for new episodes";
-
-				string text = "Opening ";
-				int seriesFound = 0;
-
-				foreach (Show show in AppGlobal.User.Shows)
-				{
-					Episode episode = show.LatestEpisode;
-
-					if (episode == null) continue;
-					if (episode.AirDate.Value.Date != DateTime.Now.Date) continue;
-
-					await MethodCollection.DownloadEpisode(show, episode);
-
-					text += show.DisplayName + ", ";
-
-					seriesFound++;
-				}
-
-				PopupNotification(seriesFound == 0 ? "No shows found" : text.Substring(0, text.Length - 2));
-
-				MyViewModel.ResetStatus();
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
-		}
-
-		private void Menu_Series_DetectLocal_Click(object sender, RoutedEventArgs e)
-		{
-			if (!string.IsNullOrWhiteSpace(AppGlobal.Paths.LocalSeriesDirectory))
-			{
-				AutoDetectLocalSeriesPaths();
-			}
-			else
-			{
-				MessageBox.Show("Enter local series folder in settings first");
-			}
 		}
 		#endregion
 
@@ -994,20 +884,133 @@ namespace SeriesTracker.Windows
 		}
 		#endregion
 
-		private void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			if (DemoItemsListBox.SelectedItem == null) return;
+
 			var selected = DemoItemsListBox.SelectedItem as HamburgerMenuItem;
-			//switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+			switch (selected.Id)
+			{
+				case "AddSeries": await AddSeries(); break;
+				case "ForceUpdate": await UpdateShows(AppGlobal.User.Shows); break;
+				case "Updates": await CheckForUpdates(); break;
+				case "NewEpisodes": await CheckForNewEpisodes(); break;
+				case "LocalSeries": await DetectLocalSeriesPaths(); break;
+				default:
+					break;
+			}
+
+			// Deselect item
+			DemoItemsListBox.SelectedItem = null;
+
+			// Close drawer
+			MenuToggleButton.IsChecked = false;
+		}
+
+		private async Task AddSeries()
+		{
+
+			// 257655 - arrow
+			// 279121 - flash
+
+			WindowAddShow win = new WindowAddShow();
+			win.ShowDialog();
+
+			if (win.selectedShow == null)
+				return;
+
+			MyViewModel.Status = $"Loading data for {win.selectedShow.SeriesName}";
+
+			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
+
+			// Add to database
+			SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
+			show.UserShowID = result.Data.UserShowID;
+
+			AppGlobal.User.Shows.Add(show);
+
+			// Reload UI
+			MyViewModel.RefreshView();
+
+			// Notification
+			PopupNotification(show.SeriesName + " has been added");
+
+			MyViewModel.ResetStatus();
+
+			//ProgressDialogResult dialogResult = ProgressDialog.Execute(this, string.Format("Loading data for {0}", win.selectedShow.SeriesName), async () =>
 			//{
-			//	case "ItemHome":
+			//	Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
 
-			//		break;
-			//	case "ItemCreate":
+			//	// Add to database
+			//	SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
+			//	show.UserShowID = result.Data.UserShowID;
 
-			//		break;
-			//	default:
-			//		break;
-			//}
+			//	AppGlobal.User.Shows.Add(show);
+
+			//	// Reload UI
+			//	Dispatcher.Invoke(() => MyViewModel.RefreshView());
+
+			//	// Notification
+			//	PopupNotification(show.SeriesName + " has been added");
+			//}, ProgressDialogSettings.WithSubLabel);
+
+			//if (dialogResult.OperationFailed)
+			//MessageBox.Show("ProgressDialog failed.");
+		}
+
+		private async Task CheckForNewEpisodes()
+		{
+			try
+			{
+				MyViewModel.Status = "Looking for new episodes";
+
+				string text = "Opening ";
+				int seriesFound = 0;
+
+				foreach (Show show in AppGlobal.User.Shows)
+				{
+					Episode episode = show.LatestEpisode;
+
+					if (episode == null) continue;
+					if (episode.AirDate.Value.Date != DateTime.Now.Date) continue;
+
+					await MethodCollection.DownloadEpisode(show, episode);
+
+					text += show.DisplayName + ", ";
+
+					seriesFound++;
+				}
+
+				PopupNotification(seriesFound == 0 ? "No shows found" : text.Substring(0, text.Length - 2));
+
+				MyViewModel.ResetStatus();
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+		}
+
+		private async Task DetectLocalSeriesPaths()
+		{
+			if (!string.IsNullOrWhiteSpace(AppGlobal.Paths.LocalSeriesDirectory))
+			{
+				AutoDetectLocalSeriesPaths();
+			}
+			else
+			{
+				MessageBox.Show("Enter local series folder in settings first");
+			}
+		}
+
+		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			var sampleMessageDialog = new SampleMessageDialog
+			{
+				Message = { Text = "Hello" }
+			};
+
+			await DialogHost.Show(sampleMessageDialog, "RootDialog");
 		}
 	}
 }

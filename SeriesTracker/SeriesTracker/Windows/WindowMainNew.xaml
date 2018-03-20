@@ -18,7 +18,6 @@
 		<local:VisibilityToBoolConverter x:Key="VisibilityToBoolConv"/>
 	</Window.Resources>
 
-
 	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<materialDesign:DrawerHost.LeftDrawerContent>
@@ -43,7 +42,22 @@
 			<DockPanel>
 				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Top">
 					<DockPanel>
-						<materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1" Margin="16 0 0 0" materialDesign:ShadowAssist.ShadowDepth="Depth1" DockPanel.Dock="Right">
+						<materialDesign:PopupBox DockPanel.Dock="Right" Margin="20 0 0 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+							<StackPanel>
+								<Button Content="Hello World" Click="MenuPopupButton_OnClick"/>
+								<Button Content="Nice Popup" Click="MenuPopupButton_OnClick"/>
+								<Button Content="Can't Touch This" IsEnabled="False" />
+								<Separator/>
+								<Button Content="Goodbye" Click="MenuPopupButton_OnClick"/>
+							</StackPanel>
+						</materialDesign:PopupBox>
+						<materialDesign:ColorZone Mode="Standard"
+												  Padding="8 4 8 4"
+												  Margin="16 0 0 0"
+												  CornerRadius="2"
+												  Panel.ZIndex="1"
+												  materialDesign:ShadowAssist.ShadowDepth="Depth1"
+												  DockPanel.Dock="Right">
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto" />
@@ -62,18 +76,21 @@
 								</Button>
 							</Grid>
 						</materialDesign:ColorZone>
-						<ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name" SelectedValuePath="CategoryID" SelectedItem="{Binding FilterCategory}" VerticalAlignment="Stretch" Width="125" DockPanel.Dock="Right">
+						<ComboBox ItemsSource="{Binding Categories}"
+								  DisplayMemberPath="Name"
+								  SelectedValuePath="CategoryID"
+								  SelectedItem="{Binding FilterCategory}"
+								  VerticalAlignment="Stretch"
+								  Width="150"
+								  DockPanel.Dock="Right">
 							<ComboBox.ToolTip>
-								<TextBlock>
-						Filter by user list
-						<LineBreak />Add user lists via settings
-								</TextBlock>
+								<TextBlock>Filter by user list<LineBreak />Add user lists via settings</TextBlock>
 							</ComboBox.ToolTip>
 						</ComboBox>
 
 						<StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
 							<ToggleButton x:Name="MenuToggleButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-							<Menu x:Name="Menu">
+							<!--<Menu x:Name="Menu">
 								<MenuItem x:Name="menu_File" Header="_File">
 									<MenuItem x:Name="menu_File_Exit" Header="_Exit" Click="Menu_File_Exit_Click" InputGestureText="Alt+F4"/>
 								</MenuItem>
@@ -86,7 +103,7 @@
 									<Separator />
 									<MenuItem x:Name="menu_Series_DetectLocal" Header="Detect _local series paths" Click="Menu_Series_DetectLocal_Click" InputGestureText="Ctrl+L"/>
 								</MenuItem>
-							</Menu>
+							</Menu>-->
 						</StackPanel>
 					</DockPanel>
 				</materialDesign:ColorZone>

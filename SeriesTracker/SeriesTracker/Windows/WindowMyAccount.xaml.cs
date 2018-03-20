@@ -1,5 +1,6 @@
 ﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 
@@ -7,6 +8,12 @@ namespace SeriesTracker.Windows
 {
 	public partial class WindowMyAccount : Window
 	{
+		#region Variables
+		// ViewModel
+		private MyAccountViewModel MyViewModel;
+		#endregion
+
+		#region Window Events
 		public WindowMyAccount()
 		{
 			InitializeComponent();
@@ -25,11 +32,17 @@ namespace SeriesTracker.Windows
 			Title = "Your Profile - " + AppGlobal.User.Username;
 		}
 
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			MyViewModel = DataContext as MyAccountViewModel;
+		}
+
 		private void grid_Header_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left)
 				DragMove();
 		}
+		#endregion
 
 		#region Button events
 		private async void btn_DeleteAccount_Click(object sender, RoutedEventArgs e)

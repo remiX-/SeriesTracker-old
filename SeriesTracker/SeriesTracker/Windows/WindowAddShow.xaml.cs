@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,8 +17,10 @@ namespace SeriesTracker.Windows
 	public partial class WindowAddShow : Window
 	{
 		#region Variables
+		// ViewModel
+		private AddShowViewModel MyViewModel;
+
 		//private ObservableCollection<Show> allShows = new ObservableCollection<Show>();
-		public ObservableCollection<Show> SearchResults { get; set; } = new ObservableCollection<Show>();
 
 		private bool busySearching = false;
 
@@ -35,7 +38,7 @@ namespace SeriesTracker.Windows
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			DataContext = this;
+			MyViewModel = DataContext as AddShowViewModel;
 
 			txt_Search.Focus();
 		}
@@ -60,25 +63,26 @@ namespace SeriesTracker.Windows
 			{
 				busySearching = true;
 
-				SearchResults.Clear();
+				MyViewModel.SearchResults.Clear();
 				btn_Accept.IsEnabled = false;
 
 				lbl_Info.Foreground = Brushes.Yellow;
 				lbl_Info.Content = "Searching ...";
 
-				string url = string.Format("https://api.thetvdb.com/search/series?name={0}", Uri.EscapeUriString(searchString));
+				string url = $"https://api.thetvdb.com/search/series?name={Uri.EscapeUriString(searchString)}";
 				TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync("GET", url);
 
 				if (jsonData.Error == null)
 				{
 					List<Show> results = JsonConvert.DeserializeObject<List<Show>>(jsonData.Data.ToString())
-						.Where(x => !x.SeriesName.Contains("Series Not Permitted")).ToList();
+						.Where(x => !x.SeriesName.Contains("Series Not Permitted"))
+						.ToList();
 					results.ForEach(s => s.SetupVariables());
 
-					SearchResults.AddRange(results.OrderByDescending(x => x.YearDisplay == "Unknown" ? "1" : x.YearDisplay).ThenBy(x => x.SeriesName));
+					MyViewModel.SearchResults.AddRange(results.OrderByDescending(x => x.YearDisplay == "Unknown" ? "1" : x.YearDisplay).ThenBy(x => x.SeriesName));
 
 					lbl_Info.Foreground = Brushes.LimeGreen;
-					lbl_Info.Content = string.Format("{0} results found", SearchResults.Count);
+					lbl_Info.Content = string.Format("{0} results found", MyViewModel.SearchResults.Count);
 				}
 				else
 				{

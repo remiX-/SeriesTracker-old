@@ -26,7 +26,7 @@ namespace SeriesTracker.Windows
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			DataContext = MyViewModel = new SetCategoryViewModel();
+			MyViewModel = DataContext as SetCategoryViewModel;
 
 			if (AppGlobal.User.Categories != null && AppGlobal.User.Categories.Count > 0)
 			{

@@ -78,9 +78,11 @@ namespace SeriesTracker.ViewModels
 		{
 			DemoItems = new[]
 			{
-				new HamburgerMenuItem("One", PackIconKind.Account),
-				new HamburgerMenuItem("Two", PackIconKind.Settings),
-				new HamburgerMenuItem("Three", PackIconKind.Logout)
+				new HamburgerMenuItem("AddSeries", "Add Series", PackIconKind.Account),
+				new HamburgerMenuItem("ForceUpdate", "Force Update Series", PackIconKind.Settings),
+				new HamburgerMenuItem("Updates", "Check for Updates", PackIconKind.Logout),
+				new HamburgerMenuItem("NewEpisodes", "Check for New Episodes", PackIconKind.Logout),
+				new HamburgerMenuItem("LocalSeries", "Detect local series paths", PackIconKind.Logout)
 			};
 			myTitle = AppGlobal.AssemblyTitle;
 			UserEmail = AppGlobal.User.Email;
@@ -134,8 +136,15 @@ namespace SeriesTracker.ViewModels
 
 	public class HamburgerMenuItem : BindableBase
 	{
+		private string id;
 		private string name;
 		private PackIconKind icon;
+
+		public string Id
+		{
+			get { return id; }
+			set { SetProperty(ref id, value); }
+		}
 
 		public string Name
 		{
@@ -149,8 +158,9 @@ namespace SeriesTracker.ViewModels
 			set { SetProperty(ref icon, value); }
 		}
 
-		public HamburgerMenuItem(string name, PackIconKind icon)
+		public HamburgerMenuItem(string id, string name, PackIconKind icon)
 		{
+			this.id = id;
 			this.name = name;
 			this.icon = icon;
 		}
