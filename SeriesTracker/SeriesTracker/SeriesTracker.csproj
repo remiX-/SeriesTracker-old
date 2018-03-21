@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ShowViewModel.cs" />
     <Compile Include="ViewModels\ViewLoggingInViewModel.cs" />
+    <Compile Include="ViewModels\ViewShowNewViewModel.cs" />
     <Compile Include="ViewModels\ViewShowViewModel.cs" />
     <Compile Include="Views\Seasons.xaml.cs">
       <DependentUpon>Seasons.xaml</DependentUpon>
@@ -216,6 +217,9 @@
     </Compile>
     <Compile Include="Windows\WindowViewShow.xaml.cs">
       <DependentUpon>WindowViewShow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WindowViewShowNew.xaml.cs">
+      <DependentUpon>WindowViewShowNew.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\SampleMessageDialog.xaml">
       <SubType>Designer</SubType>
@@ -304,6 +308,10 @@
     <Page Include="Windows\WindowViewShow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\WindowViewShowNew.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

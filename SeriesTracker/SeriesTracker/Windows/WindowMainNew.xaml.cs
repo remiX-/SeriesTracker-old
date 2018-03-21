@@ -30,7 +30,7 @@ namespace SeriesTracker.Windows
 		private MainNewViewModel MyViewModel;
 
 		// Windows
-		private WindowViewShow WindowViewShow;
+		private WindowViewShowNew WindowViewShow;
 
 		private bool windowHasInit = false;
 
@@ -685,12 +685,12 @@ namespace SeriesTracker.Windows
 				if (WindowViewShow == null || !WindowViewShow.IsLoaded)
 				{
 					//WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
-					WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
+					WindowViewShow = new WindowViewShowNew((Show)view_DataGridView.SelectedItem);
 					WindowViewShow.Show();
 				}
 				else
 				{
-					await WindowViewShow.SetShow((Show)view_DataGridView.SelectedItem);
+					//await WindowViewShow.SetShow((Show)view_DataGridView.SelectedItem);
 				}
 			}
 		}
@@ -884,29 +884,6 @@ namespace SeriesTracker.Windows
 		}
 		#endregion
 
-		private async void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (DemoItemsListBox.SelectedItem == null) return;
-
-			var selected = DemoItemsListBox.SelectedItem as HamburgerMenuItem;
-			switch (selected.Id)
-			{
-				case "AddSeries": await AddSeries(); break;
-				case "ForceUpdate": await UpdateShows(AppGlobal.User.Shows); break;
-				case "Updates": await CheckForUpdates(); break;
-				case "NewEpisodes": await CheckForNewEpisodes(); break;
-				case "LocalSeries": await DetectLocalSeriesPaths(); break;
-				default:
-					break;
-			}
-
-			// Deselect item
-			DemoItemsListBox.SelectedItem = null;
-
-			// Close drawer
-			MenuToggleButton.IsChecked = false;
-		}
-
 		private async Task AddSeries()
 		{
 
@@ -1001,6 +978,29 @@ namespace SeriesTracker.Windows
 			{
 				MessageBox.Show("Enter local series folder in settings first");
 			}
+		}
+
+		private async void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (DemoItemsListBox.SelectedItem == null) return;
+
+			var selected = DemoItemsListBox.SelectedItem as HamburgerMenuItem;
+			switch (selected.Id)
+			{
+				case "AddSeries": await AddSeries(); break;
+				case "ForceUpdate": await UpdateShows(AppGlobal.User.Shows); break;
+				case "Updates": await CheckForUpdates(); break;
+				case "NewEpisodes": await CheckForNewEpisodes(); break;
+				case "LocalSeries": await DetectLocalSeriesPaths(); break;
+				default:
+					break;
+			}
+
+			// Deselect item
+			DemoItemsListBox.SelectedItem = null;
+
+			// Close drawer
+			MenuToggleButton.IsChecked = false;
 		}
 
 		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)

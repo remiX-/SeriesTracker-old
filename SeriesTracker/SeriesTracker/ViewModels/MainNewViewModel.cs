@@ -140,6 +140,8 @@ namespace SeriesTracker.ViewModels
 		private string name;
 		private PackIconKind icon;
 
+		private object content;
+
 		public string Id
 		{
 			get { return id; }
@@ -158,11 +160,23 @@ namespace SeriesTracker.ViewModels
 			set { SetProperty(ref icon, value); }
 		}
 
+
+		public object Content
+		{
+			get { return content; }
+			set { SetProperty(ref content, value); }
+		}
+
 		public HamburgerMenuItem(string id, string name, PackIconKind icon)
 		{
 			this.id = id;
 			this.name = name;
 			this.icon = icon;
+		}
+
+		public HamburgerMenuItem(string id, string name, PackIconKind icon, object content) : this(id, name, icon)
+		{
+			this.content = content;
 		}
 	}
 }

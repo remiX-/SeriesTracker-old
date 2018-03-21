@@ -52,12 +52,12 @@
 							</StackPanel>
 						</materialDesign:PopupBox>
 						<materialDesign:ColorZone Mode="Standard"
-												  Padding="8 4 8 4"
+												  Padding="0"
 												  Margin="16 0 0 0"
 												  CornerRadius="2"
 												  Panel.ZIndex="1"
-												  materialDesign:ShadowAssist.ShadowDepth="Depth1"
-												  DockPanel.Dock="Right">
+												  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+												  DockPanel.Dock="Right" VerticalAlignment="Stretch">
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto" />
@@ -94,20 +94,6 @@
 
 						<StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
 							<ToggleButton x:Name="MenuToggleButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-							<!--<Menu x:Name="Menu">
-								<MenuItem x:Name="menu_File" Header="_File">
-									<MenuItem x:Name="menu_File_Exit" Header="_Exit" Click="Menu_File_Exit_Click" InputGestureText="Alt+F4"/>
-								</MenuItem>
-								<MenuItem x:Name="menu_Series" Header="_Series">
-									<MenuItem x:Name="menu_Series_AddShow" Header="_Add series" Click="Menu_Series_AddShow_Click" InputGestureText="Ctrl+N"/>
-									<Separator />
-									<MenuItem x:Name="menu_Series_ForceUpdate" Header="F_orce update series" Click="Menu_Series_ForceUpdate_Click" InputGestureText="Ctrl+O"/>
-									<MenuItem x:Name="menu_Series_CheckForUpdates" Header="_Check for updates" Click="Menu_Series_CheckForUpdates_Click" InputGestureText="Ctrl+U"/>
-									<MenuItem x:Name="menu_Series_CheckShows" Header="Check for new _episodes" Click="Menu_Series_CheckForNewEpisodes_Click" InputGestureText="Ctrl+E"/>
-									<Separator />
-									<MenuItem x:Name="menu_Series_DetectLocal" Header="Detect _local series paths" Click="Menu_Series_DetectLocal_Click" InputGestureText="Ctrl+L"/>
-								</MenuItem>
-							</Menu>-->
 						</StackPanel>
 					</DockPanel>
 				</materialDesign:ColorZone>
