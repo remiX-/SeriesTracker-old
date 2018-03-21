@@ -142,6 +142,7 @@
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
     <Compile Include="Core\AppGlobal.cs" />
+    <Compile Include="Core\AppPrivate.cs" />
     <Compile Include="Core\CommonMethods.cs" />
     <Compile Include="Controllers\MemoryRepositoryContainer.cs" />
     <Compile Include="Controllers\Repositories\IShowRepository.cs" />

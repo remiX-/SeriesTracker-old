@@ -67,10 +67,14 @@
 								<Button Style="{DynamicResource MaterialDesignToolButton}">
 									<materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
 								</Button>
-								<TextBox Grid.Column="1" x:Name="txt_FilterText" Margin="8 0 0 0"
-								 Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}"
-								 materialDesign:HintAssist.Hint="Build a search bar"
-								 materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" />
+								<TextBox Grid.Column="1"
+										 x:Name="txt_FilterText"
+										 Margin="8 0 0 0"
+										 Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}"
+										 materialDesign:HintAssist.Hint="Search"
+										 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+										 MinWidth="200"
+										 VerticalAlignment="Center" />
 								<Button Style="{DynamicResource MaterialDesignToolButton}" Grid.Column="2" Click="ClearFilter_Click">
 									<materialDesign:PackIcon Kind="Close" Opacity=".56" Margin="8 0 0 0" />
 								</Button>
