@@ -23,8 +23,7 @@ namespace SeriesTracker.Core
 			if (useOnlineDatabase)
 			{
 				// Online
-				//connection = new SqlConnection("Server=seriestracker.database.windows.net;Initial Catalog=SeriesTracker;Persist Security Info=True;User ID=seriestrackeruser;Password=STUser!@#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=15;");
-				connection = new SqlConnection("Server=seriestracker.cw1deesdx7ti.eu-central-1.rds.amazonaws.com,1433;Initial Catalog=SeriesTracker;User ID=seriestrackeruser;Password=STUser123!;Connection Timeout=15;");
+				connection = new SqlConnection(AppPrivate.DatabaseConnectionString);
 			}
 			else
 			{
