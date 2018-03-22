@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,8 +45,8 @@ namespace SeriesTracker.Windows
 
 			await Startup();
 
-			HamburgerListItems.SelectionChanged += DemoItemsListBox_SelectionChanged;
-			HamburgerListItems.SelectedIndex = 0;
+			HamburgerListBox.SelectionChanged += HamburgerListBox_SelectionChanged;
+			HamburgerListBox.SelectedIndex = 0;
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
@@ -72,6 +73,7 @@ namespace SeriesTracker.Windows
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
+			if (MyViewModel == null) return;
 			if (e.PreviousSize.Height == 0 && e.PreviousSize.Width == 0) return;
 
 			for (int i = 0; i < actorResize.GetLength(0); i++)
@@ -92,38 +94,30 @@ namespace SeriesTracker.Windows
 		#region Startup
 		private async Task Startup()
 		{
+			MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
+			//Task.Factory.StartNew(() =>
+			//{
+			//	Thread.Sleep(2500);
+			//}).ContinueWith(t =>
+			//{
+			//	//note you can use the message queue from any thread, but just for the demo here we 
+			//	//need to get the message queue from the snackbar, so need to be on the dispatcher
+			//	MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
+			//}, TaskScheduler.FromCurrentSynchronizationContext());
+
 			SetupDirectories();
 
 			await LoadBannerAsync();
-
 			//await GetWatchedEpisodes();
 		}
 
 		private void SetupDirectories()
 		{
-			if (!Directory.Exists(ViewingShow.LocalImagesActorsPath)) Directory.CreateDirectory(ViewingShow.LocalImagesActorsPath);
-			if (!Directory.Exists(ViewingShow.LocalImagesEpisodesPath)) Directory.CreateDirectory(ViewingShow.LocalImagesEpisodesPath);
-			if (!Directory.Exists(ViewingShow.LocalImagesPostersPath)) Directory.CreateDirectory(ViewingShow.LocalImagesPostersPath);
-			if (!Directory.Exists(ViewingShow.LocalImagesBannersPath)) Directory.CreateDirectory(ViewingShow.LocalImagesBannersPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesActorsPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesActorsPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesEpisodesPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesEpisodesPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesPostersPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesPostersPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesBannersPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesBannersPath);
 		}
-
-		private async Task GetWatchedEpisodes()
-		{
-			SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchListAsync(ViewingShow);
-
-			ViewingShow.EpisodesWatched = result.ListData;
-
-			foreach (Episode episode in ViewingShow.Episodes)
-			{
-				UserShowWatch watch = ViewingShow.EpisodesWatched.SingleOrDefault(x => x.SeasonNo == episode.AiredSeason && x.EpisodeNo == episode.AiredEpisodeNumber);
-
-				if (watch != null)
-				{
-					episode.Watched = true;
-				}
-			}
-		}
-		#endregion
 
 		private async Task LoadBannerAsync()
 		{
@@ -151,11 +145,30 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async Task GetWatchedEpisodes()
 		{
-			if (HamburgerListItems.SelectedItem == null) return;
+			SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchListAsync(MyViewModel.MyShow);
 
-			var selected = HamburgerListItems.SelectedItem as HamburgerMenuItem;
+			MyViewModel.MyShow.EpisodesWatched = result.ListData;
+
+			foreach (Episode episode in MyViewModel.MyShow.Episodes)
+			{
+				UserShowWatch watch = MyViewModel.MyShow.EpisodesWatched.SingleOrDefault(x => x.SeasonNo == episode.AiredSeason && x.EpisodeNo == episode.AiredEpisodeNumber);
+
+				if (watch != null)
+				{
+					episode.Watched = true;
+				}
+			}
+		}
+		#endregion
+
+		#region HamburgerListBox
+		private void HamburgerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (HamburgerListBox.SelectedItem == null) return;
+
+			var selected = HamburgerListBox.SelectedItem as HamburgerMenuItem;
 			switch (selected.Id)
 			{
 				case "Overview": break;
@@ -168,7 +181,9 @@ namespace SeriesTracker.Windows
 			// Close drawer
 			MenuToggleButton.IsChecked = false;
 		}
+		#endregion
 
+		#region Triple Dots
 		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
 		{
 			var sampleMessageDialog = new SampleMessageDialog
@@ -178,5 +193,6 @@ namespace SeriesTracker.Windows
 
 			await DialogHost.Show(sampleMessageDialog, "RootDialog");
 		}
+		#endregion
 	}
 }

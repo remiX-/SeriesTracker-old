@@ -20,18 +20,10 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<!--<Grid.Resources>
-			<Storyboard x:Key="OpenMenu" Storyboard.TargetName="SeasonTreeView" Storyboard.TargetProperty="(ColumnDefinition.Width)">
-				<mah:GridLengthAnimation To="300" Duration="10:10:00"></mah:GridLengthAnimation>
-			</Storyboard>
-			<Storyboard x:Key="CloseMenu" Storyboard.TargetName="SeasonTreeView" Storyboard.TargetProperty="(ColumnDefinition.Width)">
-				<mah:GridLengthAnimation To="120" Duration="01:10:00"></mah:GridLengthAnimation>
-			</Storyboard>
-		</Grid.Resources>-->
-
+		<Button x:Name="btn_TreeViewToggle" Style="{StaticResource btn-default-top-left}" HorizontalAlignment="Left" Content="Expand" Click="Btn_TreeViewToggle_Click" />
+		
 		<Label x:Name="lbl_SeasonHeader" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource lbl-heading}" Content="Season 1" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-		<Button x:Name="btn_TreeViewToggle" Style="{StaticResource btn-default-top-left}" HorizontalAlignment="Left" Content="Hide" Click="TreeViewToggle_Click" />
 		<TreeView Grid.Row="1" x:Name="tv_Seasons" SelectedItemChanged="TreeView_SelectedItemChanged">
 			<TreeView.ContextMenu>
 				<ContextMenu>
@@ -87,7 +79,7 @@
 									</StackPanel>
 								</StackPanel>
 
-								<ToggleButton Grid.Column="4" Width="50" Height="50" Margin="0,5,5,0" VerticalAlignment="Top" Checked="EpisodeEyeToggle_Click" Unchecked="EpisodeEyeToggle_Click" IsChecked="{Binding Watched}">
+								<ToggleButton Grid.Column="4" Width="50" Height="50" Margin="0,5,5,0" VerticalAlignment="Top" Checked="Btn_EpisodeEyeToggle_Click" Unchecked="Btn_EpisodeEyeToggle_Click" IsChecked="{Binding Watched}">
 									<materialDesign:PackIcon Kind="Eye" />
 								</ToggleButton>
 
@@ -101,6 +93,5 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</ScrollViewer>
-		
 	</Grid>
 </UserControl>

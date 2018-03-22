@@ -45,40 +45,10 @@ namespace SeriesTracker.Views
 		}
 		#endregion
 
-		private void LoadEpisodeTreeView()
-		{
-			tv_Seasons.Items.Clear();
+		#region Startup
+		#endregion
 
-			int? lastSeason = MyViewModel.MyShow.Episodes[MyViewModel.MyShow.Episodes.Count - 1].AiredSeason;
-
-			if (!lastSeason.HasValue)
-			{
-				throw new Exception("invalid season");
-			}
-
-			for (int i = 1; i <= lastSeason; i++)
-			{
-				List<Episode> episodes = MyViewModel.MyShow.GetEpisodesBySeason(i);
-
-				TreeViewItem tvi_season = new TreeViewItem
-				{
-					Header = string.Format("Season {0} ({1})", i, episodes.Count)
-				};
-
-				foreach (Episode episode in episodes)
-				{
-					TreeViewItem tvi_episode = new TreeViewItem
-					{
-						Header = string.Format("Episode {0} - {1}", episode.AiredEpisodeNumber, episode.EpisodeName)
-					};
-
-					tvi_season.Items.Add(tvi_episode);
-				}
-
-				tv_Seasons.Items.Add(tvi_season);
-			}
-		}
-
+		#region Season View
 		private async Task ReloadEpisodeViewAsync()
 		{
 			try
@@ -135,23 +105,6 @@ namespace SeriesTracker.Views
 			await ReloadEpisodeViewAsync();
 		}
 
-		private void TreeViewToggle_Click(object sender, RoutedEventArgs e)
-		{
-			try
-			{
-				treeViewOpen = !treeViewOpen;
-
-				btn_TreeViewToggle.Content = treeViewOpen ? "Collapse" : "Expand";
-
-				Storyboard sb = Core.FindResource(treeViewOpen ? "OpenMenu" : "CloseMenu") as Storyboard;
-				sb.Begin();
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
-		}
-
 		private async void CM_MarkEpisodeWatched_Click(object sender, RoutedEventArgs e)
 		{
 			//TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
@@ -172,30 +125,150 @@ namespace SeriesTracker.Views
 			//}
 		}
 
-		private async void EpisodeEyeToggle_Click(object sender, RoutedEventArgs e)
+		private async void Btn_EpisodeEyeToggle_Click(object sender, RoutedEventArgs e)
 		{
-			//try
-			//{
-			//	if (busy)
-			//		return;
+			try
+			{
+				if (busy)
+					return;
 
-			//	busy = true;
+				busy = true;
 
-			//	ToggleButton m = (ToggleButton)sender;
-			//	Grid p = m.TryFindParent<Grid>();
+				ToggleButton m = (ToggleButton)sender;
+				Grid p = m.Parent as Grid;
 
-			//	m.IsHitTestVisible = false;
+				m.IsHitTestVisible = false;
 
-			//	int episode = int.Parse(p.Tag.ToString());
-			//	await EpisodeWatchedToggle(episode);
+				int episode = int.Parse(p.Tag.ToString());
+				await EpisodeWatchedToggle(episode);
 
-			//	m.IsHitTestVisible = true;
-			//	busy = false;
-			//}
-			//catch (Exception ex)
-			//{
-			//	ErrorMethods.LogError(ex.Message);
-			//}
+				m.IsHitTestVisible = true;
+				busy = false;
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+		}
+
+		private void LoadEpisodeTreeView()
+		{
+			tv_Seasons.Items.Clear();
+
+			int? lastSeason = MyViewModel.MyShow.Episodes[MyViewModel.MyShow.Episodes.Count - 1].AiredSeason;
+
+			if (!lastSeason.HasValue)
+			{
+				throw new Exception("invalid season");
+			}
+
+			for (int i = 1; i <= lastSeason; i++)
+			{
+				List<Episode> episodes = MyViewModel.MyShow.GetEpisodesBySeason(i);
+
+				TreeViewItem tvi_season = new TreeViewItem
+				{
+					Header = string.Format("Season {0} ({1})", i, episodes.Count)
+				};
+
+				foreach (Episode episode in episodes)
+				{
+					TreeViewItem tvi_episode = new TreeViewItem
+					{
+						Header = string.Format("Episode {0} - {1}", episode.AiredEpisodeNumber, episode.EpisodeName)
+					};
+
+					tvi_season.Items.Add(tvi_episode);
+				}
+
+				tv_Seasons.Items.Add(tvi_season);
+			}
+		}
+
+		private void Btn_TreeViewToggle_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				treeViewOpen = !treeViewOpen;
+
+				btn_TreeViewToggle.Content = treeViewOpen ? "Collapse" : "Expand";
+				SeasonTreeView.Width = new GridLength(treeViewOpen ? 300 : 125);
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+		}
+
+		private void Btn_WatchEpisode_Click(object sender, RoutedEventArgs e)
+		{
+			bool found = false;
+
+			try
+			{
+				if (string.IsNullOrEmpty(MyViewModel.MyShow.LocalSeriesPath)) return;
+				if (!Directory.Exists(MyViewModel.MyShow.LocalSeriesPath)) return;
+
+				Button m = (Button)sender;
+				Panel p = (m.Parent as Panel).Parent as Panel;
+
+				int episodeNumber = int.Parse(p.Tag.ToString());
+
+				string seasonPath = Path.Combine(MyViewModel.MyShow.LocalSeriesPath, "Season " + viewingSeason);
+				var dir = new DirectoryInfo(seasonPath);
+
+				if (!dir.Exists)
+					return;
+
+				var files = dir.GetFiles();
+
+				Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
+				foreach (FileInfo file in files)
+				{
+					if (file.Name.Contains(episode.FullEpisodeString))
+					{
+						found = true;
+						var q = CommonMethods.StartProcess(file.FullName);
+						// Testing
+						//q.EnableRaisingEvents = true;
+						//q.Exited += delegate
+						//{
+						//	TimeSpan watchTime = DateTime.Now - q.StartTime;
+
+						//	MessageBox.Show("You watched for " + watchTime.TotalSeconds + " seconds");
+						//};
+
+						break;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+
+			if (!found)
+			{
+				MessageBox.Show("Failed to locate episode on local drive.", "Episode not found");
+			}
+		}
+
+		private async void Btn_Download_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				Button m = (Button)sender;
+				Panel p = (m.Parent as Panel).Parent as Panel;
+
+				int episodeNumber = int.Parse(p.Tag.ToString());
+				Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
+
+				await MethodCollection.DownloadEpisode(MyViewModel.MyShow, episode);
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
 		}
 
 		private async Task<bool> EpisodeWatchedToggle(int episodeNumber)
@@ -229,76 +302,6 @@ namespace SeriesTracker.Views
 
 			return false;
 		}
-
-		private void Btn_WatchEpisode_Click(object sender, RoutedEventArgs e)
-		{
-			//bool found = false;
-
-			//try
-			//{
-			//	if (string.IsNullOrEmpty(MyViewModel.MyShow.LocalSeriesPath)) return;
-			//	if (!Directory.Exists(MyViewModel.MyShow.LocalSeriesPath)) return;
-
-			//	Button m = (Button)sender;
-			//	Grid p = m.TryFindParent<Grid>();
-
-			//	int episodeNumber = int.Parse(p.Tag.ToString());
-
-			//	string seasonPath = Path.Combine(MyViewModel.MyShow.LocalSeriesPath, "Season " + viewingSeason);
-			//	var dir = new DirectoryInfo(seasonPath);
-
-			//	if (!dir.Exists)
-			//		return;
-
-			//	var files = dir.GetFiles();
-
-			//	Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
-			//	foreach (FileInfo file in files)
-			//	{
-			//		if (file.Name.Contains(episode.FullEpisodeString))
-			//		{
-			//			found = true;
-			//			var q = CommonMethods.StartProcess(file.FullName);
-			//			// Testing
-			//			//q.EnableRaisingEvents = true;
-			//			//q.Exited += delegate
-			//			//{
-			//			//	TimeSpan watchTime = DateTime.Now - q.StartTime;
-
-			//			//	MessageBox.Show("You watched for " + watchTime.TotalSeconds + " seconds");
-			//			//};
-
-			//			break;
-			//		}
-			//	}
-			//}
-			//catch (Exception ex)
-			//{
-			//	ErrorMethods.LogError(ex.Message);
-			//}
-
-			//if (!found)
-			//{
-			//	MessageBox.Show("Failed to locate episode on local drive.", "Episode not found");
-			//}
-		}
-
-		private async void Btn_Download_Click(object sender, RoutedEventArgs e)
-		{
-			//try
-			//{
-			//	Button m = (Button)sender;
-			//	Grid p = m.TryFindParent<Grid>();
-
-			//	int episodeNumber = int.Parse(p.Tag.ToString());
-			//	Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
-
-			//	await MethodCollection.DownloadEpisode(MyViewModel.MyShow, episode);
-			//}
-			//catch (Exception ex)
-			//{
-			//	ErrorMethods.LogError(ex.Message);
-			//}
-		}
+		#endregion
 	}
 }

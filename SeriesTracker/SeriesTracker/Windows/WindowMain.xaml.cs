@@ -1257,8 +1257,8 @@ namespace SeriesTracker.Windows
 
 		private void Btn_Test1_Click(object sender, RoutedEventArgs e)
 		{
-			Window w = new WindowTestMD();
-			w.ShowDialog();
+			//Window w = new WindowTestMD();
+			//w.ShowDialog();
 		}
 
 		private void Btn_Test2_Click(object sender, RoutedEventArgs e)
