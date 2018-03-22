@@ -884,6 +884,7 @@ namespace SeriesTracker.Windows
 		}
 		#endregion
 
+		#region HamburgerMenu
 		private async Task AddSeries()
 		{
 
@@ -1012,5 +1013,6 @@ namespace SeriesTracker.Windows
 
 			await DialogHost.Show(sampleMessageDialog, "RootDialog");
 		}
+		#endregion
 	}
 }

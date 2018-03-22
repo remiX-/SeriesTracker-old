@@ -191,12 +191,6 @@
     <Compile Include="Views\Seasons.xaml.cs">
       <DependentUpon>Seasons.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PageTwo.xaml.cs">
-      <DependentUpon>PageTwo.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PageOne.xaml.cs">
-      <DependentUpon>PageOne.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Overview.xaml.cs">
       <DependentUpon>Overview.xaml</DependentUpon>
     </Compile>
@@ -215,9 +209,6 @@
     <Compile Include="Windows\WindowTestMD.xaml.cs">
       <DependentUpon>WindowTestMD.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WindowViewShow.xaml.cs">
-      <DependentUpon>WindowViewShow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\WindowViewShowNew.xaml.cs">
       <DependentUpon>WindowViewShowNew.xaml</DependentUpon>
     </Compile>
@@ -230,14 +221,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Seasons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\PageTwo.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\PageOne.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -304,10 +287,6 @@
     <Page Include="Windows\WindowTestMD.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\WindowViewShow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\WindowViewShowNew.xaml">
       <SubType>Designer</SubType>

@@ -21,14 +21,14 @@ using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowMain : Window
+	public partial class WindowMainOld : Window
 	{
 		#region Variables
 		// ViewModel
 		private MainViewModel MyViewModel;
 
 		// Windows
-		private WindowViewShow WindowViewShow;
+		private WindowViewShowNew WindowViewShow;
 
 		private bool windowHasInit = false;
 
@@ -57,7 +57,7 @@ namespace SeriesTracker.Windows
 
 		#region Main window
 		#region Window Events
-		public WindowMain()
+		public WindowMainOld()
 		{
 			InitializeComponent();
 		}
@@ -453,12 +453,12 @@ namespace SeriesTracker.Windows
 				if (WindowViewShow == null || !WindowViewShow.IsLoaded)
 				{
 					//WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
-					WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
+					WindowViewShow = new WindowViewShowNew((Show)view_DataGridView.SelectedItem);
 					WindowViewShow.Show();
 				}
 				else
 				{
-					await WindowViewShow.SetShow((Show)view_DataGridView.SelectedItem);
+					//await WindowViewShow.SetShow((Show)view_DataGridView.SelectedItem);
 				}
 			}
 		}
@@ -1263,7 +1263,7 @@ namespace SeriesTracker.Windows
 
 		private void Btn_Test2_Click(object sender, RoutedEventArgs e)
 		{
-			WindowViewShow = new WindowViewShow((Show)view_DataGridView.Items[0]);
+			WindowViewShow = new WindowViewShowNew((Show)view_DataGridView.Items[0]);
 			WindowViewShow.Show();
 		}
 		#endregion

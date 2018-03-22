@@ -80,7 +80,7 @@ namespace SeriesTracker.ViewModels
 			IgnoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
 			UseListedName = AppGlobal.Settings.UseListedName;
 
-			ColumnHeadings = WindowMain.ColumnHeadings;
+			ColumnHeadings = WindowMainNew.ColumnHeadings;
 
 			DateFormats = new List<string> { "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy", "d/M/yyyy", "d MMM yyyy", "dd MMM yyyy", "d MMMM yyyy", "dd MMMM yyyy", "dd MMM, ddd", "d MMM, ddd" };
 			DefaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
