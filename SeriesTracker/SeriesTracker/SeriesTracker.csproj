@@ -166,7 +166,6 @@
     <Compile Include="Controllers\RepositorySession.cs" />
     <Compile Include="Core\Database.cs" />
     <Compile Include="Controllers\ModelMethods\ErrorMethods.cs" />
-    <Compile Include="Navigation\Navigation.cs" />
     <Compile Include="ProgressDialog\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
@@ -204,9 +203,6 @@
     </Compile>
     <Compile Include="Windows\WindowSettings.xaml.cs">
       <DependentUpon>WindowSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\WindowTestMD.xaml.cs">
-      <DependentUpon>WindowTestMD.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WindowViewShow.xaml.cs">
       <DependentUpon>WindowViewShow.xaml</DependentUpon>
@@ -280,10 +276,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WindowSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\WindowTestMD.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
