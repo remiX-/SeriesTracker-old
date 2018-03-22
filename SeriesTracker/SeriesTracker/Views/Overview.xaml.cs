@@ -16,7 +16,7 @@ namespace SeriesTracker.Views
 	public partial class Overview : UserControl
 	{
 		#region Variables
-		private ViewShowNewViewModel MyViewModel;
+		private ViewShowViewModel MyViewModel;
 
 		private bool loaded = false;
 		#endregion
@@ -31,7 +31,7 @@ namespace SeriesTracker.Views
 		{
 			if (loaded) return;
 
-			MyViewModel = DataContext as ViewShowNewViewModel;
+			MyViewModel = DataContext as ViewShowViewModel;
 
 			await Task.WhenAll(LoadBannerAsync(), LoadCastAsync(), LoadImdbAsync());
 

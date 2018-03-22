@@ -16,7 +16,7 @@ namespace SeriesTracker.Windows
 	public partial class WindowViewShow : Window
 	{
 		#region Variables
-		private ViewShowNewViewModel MyViewModel;
+		private ViewShowViewModel MyViewModel;
 		private Show ViewingShow;
 
 		private bool hasWindowInit = false;
@@ -34,7 +34,7 @@ namespace SeriesTracker.Windows
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			MyViewModel = DataContext as ViewShowNewViewModel;
+			MyViewModel = DataContext as ViewShowViewModel;
 			MyViewModel.SetShow(ViewingShow);
 
 			Width = AppGlobal.Settings.LayoutViewShow.Width;

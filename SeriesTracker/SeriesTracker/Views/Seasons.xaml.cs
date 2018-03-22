@@ -17,7 +17,7 @@ namespace SeriesTracker.Views
 	public partial class Seasons : UserControl
 	{
 		#region Variables
-		private ViewShowNewViewModel MyViewModel;
+		private ViewShowViewModel MyViewModel;
 
 		private bool busy = false;
 
@@ -37,7 +37,7 @@ namespace SeriesTracker.Views
 		{
 			if (loaded) return;
 
-			MyViewModel = DataContext as ViewShowNewViewModel;
+			MyViewModel = DataContext as ViewShowViewModel;
 
 			LoadEpisodeTreeView();
 

@@ -186,7 +186,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ShowViewModel.cs" />
     <Compile Include="ViewModels\ViewLoggingInViewModel.cs" />
-    <Compile Include="ViewModels\ViewShowNewViewModel.cs" />
     <Compile Include="ViewModels\ViewShowViewModel.cs" />
     <Compile Include="Views\Seasons.xaml.cs">
       <DependentUpon>Seasons.xaml</DependentUpon>

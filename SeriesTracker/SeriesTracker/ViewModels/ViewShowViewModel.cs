@@ -1,5 +1,7 @@
-﻿using Prism.Mvvm;
+﻿using MaterialDesignThemes.Wpf;
+using Prism.Mvvm;
 using SeriesTracker.Models;
+using SeriesTracker.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -8,6 +10,9 @@ namespace SeriesTracker.ViewModels
 	internal class ViewShowViewModel : BindableBase
 	{
 		public Show MyShow { get; set; }
+
+		public HamburgerMenuItem[] MenuItems { get; }
+
 		private static readonly ObservableCollection<ViewShowMenuItem> AppMenu = new ObservableCollection<ViewShowMenuItem>();
 		public ObservableCollection<ViewShowMenuItem> Menu => AppMenu;
 
@@ -118,18 +123,12 @@ namespace SeriesTracker.ViewModels
 
 		public ViewShowViewModel()
 		{
-			//Menu.Add(new ViewShowMenuItem()
-			//{
-			//	Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.OrnamentVariant },
-			//	Text = "Overview",
-			//	NavigationDestination = new Uri("Views/Overview.xaml", UriKind.RelativeOrAbsolute)
-			//});
-			//Menu.Add(new ViewShowMenuItem()
-			//{
-			//	Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.EmoticonPoop },
-			//	Text = "Seasons",
-			//	NavigationDestination = new Uri("Views/Seasons.xaml", UriKind.RelativeOrAbsolute)
-			//});
+			MenuItems = new[]
+			{
+				new HamburgerMenuItem("Overview", "Overview", PackIconKind.InformationVariant, new Overview()),
+				new HamburgerMenuItem("Seasons", "Seasons", PackIconKind.Itunes, new Seasons()),
+				new HamburgerMenuItem("Gallery", "Gallery", PackIconKind.ImageAlbum)
+			};
 		}
 
 		public void RefreshBanner()
