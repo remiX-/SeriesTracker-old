@@ -1,10 +1,12 @@
-﻿using SeriesTracker.Core;
+﻿using MaterialDesignThemes.Wpf;
+using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,6 +45,7 @@ namespace SeriesTracker.Windows
 			await Startup();
 
 			HamburgerListItems.SelectionChanged += DemoItemsListBox_SelectionChanged;
+			HamburgerListItems.SelectedIndex = 0;
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
@@ -91,6 +94,8 @@ namespace SeriesTracker.Windows
 		{
 			SetupDirectories();
 
+			await LoadBannerAsync();
+
 			//await GetWatchedEpisodes();
 		}
 
@@ -120,7 +125,33 @@ namespace SeriesTracker.Windows
 		}
 		#endregion
 
-		private async void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async Task LoadBannerAsync()
+		{
+			try
+			{
+				Models.Image banner = MyViewModel.MyShow.Banners.First();
+				if (!File.Exists(MyViewModel.MyShow.LocalBannerPath) && !File.Exists(banner.LocalImagePath))
+				{
+					using (WebClient client = new WebClient())
+					{
+						await client.DownloadFileTaskAsync(new Uri(banner.OnlineImageUrl), banner.LocalImagePath);
+					}
+
+					if (File.Exists(MyViewModel.MyShow.LocalBannerPath))
+						File.Delete(MyViewModel.MyShow.LocalBannerPath);
+
+					File.Copy(banner.LocalImagePath, MyViewModel.MyShow.LocalBannerPath);
+
+					MyViewModel.RefreshBanner();
+				}
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+		}
+
+		private void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (HamburgerListItems.SelectedItem == null) return;
 
@@ -145,7 +176,7 @@ namespace SeriesTracker.Windows
 				Message = { Text = "Hello" }
 			};
 
-			//await DialogHost.Show(sampleMessageDialog, "RootDialog");
+			await DialogHost.Show(sampleMessageDialog, "RootDialog");
 		}
 	}
 }

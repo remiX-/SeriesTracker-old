@@ -14,24 +14,30 @@ using System.Windows.Media.Animation;
 
 namespace SeriesTracker.Views
 {
-	public partial class Seasons : Page
+	public partial class Seasons : UserControl
 	{
-		private ViewShowViewModel MyViewModel;
+		#region Variables
+		private ViewShowNewViewModel MyViewModel;
 
 		private bool busy = false;
 
 		private bool treeViewOpen = false;
 		private int viewingSeason = 1;
 
-		#region Page Events
+		private bool loaded = false;
+		#endregion
+
+		#region UserControl Events
 		public Seasons()
 		{
 			InitializeComponent();
 		}
 
-		private async void Page_Loaded(object sender, RoutedEventArgs e)
+		private async void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			MyViewModel = DataContext as ViewShowViewModel;
+			if (loaded) return;
+
+			MyViewModel = DataContext as ViewShowNewViewModel;
 
 			LoadEpisodeTreeView();
 

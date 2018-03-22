@@ -13,21 +13,29 @@ using System.Windows.Navigation;
 
 namespace SeriesTracker.Views
 {
-	public partial class Overview : Page
+	public partial class Overview : UserControl
 	{
-		private ViewShowViewModel MyViewModel;
+		#region Variables
+		private ViewShowNewViewModel MyViewModel;
 
-		#region Page Events
+		private bool loaded = false;
+		#endregion
+
+		#region UserControl Events
 		public Overview()
 		{
 			InitializeComponent();
 		}
 
-		private async void Page_Loaded(object sender, RoutedEventArgs e)
+		private async void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			MyViewModel = DataContext as ViewShowViewModel;
+			if (loaded) return;
+
+			MyViewModel = DataContext as ViewShowNewViewModel;
 
 			await Task.WhenAll(LoadBannerAsync(), LoadCastAsync(), LoadImdbAsync());
+
+			loaded = true;
 		}
 		#endregion
 

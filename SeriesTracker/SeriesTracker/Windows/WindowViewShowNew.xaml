@@ -35,8 +35,13 @@
 
 			<DockPanel>
 				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Top">
-					<DockPanel>
-						<materialDesign:PopupBox DockPanel.Dock="Right" Margin="20 0 0 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<materialDesign:PopupBox Grid.Column="2" Margin="0 0 0 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" VerticalAlignment="Top">
 							<StackPanel>
 								<Button Content="Hello World" />
 								<Button Content="Nice Popup" />
@@ -46,26 +51,15 @@
 							</StackPanel>
 						</materialDesign:PopupBox>
 
-						<StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
-							<ToggleButton x:Name="MenuToggleButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+						<Image Grid.Column="1" x:Name="img_Banner" Height="150" Source="{Binding BannerPath}" />
+
+						<StackPanel Grid.Column="0" Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
+							<ToggleButton x:Name="MenuToggleButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" VerticalAlignment="Top" />
 						</StackPanel>
-					</DockPanel>
+					</Grid>
 				</materialDesign:ColorZone>
 
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="*" />
-					</Grid.RowDefinitions>
-
-					<Border Height="50" BorderThickness="5" BorderBrush="Red" />
-
-					<ScrollViewer Grid.Row="1">
-						<ContentControl Content="{Binding ElementName=HamburgerListItems, Path=SelectedItem.Content}" />
-					</ScrollViewer>
-
-					<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" Grid.Row="1" />
-				</Grid>
+				<ContentControl Content="{Binding ElementName=HamburgerListItems, Path=SelectedItem.Content}" />
 			</DockPanel>
 		</materialDesign:DrawerHost>
 	</materialDesign:DialogHost>
