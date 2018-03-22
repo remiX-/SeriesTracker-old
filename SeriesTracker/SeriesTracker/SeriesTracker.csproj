@@ -209,8 +209,8 @@
     <Compile Include="Windows\WindowTestMD.xaml.cs">
       <DependentUpon>WindowTestMD.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WindowViewShowNew.xaml.cs">
-      <DependentUpon>WindowViewShowNew.xaml</DependentUpon>
+    <Compile Include="Windows\WindowViewShow.xaml.cs">
+      <DependentUpon>WindowViewShow.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\SampleMessageDialog.xaml">
       <SubType>Designer</SubType>
@@ -288,7 +288,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\WindowViewShowNew.xaml">
+    <Page Include="Windows\WindowViewShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

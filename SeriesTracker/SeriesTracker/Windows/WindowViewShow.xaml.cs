@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowViewShowNew : Window
+	public partial class WindowViewShow : Window
 	{
 		#region Variables
 		private ViewShowNewViewModel MyViewModel;
@@ -25,7 +25,7 @@ namespace SeriesTracker.Windows
 		#endregion
 
 		#region Window Events
-		public WindowViewShowNew(Show show)
+		public WindowViewShow(Show show)
 		{
 			InitializeComponent();
 

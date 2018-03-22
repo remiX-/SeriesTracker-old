@@ -28,7 +28,7 @@ namespace SeriesTracker.Windows
 		private MainViewModel MyViewModel;
 
 		// Windows
-		private WindowViewShowNew WindowViewShow;
+		private WindowViewShow WindowViewShow;
 
 		private bool windowHasInit = false;
 
@@ -453,7 +453,7 @@ namespace SeriesTracker.Windows
 				if (WindowViewShow == null || !WindowViewShow.IsLoaded)
 				{
 					//WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
-					WindowViewShow = new WindowViewShowNew((Show)view_DataGridView.SelectedItem);
+					WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
 					WindowViewShow.Show();
 				}
 				else
@@ -1263,7 +1263,7 @@ namespace SeriesTracker.Windows
 
 		private void Btn_Test2_Click(object sender, RoutedEventArgs e)
 		{
-			WindowViewShow = new WindowViewShowNew((Show)view_DataGridView.Items[0]);
+			WindowViewShow = new WindowViewShow((Show)view_DataGridView.Items[0]);
 			WindowViewShow.Show();
 		}
 		#endregion

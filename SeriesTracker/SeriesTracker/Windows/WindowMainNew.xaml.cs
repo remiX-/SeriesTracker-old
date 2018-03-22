@@ -30,7 +30,7 @@ namespace SeriesTracker.Windows
 		private MainNewViewModel MyViewModel;
 
 		// Windows
-		private WindowViewShowNew WindowViewShow;
+		private WindowViewShow WindowViewShow;
 
 		private bool windowHasInit = false;
 
@@ -685,7 +685,7 @@ namespace SeriesTracker.Windows
 				if (WindowViewShow == null || !WindowViewShow.IsLoaded)
 				{
 					//WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
-					WindowViewShow = new WindowViewShowNew((Show)view_DataGridView.SelectedItem);
+					WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
 					WindowViewShow.Show();
 				}
 				else
