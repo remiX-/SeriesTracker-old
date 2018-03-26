@@ -32,71 +32,19 @@ namespace SeriesTracker.Models
 		private string imdbId;
 		private string zap2itId;
 
-		public int Id
-		{
-			get { return id; }
-			set { id = value; }
-		}
-		public string SeriesName
-		{
-			get { return seriesName; }
-			set { seriesName = value; }
-		}
-		public string Overview
-		{
-			get { return overview; }
-			set { overview = value; }
-		}
-		public List<string> Genre
-		{
-			get { return genre; }
-			set { genre = value; }
-		}
-		public string FirstAired
-		{
-			get { return firstAired; }
-			set { firstAired = value; }
-		}
-		public string Runtime
-		{
-			get { return runtime; }
-			set { runtime = value; }
-		}
-		public string Network
-		{
-			get { return network; }
-			set { network = value; }
-		}
-		public string Status
-		{
-			get { return status; }
-			set { status = value; }
-		}
-		public string AirsDayOfWeek
-		{
-			get { return airsDayOfWeek; }
-			set { airsDayOfWeek = value; }
-		}
-		public string AirsTime
-		{
-			get { return airsTime; }
-			set { airsTime = value; }
-		}
-		public string Rating
-		{
-			get { return rating; }
-			set { rating = value; }
-		}
-		public string ImdbId
-		{
-			get { return imdbId; }
-			set { imdbId = value; }
-		}
-		public string Zap2itId
-		{
-			get { return zap2itId; }
-			set { zap2itId = value; }
-		}
+		public int Id { get => id; set => id = value; }
+		public string SeriesName { get => seriesName; set => seriesName = value; }
+		public string Overview { get => overview; set => overview = value; }
+		public List<string> Genre { get => genre; set => genre = value; }
+		public string FirstAired { get => firstAired; set => firstAired = value; }
+		public string Runtime { get => runtime; set => runtime = value; }
+		public string Network { get => network; set => network = value; }
+		public string Status { get => status; set => status = value; }
+		public string AirsDayOfWeek { get => airsDayOfWeek; set => airsDayOfWeek = value; }
+		public string AirsTime { get => airsTime; set => airsTime = value; }
+		public string Rating { get => rating; set => rating = value; }
+		public string ImdbId { get => imdbId; set => imdbId = value; }
+		public string Zap2itId { get => zap2itId; set => zap2itId = value; }
 
 		public List<Episode> Episodes { get; set; }
 		public List<Actor> Actors { get; set; }
