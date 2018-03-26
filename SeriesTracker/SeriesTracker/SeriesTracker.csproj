@@ -135,12 +135,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Comparers\DefaultComparer.cs" />
-    <Compile Include="Comparers\StatusComparer.cs" />
     <Compile Include="Controllers\ModelMethods\UserMethods.cs" />
     <Compile Include="Controllers\Repositories\IUserRepository.cs" />
     <Compile Include="Controls\VisibilityToBoolConverter.cs" />
-    <Compile Include="Controls\WatermarkAdorner.cs" />
-    <Compile Include="Controls\WatermarkService.cs" />
     <Compile Include="Core\AppGlobal.cs" />
     <Compile Include="Core\AppPrivate.cs" />
     <Compile Include="Core\CommonMethods.cs" />
