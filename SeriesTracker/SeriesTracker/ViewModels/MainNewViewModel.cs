@@ -130,7 +130,12 @@ namespace SeriesTracker.ViewModels
 
 		public void ResetStatus()
 		{
-			Status = "Ready";
+			SetStatus("Ready");
+		}
+
+		public void SetStatus(string status)
+		{
+			Status = status;
 		}
 	}
 
