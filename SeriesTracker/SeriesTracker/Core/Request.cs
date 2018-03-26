@@ -77,15 +77,15 @@ namespace SeriesTracker.Core
 			return ExecuteAndDeserialize(verb, url, null);
 		}
 
-		public static async Task<TvdbAPI> ExecuteAndDeserializeAsync(string verb, string url, string obj)
+		public static async Task<T> ExecuteAndDeserializeAsync<T>(string verb, string url, string obj)
 		{
 			object response = await ExecuteAsync(verb, url, obj);
-			return await Task.Run(() => JsonConvert.DeserializeObject<TvdbAPI>(response.ToString()));
+			return await Task.Run(() => JsonConvert.DeserializeObject<T>(response.ToString()));
 		}
 
-		public static async Task<TvdbAPI> ExecuteAndDeserializeAsync(string verb, string url)
+		public static async Task<T> ExecuteAndDeserializeAsync<T>(string verb, string url)
 		{
-			return await ExecuteAndDeserializeAsync(verb, url, null);
+			return await ExecuteAndDeserializeAsync<T>(verb, url, null);
 		}
 
 		internal static HttpWebRequest CreateRequest(string URL, string Verb)

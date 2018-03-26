@@ -825,7 +825,7 @@ namespace SeriesTracker.Windows
 				};
 
 				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
-				data = await Request.ExecuteAndDeserializeAsync("POST", "https://api.thetvdb.com/login", jObject.ToString());
+				data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
 				if (data != null && !string.IsNullOrEmpty(data.Token))
 				{
@@ -1015,7 +1015,7 @@ namespace SeriesTracker.Windows
 
 			// Check for show updates
 			string url = string.Format("https://api.thetvdb.com/updated/query?fromTime={0}", Properties.Settings.Default.TvdbUpdateEpochTime);
-			TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync("GET", url);
+			TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
 
 			if (jsonData.Data != null)
 			{

@@ -70,7 +70,7 @@ namespace SeriesTracker.Windows
 				lbl_Info.Content = "Searching ...";
 
 				string url = $"https://api.thetvdb.com/search/series?name={Uri.EscapeUriString(searchString)}";
-				TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync("GET", url);
+				TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
 
 				if (jsonData.Error == null)
 				{
