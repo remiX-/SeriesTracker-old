@@ -170,6 +170,8 @@
 						</Style>
 					</DataGrid.Resources>
 				</DataGrid>
+
+				<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
 			</DockPanel>
 		</materialDesign:DrawerHost>
 	</materialDesign:DialogHost>

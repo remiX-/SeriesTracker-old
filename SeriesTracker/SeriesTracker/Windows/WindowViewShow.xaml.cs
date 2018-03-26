@@ -94,21 +94,11 @@ namespace SeriesTracker.Windows
 		#region Startup
 		private async Task Startup()
 		{
-			MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
-			//Task.Factory.StartNew(() =>
-			//{
-			//	Thread.Sleep(2500);
-			//}).ContinueWith(t =>
-			//{
-			//	//note you can use the message queue from any thread, but just for the demo here we 
-			//	//need to get the message queue from the snackbar, so need to be on the dispatcher
-			//	MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
-			//}, TaskScheduler.FromCurrentSynchronizationContext());
+			//MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
 
 			SetupDirectories();
 
 			await LoadBannerAsync();
-			//await GetWatchedEpisodes();
 		}
 
 		private void SetupDirectories()
@@ -144,23 +134,6 @@ namespace SeriesTracker.Windows
 				ErrorMethods.LogError(ex.Message);
 			}
 		}
-
-		private async Task GetWatchedEpisodes()
-		{
-			SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchListAsync(MyViewModel.MyShow);
-
-			MyViewModel.MyShow.EpisodesWatched = result.ListData;
-
-			foreach (Episode episode in MyViewModel.MyShow.Episodes)
-			{
-				UserShowWatch watch = MyViewModel.MyShow.EpisodesWatched.SingleOrDefault(x => x.SeasonNo == episode.AiredSeason && x.EpisodeNo == episode.AiredEpisodeNumber);
-
-				if (watch != null)
-				{
-					episode.Watched = true;
-				}
-			}
-		}
 		#endregion
 
 		#region HamburgerListBox
@@ -191,7 +164,7 @@ namespace SeriesTracker.Windows
 				Message = { Text = "Hello" }
 			};
 
-			await DialogHost.Show(sampleMessageDialog, "RootDialog");
+			await DialogHost.Show(sampleMessageDialog, "ViewShowRootDialog");
 		}
 		#endregion
 	}

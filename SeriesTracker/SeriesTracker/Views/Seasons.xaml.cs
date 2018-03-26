@@ -42,6 +42,7 @@ namespace SeriesTracker.Views
 			LoadEpisodeTreeView();
 
 			await ReloadEpisodeViewAsync();
+			await GetWatchedEpisodes();
 		}
 		#endregion
 
@@ -86,6 +87,23 @@ namespace SeriesTracker.Views
 			}
 		}
 
+		private async Task GetWatchedEpisodes()
+		{
+			SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchListAsync(MyViewModel.MyShow);
+
+			MyViewModel.MyShow.EpisodesWatched = result.ListData;
+
+			foreach (Episode episode in MyViewModel.MyShow.Episodes)
+			{
+				UserShowWatch watch = MyViewModel.MyShow.EpisodesWatched.SingleOrDefault(x => x.SeasonNo == episode.AiredSeason && x.EpisodeNo == episode.AiredEpisodeNumber);
+
+				if (watch != null)
+				{
+					episode.Watched = true;
+				}
+			}
+		}
+
 		private async void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
 			TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
@@ -107,22 +125,22 @@ namespace SeriesTracker.Views
 
 		private async void CM_MarkEpisodeWatched_Click(object sender, RoutedEventArgs e)
 		{
-			//TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
-			//if (item == null)
-			//	return;
+			TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
+			if (item == null)
+				return;
 
-			//string[] split = item.Header.ToString().Split(' ');
-			//string type = split[0];
-			//int number = int.Parse(split[1]);
+			string[] split = item.Header.ToString().Split(' ');
+			string type = split[0];
+			int number = int.Parse(split[1]);
 
-			//if (type == "Season")
-			//{
+			if (type == "Season")
+			{
 
-			//}
-			//else
-			//{
-			//	await ToggleEpisodeWatched(number);
-			//}
+			}
+			else
+			{
+				await EpisodeWatchedToggle(number);
+			}
 		}
 
 		private async void Btn_EpisodeEyeToggle_Click(object sender, RoutedEventArgs e)

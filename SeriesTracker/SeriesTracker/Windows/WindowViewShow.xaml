@@ -12,7 +12,7 @@
 	<Window.DataContext>
 		<ViewModels:ViewShowViewModel />
 	</Window.DataContext>
-	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+	<materialDesign:DialogHost Identifier="ViewShowRootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<materialDesign:DrawerHost.LeftDrawerContent>
 				<DockPanel MinWidth="212">

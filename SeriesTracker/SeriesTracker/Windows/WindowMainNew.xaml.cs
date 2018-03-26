@@ -43,7 +43,7 @@ namespace SeriesTracker.Windows
 		private Timer ShowChecker;
 
 		// Shortcut command keys
-		private Dictionary<Key, ExecutedRoutedEventHandler> commands = new Dictionary<Key, ExecutedRoutedEventHandler>();
+		//private Dictionary<Key, Task> commands = new Dictionary<Key, Task>();
 
 		// Grid view settings
 		private SeriesView currentView = SeriesView.List;
@@ -272,7 +272,7 @@ namespace SeriesTracker.Windows
 		{
 			//commands.Add(Key.S, Menu_Settings_Click);
 
-			//commands.Add(Key.N, Menu_Series_AddShow_Click);
+			//commands.Add(Key.N, await AddSeries);
 			//commands.Add(Key.O, Menu_Series_ForceUpdate_Click);
 			//commands.Add(Key.U, Menu_Series_CheckForUpdates_Click);
 			//commands.Add(Key.E, Menu_Series_CheckForNewEpisodes_Click);
@@ -280,7 +280,7 @@ namespace SeriesTracker.Windows
 
 			//commands.Add(Key.C, CM_Copy_Click);
 
-			////commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
+			//commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
 
 			//foreach (var kvp in commands)
 			//{
@@ -304,7 +304,7 @@ namespace SeriesTracker.Windows
 
 		private async Task SetupTvdbAPI()
 		{
-			MyViewModel.Status = "Contacting TheTVDb API";
+			MyViewModel.SetStatus("Contacting TheTVDb API");
 
 			try
 			{
@@ -335,7 +335,7 @@ namespace SeriesTracker.Windows
 
 		private async Task SetupStructure()
 		{
-			MyViewModel.Status = "Setting up Structure";
+			MyViewModel.SetStatus("Setting up Structure");
 
 			try
 			{
@@ -410,7 +410,7 @@ namespace SeriesTracker.Windows
 				int counter = 1;
 				foreach (Show show in shows)
 				{
-					MyViewModel.Status = $"Downloading data {counter++}/{shows.Count} - {show.SeriesName}";
+					MyViewModel.SetStatus($"Downloading data {counter++}/{shows.Count} - {show.SeriesName}");
 
 
 					await MethodCollection.RetrieveTvdbDataForSeriesAsync(show.Id);
@@ -466,7 +466,7 @@ namespace SeriesTracker.Windows
 
 		private async Task CheckForMissingLocalData()
 		{
-			MyViewModel.Status = "Verifying local data";
+			MyViewModel.SetStatus("Verifying local data");
 
 			try
 			{
@@ -484,7 +484,7 @@ namespace SeriesTracker.Windows
 					int counter = 1;
 					foreach (Show show in missingShows)
 					{
-						MyViewModel.Status = $"Downloading data {counter++}/{missingShows.Count} - {show.SeriesName}";
+						MyViewModel.SetStatus($"Downloading data {counter++}/{missingShows.Count} - {show.SeriesName}");
 
 						await MethodCollection.RetrieveTvdbDataForSeriesAsync(show.Id);
 					}
@@ -498,7 +498,7 @@ namespace SeriesTracker.Windows
 
 		private async Task<bool> CheckForShowUpdates()
 		{
-			MyViewModel.Status = "Checking for show updates";
+			MyViewModel.SetStatus("Checking for show updates");
 
 			bool didUpdate = false;
 
@@ -607,7 +607,7 @@ namespace SeriesTracker.Windows
 							AppGlobal.Settings.AddSeriesPath(show.Id, showDir.FullName);
 						}
 
-						//Thread.Sleep(250);
+						Thread.Sleep(100);
 					}
 
 					AppGlobal.Settings.Save();
@@ -834,6 +834,8 @@ namespace SeriesTracker.Windows
 		{
 			try
 			{
+				if (MyViewModel.IsBusy) return;
+
 				Show show = view_DataGridView.SelectedItem as Show;
 
 				MyViewModel.SetStatus($"Finding magnets for {show.SeriesName} {show.LatestEpisode.FullEpisodeString}");
@@ -848,7 +850,9 @@ namespace SeriesTracker.Windows
 				var view = new EpisodeDownloadsDialog(torrents);
 
 				//show the dialog
-				var result = await DialogHost.Show(view, "RootDialog");
+				await DialogHost.Show(view, "RootDialog");
+
+				MyViewModel.ResetStatus();
 
 				//List<Show> shows = view_DataGridView.SelectedItems.Cast<Show>().ToList();
 
@@ -913,7 +917,7 @@ namespace SeriesTracker.Windows
 			if (win.selectedShow == null)
 				return;
 
-			MyViewModel.Status = $"Loading data for {win.selectedShow.SeriesName}";
+			MyViewModel.SetStatus($"Loading data for {win.selectedShow.SeriesName}");
 
 			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
 
@@ -956,7 +960,7 @@ namespace SeriesTracker.Windows
 		{
 			try
 			{
-				MyViewModel.Status = "Looking for new episodes";
+				MyViewModel.SetStatus("Looking for new episodes");
 
 				string text = "Opening ";
 				int seriesFound = 0;

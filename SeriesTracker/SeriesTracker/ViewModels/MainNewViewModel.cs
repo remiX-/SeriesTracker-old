@@ -18,6 +18,8 @@ namespace SeriesTracker.ViewModels
 
 		public CollectionViewSource Collection { get; } = new CollectionViewSource();
 
+		public bool IsBusy => status != "Ready";
+
 		#region Fields
 		private string myTitle;
 		private Category filterCategory;
@@ -30,8 +32,8 @@ namespace SeriesTracker.ViewModels
 		#region Properties
 		public string MyTitle
 		{
-			get { return myTitle; }
-			set { SetProperty(ref myTitle, $"{AppGlobal.AssemblyTitle} - {value}"); }
+			get => myTitle;
+			set => SetProperty(ref myTitle, $"{AppGlobal.AssemblyTitle} - {value}");
 		}
 
 		public string UserEmail { get; }
@@ -39,7 +41,7 @@ namespace SeriesTracker.ViewModels
 
 		public Category FilterCategory
 		{
-			get { return filterCategory; }
+			get => filterCategory;
 			set { SetProperty(ref filterCategory, value); RefreshView(); }
 		}
 		public List<Category> Categories
@@ -54,23 +56,23 @@ namespace SeriesTracker.ViewModels
 
 		public string FilterText
 		{
-			get { return filterText; }
+			get => filterText;
 			set { SetProperty(ref filterText, value); RefreshView(); }
 		}
 
 		public int GridViewColumnCount
 		{
-			get { return gridViewColumnCount; }
-			set { SetProperty(ref gridViewColumnCount, value); }
+			get => gridViewColumnCount;
+			set => SetProperty(ref gridViewColumnCount, value);
 		}
-
-		public string Product { get; }
 
 		public string Status
 		{
-			get { return status; }
-			set { SetProperty(ref status, value); }
+			get => status;
+			private set => SetProperty(ref status, value);
 		}
+
+		public string Product { get; }
 		#endregion
 		#endregion
 
