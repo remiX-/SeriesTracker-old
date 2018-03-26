@@ -1,4 +1,5 @@
 ﻿using SeriesTracker.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SeriesTracker
@@ -13,6 +14,7 @@ namespace SeriesTracker
 		Task<bool> UpdateEztvShowFileAsync();
 
 		Task<bool> DownloadEpisode(Show show, Episode episode);
-		Task<string> GetMagnetForEpisode(string url, Episode episode, bool getHD);
+
+		Task<List<EztvTorrent>> GetEpisodeTorrentList(Show show, Episode episode);
 	}
 }
