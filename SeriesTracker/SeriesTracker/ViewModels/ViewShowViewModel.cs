@@ -35,89 +35,102 @@ namespace SeriesTracker.ViewModels
 		private int castColumnCount;
 
 		private List<Episode> episodes;
+
+		private int episodeColumnCount;
+		private int viewingSeason = 1;
 		#endregion
 
 		#region Properties
 		public string MyTitle
 		{
-			get { return myTitle; }
-			set { SetProperty(ref myTitle, value); }
+			get => myTitle;
+			set => SetProperty(ref myTitle, value);
 		}
 		public string BannerPath
 		{
-			get { return bannerPath; }
-			set { SetProperty(ref bannerPath, value); }
+			get => bannerPath;
+			set => SetProperty(ref bannerPath, value);
 		}
 		public string Overview
 		{
-			get { return overview; }
-			set { SetProperty(ref overview, value); }
+			get => overview;
+			set => SetProperty(ref overview, value);
 		}
 		public string Network
 		{
-			get { return network; }
-			set { SetProperty(ref network, value); }
+			get => network;
+			set => SetProperty(ref network, value);
 		}
 		public string Genre
 		{
-			get { return genre; }
-			set { SetProperty(ref genre, value); }
+			get => genre;
+			set => SetProperty(ref genre, value);
 		}
 		public string Status
 		{
-			get { return status; }
-			set { SetProperty(ref status, value); }
+			get => status;
+			set => SetProperty(ref status, value);
 		}
 		public string FirstAired
 		{
-			get { return firstAired; }
-			set { SetProperty(ref firstAired, value); }
+			get => firstAired;
+			set => SetProperty(ref firstAired, value);
 		}
 		public string LatestEpisode
 		{
-			get { return latestEpisode; }
-			set { SetProperty(ref latestEpisode, value); }
+			get => latestEpisode;
+			set => SetProperty(ref latestEpisode, value);
 		}
 		public string AirTime
 		{
-			get { return airTime; }
-			set { SetProperty(ref airTime, value); }
+			get => airTime;
+			set => SetProperty(ref airTime, value);
 		}
 		public string Runtime
 		{
-			get { return runtime; }
-			set { SetProperty(ref runtime, value); }
+			get => runtime;
+			set => SetProperty(ref runtime, value);
 		}
 		public string ImdbId
 		{
-			get { return imdbId; }
-			set { SetProperty(ref imdbId, value); }
+			get => imdbId;
+			set => SetProperty(ref imdbId, value);
 		}
 		public string ImdbUrl
 		{
-			get { return imdbUrl; }
-			set { SetProperty(ref imdbUrl, value); }
+			get => imdbUrl;
+			set => SetProperty(ref imdbUrl, value);
 		}
 
 		public List<Actor> ShowCast
 		{
-			get { return showCast; }
-			set { SetProperty(ref showCast, value); }
+			get => showCast;
+			set => SetProperty(ref showCast, value);
 		}
 
 		public int CastColumnCount
 		{
-			get { return castColumnCount; }
-			set { SetProperty(ref castColumnCount, value); }
+			get => castColumnCount;
+			set => SetProperty(ref castColumnCount, value);
 		}
 
 		public List<Episode> Episodes
 		{
-			get { return episodes; }
-			set { SetProperty(ref episodes, value); }
+			get => episodes;
+			set => SetProperty(ref episodes, value);
 		}
 
-		public int EpisodeColumnCount { get { return 2; } }
+		public int EpisodeColumnCount
+		{
+			get => episodeColumnCount;
+			set => SetProperty(ref episodeColumnCount, value);
+		}
+
+		public int ViewingSeason
+		{
+			get => viewingSeason;
+			set => SetProperty(ref viewingSeason, value);
+		}
 		#endregion
 		#endregion
 
@@ -129,6 +142,9 @@ namespace SeriesTracker.ViewModels
 				new HamburgerMenuItem("Seasons", "Seasons", PackIconKind.Itunes, new Seasons()),
 				new HamburgerMenuItem("Gallery", "Gallery", PackIconKind.ImageAlbum)
 			};
+
+			EpisodeColumnCount = 2;
+			ViewingSeason = 1;
 		}
 
 		public void RefreshBanner()

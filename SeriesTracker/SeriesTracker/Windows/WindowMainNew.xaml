@@ -109,29 +109,12 @@
 					Grid.Row="1"
 					x:Name="view_DataGridView"
 					Margin="0 0 0 0"
-					ItemsSource="{Binding Collection.View}" IsReadOnly="True"
-					CanUserSortColumns="True" CanUserResizeRows="False"
-					CanUserAddRows="False"
+					ItemsSource="{Binding Collection.View}"
+					IsReadOnly="True" CanUserSortColumns="True" CanUserResizeRows="False" CanUserAddRows="False"
 					AutoGenerateColumns="False"
-					Sorting="DataGrid_Sorting"
+					Sorting="DataGrid_Sorting" MouseDoubleClick="DataGrid_RowDoubleClick"
 					materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-					<DataGrid.Columns>
-						<DataGridTextColumn Binding="{Binding Id}" Width="75" Header="Tvdb ID" />
-						<DataGridTextColumn Binding="{Binding ImdbId}" Width="75" Header="IMDb ID" Visibility="Collapsed" />
-						<DataGridTextColumn Binding="{Binding DisplayName}" Width="250" Header="Name" />
-						<DataGridTextColumn Binding="{Binding Status}" Width="125" Header="Status" />
-						<DataGridTextColumn Binding="{Binding Network}" Width="125" Header="Network" Visibility="Collapsed" />
-						<DataGridTextColumn Binding="{Binding Runtime}" Width="125" Header="Run Time" Visibility="Collapsed" />
-						<DataGridTextColumn Binding="{Binding GenreDisplay}" Width="125" Header="Genre" Visibility="Collapsed" />
-						<DataGridTextColumn Binding="{Binding AirDayDisplay}" Width="125" Header="Air Day" />
-						<DataGridTextColumn Binding="{Binding LatestEpisode.FullEpisodeString}" Width="125" Header="Latest Episode" />
-						<DataGridTextColumn Binding="{Binding LatestEpisode.FullDateString}" Width="125" Header="Latest Aired" />
-						<DataGridTextColumn Binding="{Binding NextEpisodeDisplay}" Width="125" Header="Next Episode" />
-						<DataGridTextColumn Binding="{Binding NextEpisodeDateDisplay}" Width="125" Header="Next Aired" />
-						<DataGridTextColumn Binding="{Binding HowLongDisplay}" Width="125" Header="How Long" />
-						<DataGridTextColumn Binding="{Binding LocalSeriesPath}" Width="250" Header="Local Folder" Visibility="Collapsed" />
-					</DataGrid.Columns>
 					<DataGrid.Resources>
 						<ContextMenu x:Key="cm_DataGridHeader" ItemsSource="{Binding Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" Width="200">
 							<ContextMenu.ItemTemplate>
@@ -169,8 +152,25 @@
 							<Setter Property="ContextMenu" Value="{StaticResource cm_DataGridRow}" />
 						</Style>
 					</DataGrid.Resources>
+					
+					<DataGrid.Columns>
+						<DataGridTextColumn Binding="{Binding Id}" Width="75" Header="Tvdb ID" />
+						<DataGridTextColumn Binding="{Binding ImdbId}" Width="75" Header="IMDb ID" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding DisplayName}" Width="250" Header="Name" />
+						<DataGridTextColumn Binding="{Binding Status}" Width="125" Header="Status" />
+						<DataGridTextColumn Binding="{Binding Network}" Width="125" Header="Network" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding Runtime}" Width="125" Header="Run Time" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding GenreDisplay}" Width="125" Header="Genre" Visibility="Collapsed" />
+						<DataGridTextColumn Binding="{Binding AirDayDisplay}" Width="125" Header="Air Day" />
+						<DataGridTextColumn Binding="{Binding LatestEpisode.FullEpisodeString}" Width="125" Header="Latest Episode" />
+						<DataGridTextColumn Binding="{Binding LatestEpisode.FullDateString}" Width="125" Header="Latest Aired" />
+						<DataGridTextColumn Binding="{Binding NextEpisodeDisplay}" Width="125" Header="Next Episode" />
+						<DataGridTextColumn Binding="{Binding NextEpisodeDateDisplay}" Width="125" Header="Next Aired" />
+						<DataGridTextColumn Binding="{Binding HowLongDisplay}" Width="125" Header="How Long" />
+						<DataGridTextColumn Binding="{Binding LocalSeriesPath}" Width="250" Header="Local Folder" Visibility="Collapsed" />
+					</DataGrid.Columns>
 				</DataGrid>
-
+				
 				<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
 			</DockPanel>
 		</materialDesign:DrawerHost>

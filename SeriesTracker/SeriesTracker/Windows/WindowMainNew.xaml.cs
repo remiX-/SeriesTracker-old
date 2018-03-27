@@ -542,12 +542,6 @@ namespace SeriesTracker.Windows
 			return didUpdate;
 		}
 
-		private async Task CheckForUpdates()
-		{
-			await CheckForMissingLocalData();
-			await CheckForShowUpdates();
-		}
-
 		private void AutoDetectLocalSeriesPaths()
 		{
 			// Try auto find local series paths for series ona ccount
@@ -678,13 +672,12 @@ namespace SeriesTracker.Windows
 			CM_View_Click(null, null);
 		}
 
-		private async void CM_View_Click(object sender, RoutedEventArgs e)
+		private void CM_View_Click(object sender, RoutedEventArgs e)
 		{
 			if (view_DataGridView.SelectedItem != null)
 			{
 				if (WindowViewShow == null || !WindowViewShow.IsLoaded)
 				{
-					//WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
 					WindowViewShow = new WindowViewShow((Show)view_DataGridView.SelectedItem);
 					WindowViewShow.Show();
 				}
@@ -956,6 +949,12 @@ namespace SeriesTracker.Windows
 			//MessageBox.Show("ProgressDialog failed.");
 		}
 
+		private async Task CheckForUpdates()
+		{
+			await CheckForMissingLocalData();
+			await CheckForShowUpdates();
+		}
+
 		private async Task CheckForNewEpisodes()
 		{
 			try
@@ -989,7 +988,7 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private async Task DetectLocalSeriesPaths()
+		private void DetectLocalSeriesPaths()
 		{
 			if (!string.IsNullOrWhiteSpace(AppGlobal.Paths.LocalSeriesDirectory))
 			{
@@ -1012,7 +1011,7 @@ namespace SeriesTracker.Windows
 				case "ForceUpdate": await UpdateShows(AppGlobal.User.Shows); break;
 				case "Updates": await CheckForUpdates(); break;
 				case "NewEpisodes": await CheckForNewEpisodes(); break;
-				case "LocalSeries": await DetectLocalSeriesPaths(); break;
+				case "LocalSeries": DetectLocalSeriesPaths(); break;
 				default:
 					break;
 			}
