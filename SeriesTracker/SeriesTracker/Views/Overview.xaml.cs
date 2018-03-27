@@ -30,12 +30,12 @@ namespace SeriesTracker.Views
 		private async void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (loaded) return;
+			loaded = true;
 
 			MyViewModel = DataContext as ViewShowViewModel;
 
 			await Task.WhenAll(LoadBannerAsync(), LoadCastAsync(), LoadImdbAsync());
 
-			loaded = true;
 		}
 		#endregion
 

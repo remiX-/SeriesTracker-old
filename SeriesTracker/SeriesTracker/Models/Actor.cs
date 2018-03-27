@@ -23,56 +23,56 @@ namespace SeriesTracker.Models
 
 		public int Id
 		{
-			get { return id; }
-			set { id = value; }
+			get => id;
+			set => id = value;
 		}
 		public int SeriesId
 		{
-			get { return seriesId; }
-			set { seriesId = value; }
+			get => seriesId;
+			set => seriesId = value;
 		}
 		public string Name
 		{
-			get { return name; }
-			set { name = value; }
+			get => name;
+			set => name = value;
 		}
 		public string Role
 		{
-			get { return role; }
-			set { role = value; }
+			get => role;
+			set => role = value;
 		}
 		public int? SortOrder
 		{
-			get { return sortOrder; }
-			set { sortOrder = value; }
+			get => sortOrder;
+			set => sortOrder = value;
 		}
 		public string Image
 		{
-			get { return image; }
-			set { image = value; }
+			get => image;
+			set => image = value;
 		}
 
 		public int? ImageAuthor
 		{
-			get { return imageAuthor; }
-			set { imageAuthor = value; }
+			get => imageAuthor;
+			set => imageAuthor = value;
 		}
 		public string ImageAdded
 		{
-			get { return imageAdded; }
-			set { imageAdded = value; }
+			get => imageAdded;
+			set => imageAdded = value;
 		}
 		public string LastUpdated
 		{
-			get { return lastUpdated; }
-			set { lastUpdated = value; }
+			get => lastUpdated;
+			set => lastUpdated = value;
 		}
 
 		[JsonIgnore] public string OnlineImageUrl { get { return Path.Combine(AppGlobal.posterURL, Image); } }
 
 		[JsonIgnore] public string LocalImagePath { get; private set; }
 
-		[JsonIgnore] public BitmapImage LocalImage { get; set; }
+		[JsonIgnore] public BitmapImage LocalImage { get; private set; }
 		#endregion
 
 		public Actor()

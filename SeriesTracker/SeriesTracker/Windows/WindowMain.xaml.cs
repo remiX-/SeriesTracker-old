@@ -446,7 +446,7 @@ namespace SeriesTracker.Windows
 			CM_View_Click(null, null);
 		}
 
-		private async void CM_View_Click(object sender, RoutedEventArgs e)
+		private void CM_View_Click(object sender, RoutedEventArgs e)
 		{
 			if (view_DataGridView.SelectedItem != null)
 			{
@@ -656,7 +656,7 @@ namespace SeriesTracker.Windows
 			//OpenSeriesFolder(show);
 		}
 
-		private async void DetailView_DownloadLatest_Click(object sender, RoutedEventArgs e)
+		private void DetailView_DownloadLatest_Click(object sender, RoutedEventArgs e)
 		{
 			//Button b = (Button)sender;
 			//Grid p = b.TryFindParent<Grid>();
