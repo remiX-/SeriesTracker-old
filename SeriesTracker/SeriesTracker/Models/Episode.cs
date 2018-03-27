@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using SeriesTracker.Core;
 using System;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace SeriesTracker.Models
 {
@@ -27,61 +28,61 @@ namespace SeriesTracker.Models
 
 		public int Id
 		{
-			get { return id; }
-			set { id = value; }
+			get => id;
+			set => id = value;
 		}
 		public string Overview
 		{
-			get { return overview; }
-			set { overview = value; }
+			get => overview;
+			set => overview = value;
 		}
 		public string EpisodeName
 		{
-			get { return episodeName; }
-			set { episodeName = value; }
+			get => episodeName;
+			set => episodeName = value;
 		}
 		public string FirstAired
 		{
-			get { return firstAired; }
-			set { firstAired = value; }
+			get => firstAired;
+			set => firstAired = value;
 		}
 
 		public int? AbsoluteNumber
 		{
-			get { return absoluteNumber; }
-			set { absoluteNumber = value; }
+			get => absoluteNumber;
+			set => absoluteNumber = value;
 		}
 		public int? AiredSeason
 		{
-			get { return airedSeason; }
-			set { airedSeason = value; }
+			get => airedSeason;
+			set => airedSeason = value;
 		}
 		public int? AiredEpisodeNumber
 		{
-			get { return airedEpisodeNumber; }
-			set { airedEpisodeNumber = value; }
+			get => airedEpisodeNumber;
+			set => airedEpisodeNumber = value;
 		}
 		public int? AiredSeasonID
 		{
-			get { return airedSeasonID; }
-			set { airedSeasonID = value; }
+			get => airedSeasonID;
+			set => airedSeasonID = value;
 		}
 
 		public double? DvdSeason
 		{
-			get { return dvdSeason; }
-			set { dvdSeason = value; }
+			get => dvdSeason;
+			set => dvdSeason = value;
 		}
 		public double? DvdEpisodeNumber
 		{
-			get { return dvdEpisodeNumber; }
-			set { dvdEpisodeNumber = value; }
+			get => dvdEpisodeNumber;
+			set => dvdEpisodeNumber = value;
 		}
 
 		public int LastUpdated
 		{
-			get { return lastUpdated; }
-			set { lastUpdated = value; }
+			get => lastUpdated;
+			set => lastUpdated = value;
 		}
 		#endregion
 
@@ -91,36 +92,22 @@ namespace SeriesTracker.Models
 		#endregion
 
 		#region Properties
-		[JsonIgnore]
-		public string FullEpisodeString { get; private set; }
-		//{
-		//	get
-		//	{
-		//		return string.Format("S{0:d2}E{1:d2}", AiredSeason, AiredEpisodeNumber);
-		//	}
-		//}
+		[JsonIgnore] public string FullEpisodeString { get; private set; }
 
-		[JsonIgnore]
-		public string FullDateString { get; private set; }
-		//{
-		//	get
-		//	{
-		//		return CommonMethods.GetDateTimeAsFormattedString(AirDate);
-		//	}
-		//}
+		[JsonIgnore] public string FullDateString { get; private set; }
 
-		[JsonIgnore]
+		[JsonIgnore] 
 		public string ImageText
 		{
-			get { return imageText; }
-			set { SetProperty(ref imageText, value); RaisePropertyChanged("LocalImagePath"); }
+			get => imageText;
+			set { SetProperty(ref imageText, value); /*RaisePropertyChanged("LocalImagePath");*/ }
 		}
 
 		[JsonIgnore]
 		public bool Watched
 		{
-			get { return watched; }
-			set { watched = value; }
+			get => watched;
+			set => SetProperty(ref watched, value);
 		}
 		#endregion
 
@@ -129,12 +116,19 @@ namespace SeriesTracker.Models
 
 		[JsonIgnore] public string OnlineImageUrl { get; private set; }
 		[JsonIgnore] public string LocalImagePath { get; private set; }
+		[JsonIgnore] public BitmapImage LocalImage { get; private set; }
 		#endregion
 		#endregion
 
 		public Episode()
 		{
 			ImageText = "Loading ...";
+
+			LocalImage = new BitmapImage();
+			LocalImage.BeginInit();
+			LocalImage.CacheOption = BitmapCacheOption.OnLoad;
+			LocalImage.UriSource = new Uri("pack://application:,,,/Resources/noimage.jpg");
+			LocalImage.EndInit();
 		}
 
 		public void DoWork(Show show)
@@ -174,9 +168,22 @@ namespace SeriesTracker.Models
 				return string.Format("{0}h", hours);
 		}
 
-		public override string ToString()
+		public void RefreshImage()
 		{
-			return FullEpisodeString;
+			if (!File.Exists(LocalImagePath)) return;
+
+			LocalImage = new BitmapImage();
+			LocalImage.BeginInit();
+			LocalImage.CacheOption = BitmapCacheOption.OnLoad;
+			LocalImage.UriSource = new Uri(LocalImagePath);
+			LocalImage.EndInit();
+
+			RaisePropertyChanged("LocalImage");
 		}
+
+		//public override string ToString()
+		//{
+		//	return FullEpisodeString;
+		//}
 	}
 }

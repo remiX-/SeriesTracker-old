@@ -33,6 +33,11 @@ namespace SeriesTracker.Windows
 			ViewingShow = show;
 		}
 
+		private void Window_Initialized(object sender, EventArgs e)
+		{
+
+		}
+
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			MyViewModel = DataContext as ViewShowViewModel;

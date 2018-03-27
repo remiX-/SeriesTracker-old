@@ -12,19 +12,20 @@
 	<Grid x:Name="Core">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition x:Name="SeasonTreeView" Width="120" />
+			<ColumnDefinition x:Name="SeasonTreeView" Width="140" />
 			<ColumnDefinition Width="10" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<Button x:Name="btn_TreeViewToggle" Style="{StaticResource btn-default-top-left}" HorizontalAlignment="Left" Content="Expand" Click="Btn_TreeViewToggle_Click" />
-		
-		<Label x:Name="lbl_SeasonHeader" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource lbl-heading}" Content="Season 1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+		<Button x:Name="btn_TreeViewToggle" Style="{StaticResource btn-default-top-left}" Margin="16 0 0 0" VerticalAlignment="Center" Content="Expand" Click="Btn_TreeViewToggle_Click" />
 
-		<TreeView Grid.Row="1" x:Name="tv_Seasons" SelectedItemChanged="TreeView_SelectedItemChanged">
+		<Label Grid.Row="0" Grid.Column="2" Style="{StaticResource lbl-heading}" Content="{Binding ViewingSeason}" ContentStringFormat="Season {0}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+		<TreeView Grid.Row="2" Grid.Column="0" x:Name="tv_Seasons" SelectedItemChanged="TreeView_SelectedItemChanged">
 			<TreeView.ContextMenu>
 				<ContextMenu>
 					<MenuItem Header="Mark as watched" Click="CM_MarkEpisodeWatched_Click" />
@@ -32,7 +33,7 @@
 			</TreeView.ContextMenu>
 		</TreeView>
 
-		<ScrollViewer Grid.Row="1" Grid.Column="2">
+		<ScrollViewer Grid.Row="2" Grid.Column="2">
 			<ItemsControl x:Name="view_Episodes" Margin="0" Background="{x:Null}" VerticalAlignment="Top" ItemsSource="{Binding Episodes}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -65,18 +66,16 @@
 								<Grid Grid.ColumnSpan="5" Background="Black" Opacity="0.3"></Grid>
 
 								<Label Style="{StaticResource lbl-default-center-center}" Content="{Binding ImageText}" />
-								<Image Source="{Binding LocalImagePath}" HorizontalAlignment="Left" />
+								<Image Source="{Binding LocalImage}" HorizontalAlignment="Left" />
 								<Label Style="{StaticResource lbl-default-center-left}" Margin="10,0,0,0" FontSize="50" Content="{Binding AiredEpisodeNumber}">
 									<Label.Effect>
 										<DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="1" Color="Black"/>
 									</Label.Effect>
 								</Label>
 
-								<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
-									<StackPanel>
-										<Label Style="{StaticResource lbl-subheading}" Content="{Binding EpisodeName}"/>
-										<TextBlock Text="{Binding FullDateString, StringFormat={}Aired: {0}}" />
-									</StackPanel>
+								<StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Left">
+									<Label Style="{StaticResource lbl-subheading}" Content="{Binding EpisodeName}"/>
+									<Label Content="{Binding FullDateString}" ContentStringFormat="Aired: {0}" />
 								</StackPanel>
 
 								<ToggleButton Grid.Column="4" Width="50" Height="50" Margin="0,5,5,0" VerticalAlignment="Top" Checked="Btn_EpisodeEyeToggle_Click" Unchecked="Btn_EpisodeEyeToggle_Click" IsChecked="{Binding Watched}">
