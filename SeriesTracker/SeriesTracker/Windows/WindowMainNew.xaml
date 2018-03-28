@@ -29,10 +29,13 @@
 					<ListBox x:Name="DemoItemsListBox" ItemsSource="{Binding DemoItems}" Margin="0 16 0 16">
 						<ListBox.ItemTemplate>
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
-								<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
-									<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
-									<TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="15 0 0 0" />
-								</StackPanel>
+								<Grid>
+									<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
+										<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
+										<TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="15 0 0 0" />
+									</StackPanel>
+									<Separator VerticalAlignment="Bottom" />
+								</Grid>
 							</DataTemplate>
 						</ListBox.ItemTemplate>
 					</ListBox>
@@ -106,7 +109,6 @@
 				</materialDesign:ColorZone>
 
 				<DataGrid
-					Grid.Row="1"
 					x:Name="view_DataGridView"
 					Margin="0 0 0 0"
 					ItemsSource="{Binding Collection.View}"
@@ -171,7 +173,7 @@
 					</DataGrid.Columns>
 				</DataGrid>
 				
-				<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
+				<!--<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />-->
 			</DockPanel>
 		</materialDesign:DrawerHost>
 	</materialDesign:DialogHost>

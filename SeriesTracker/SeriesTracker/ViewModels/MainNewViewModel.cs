@@ -81,10 +81,13 @@ namespace SeriesTracker.ViewModels
 			DemoItems = new[]
 			{
 				new HamburgerMenuItem("AddSeries", "Add Series", PackIconKind.Account),
-				new HamburgerMenuItem("ForceUpdate", "Force Update Series", PackIconKind.Settings),
-				new HamburgerMenuItem("Updates", "Check for Updates", PackIconKind.Logout),
-				new HamburgerMenuItem("NewEpisodes", "Check for New Episodes", PackIconKind.Logout),
-				new HamburgerMenuItem("LocalSeries", "Detect local series paths", PackIconKind.Logout)
+				new HamburgerMenuItem("ForceUpdate", "Force Update Series", PackIconKind.Update),
+				new HamburgerMenuItem("Updates", "Check for Updates", PackIconKind.Update),
+				new HamburgerMenuItem("NewEpisodes", "Check for New Episodes", PackIconKind.OpenInNew),
+				new HamburgerMenuItem("LocalSeries", "Detect local series paths", PackIconKind.FileFind),
+				new HamburgerMenuItem("Profile", "Profile", PackIconKind.Account),
+				new HamburgerMenuItem("Settings", "Settings", PackIconKind.Settings),
+				new HamburgerMenuItem("Exit", "Exit", PackIconKind.ExitToApp)
 			};
 			myTitle = AppGlobal.AssemblyTitle;
 			UserEmail = AppGlobal.User.Email;
