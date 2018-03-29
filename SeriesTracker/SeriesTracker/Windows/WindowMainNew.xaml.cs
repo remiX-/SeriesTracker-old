@@ -67,7 +67,7 @@ namespace SeriesTracker.Windows
 		{
 			await Startup();
 
-			DemoItemsListBox.SelectionChanged += DemoItemsListBox_SelectionChanged;
+			AppMenuListBox.SelectionChanged += AppMenuListBox_SelectionChanged;
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
@@ -1000,11 +1000,27 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private async void DemoItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void ViewProfile()
 		{
-			if (DemoItemsListBox.SelectedItem == null) return;
+			WindowMyAccount about = new WindowMyAccount();
+			if ((bool)about.ShowDialog())
+			{
+				Logout();
+			}
+		}
 
-			var selected = DemoItemsListBox.SelectedItem as HamburgerMenuItem;
+		private void OpenSettings()
+		{
+			WindowSettings win = new WindowSettings() { Owner = this };
+			win.CloseHandler += SettingsClosedHandler;
+			win.ShowDialog();
+		}
+
+		private async void AppMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (AppMenuListBox.SelectedItem == null) return;
+
+			var selected = AppMenuListBox.SelectedItem as HamburgerMenuItem;
 			switch (selected.Id)
 			{
 				case "AddSeries": await AddSeries(); break;
@@ -1012,12 +1028,15 @@ namespace SeriesTracker.Windows
 				case "Updates": await CheckForUpdates(); break;
 				case "NewEpisodes": await CheckForNewEpisodes(); break;
 				case "LocalSeries": DetectLocalSeriesPaths(); break;
-				default:
-					break;
+
+				case "Profile": ViewProfile(); break;
+				case "Settings": OpenSettings(); break;
+				case "Exit": Close(); break;
+				default: break;
 			}
 
 			// Deselect item
-			DemoItemsListBox.SelectedItem = null;
+			AppMenuListBox.SelectedItem = null;
 
 			// Close drawer
 			MenuToggleButton.IsChecked = false;
@@ -1031,6 +1050,47 @@ namespace SeriesTracker.Windows
 			};
 
 			await DialogHost.Show(sampleMessageDialog, "RootDialog");
+		}
+
+		private void SettingsClosedHandler(List<string> changes)
+		{
+			if (changes.Contains("UpdateFolders"))
+			{
+				AutoDetectLocalSeriesPaths();
+			}
+
+			if (changes.Contains("ReloadView"))
+			{
+				MyViewModel.RefreshView();
+			}
+
+			if (changes.Contains("UpdateCategory"))
+			{
+				MyViewModel.RefreshCategory();
+			}
+
+			if (changes.Contains("UpdateTheme"))
+			{
+				//ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
+			}
+		}
+
+		private void Logout()
+		{
+			AppGlobal.User = null;
+
+			Properties.Settings.Default.UserEmail = string.Empty;
+			Properties.Settings.Default.UserPassword = string.Empty;
+			Properties.Settings.Default.UserRemember = false;
+			Properties.Settings.Default.Save();
+
+			//Window m = new WindowLogin();
+			//m.Show();
+			//Application.Current.MainWindow = m;
+			Application.Current.MainWindow = new WindowLogin();
+			Application.Current.MainWindow.Show();
+
+			Close();
 		}
 		#endregion
 	}

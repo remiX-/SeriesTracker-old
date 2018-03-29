@@ -1,14 +1,14 @@
 ﻿<Window
+	x:Class="SeriesTracker.Windows.WindowSettings"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
-	x:Class="SeriesTracker.Windows.WindowSettings"
 	Title="Settings"
 	Height="450" Width="800"
 	ShowInTaskbar="False" ResizeMode="NoResize"
 	BorderThickness="2"
 	Loaded="Window_Loaded"
-	Style="{StaticResource ResourceKey=ReWindow}">
+	Style="{StaticResource ReWindow}">
 	<Window.DataContext>
 		<ViewModels:SettingsViewModel/>
 	</Window.DataContext>
@@ -36,22 +36,41 @@
 
 					<Label Content="Date Format" Margin="0,10,0,0" />
 					<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
-						<ComboBox x:Name="cmb_DateFormat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" SelectionChanged="cmb_DateFormat_SelectionChanged" SelectedIndex="{Binding DateFormatIndex, Mode=OneTime}" ItemsSource="{Binding DateFormats}" />
+						<ComboBox x:Name="cmb_DateFormat"
+								  HorizontalAlignment="Left"
+								  VerticalAlignment="Top"
+								  Width="165"
+								  ItemsSource="{Binding DateFormats}"
+								  SelectedIndex="{Binding DateFormatIndex, Mode=OneTime}" />
 						<Label Content="{Binding ExampleDate}" Margin="10,0,0,0" VerticalAlignment="Center" />
 					</StackPanel>
 
 					<Label Content="View Default Sorting" Margin="0,10,0,0" />
 					<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
-						<ComboBox x:Name="cmb_DefaultSorting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" SelectedIndex="{Binding DefaultSortingIndex, Mode=OneTime}" ItemsSource="{Binding ColumnHeadings}" />
+						<ComboBox x:Name="cmb_DefaultSorting"
+								  HorizontalAlignment="Left"
+								  VerticalAlignment="Top"
+								  Width="165"
+								  ItemsSource="{Binding ColumnHeadings}"
+								  SelectedIndex="{Binding DefaultSortingIndex, Mode=OneTime}" />
 						<RadioButton Content="Asc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortAsc}" />
 						<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" />
 					</StackPanel>
 
 					<Label Content="Theme" Margin="0,10,0,0" Visibility="Collapsed" />
-					<ComboBox x:Name="cmb_Theme" Margin="0,5,0,0" Width="165" SelectionChanged="cmb_Theme_SelectionChanged" SelectedIndex="{Binding ThemeIndex, Mode=OneTime}" ItemsSource="{Binding Themes}" Visibility="Collapsed" />
+					<ComboBox x:Name="cmb_Theme"
+							  Margin="0,5,0,0"
+							  Width="165"
+							  ItemsSource="{Binding Themes}"
+							  SelectedIndex="{Binding ThemeIndex, Mode=OneTime}"
+							  Visibility="Collapsed" />
 
 					<Label Content="Accent" Margin="0,10,0,0" />
-					<ComboBox x:Name="cmb_Accent" Margin="0,5,0,0" Width="165" SelectionChanged="cmb_Theme_SelectionChanged" SelectedIndex="{Binding AccentIndex, Mode=OneTime}" ItemsSource="{Binding Accents}" />
+					<ComboBox x:Name="cmb_Accent"
+							  Margin="0,5,0,0"
+							  Width="165"
+							  ItemsSource="{Binding Accents}"
+							  SelectedIndex="{Binding AccentIndex, Mode=OneTime}" />
 				</StackPanel>
 			</GroupBox>
 

@@ -38,16 +38,21 @@ namespace SeriesTracker.Windows
 			MyViewModel = DataContext as SettingsViewModel;
 
 			txt_SeriesFolder.Text = AppGlobal.Settings.LocalSeriesFolder;
+
+			cmb_DateFormat.SelectionChanged += Cmb_DateFormat_SelectionChanged;
+
+			cmb_Theme.SelectionChanged += Cmb_Theme_SelectionChanged;
+			cmb_Accent.SelectionChanged += Cmb_Theme_SelectionChanged;
 		}
 		#endregion
 
 		#region General
-		private void cmb_DateFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void Cmb_DateFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			MyViewModel.ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, cmb_DateFormat.SelectedItem.ToString());
 		}
 
-		private void cmb_Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void Cmb_Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (cmb_Theme.SelectedItem == null || cmb_Accent.SelectedItem == null)
 				return;

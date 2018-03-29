@@ -24,48 +24,51 @@ namespace SeriesTracker.ViewModels
 		#region Properties
 		public bool IgnoreBrackets
 		{
-			get { return ignoreBrackets; }
-			set { ignoreBrackets = value; }
+			get => ignoreBrackets;
+			set => ignoreBrackets = value;
 		}
 
 		public bool UseListedName
 		{
-			get { return useListedName; }
-			set { useListedName = value; }
+			get => useListedName;
+			set => useListedName = value;
 		}
 
-		public List<string> DateFormats { get; protected set; }
-		public int DateFormatIndex { get { return GetSelectedTheme(DateFormats, AppGlobal.Settings.DateFormat); } }
+		public string[] DateFormats { get; }
+		public int DateFormatIndex => GetSelectedIndex(DateFormats, AppGlobal.Settings.DateFormat);
+
+		//public string GetExampleDate() => exampleDate;
 
 		public string ExampleDate
 		{
-			get { return exampleDate; }
-			set { SetProperty(ref exampleDate, value); }
+			get => exampleDate;
+			set => SetProperty(ref exampleDate, value);
 		}
 
-		public List<string> ColumnHeadings { get; }
-		public int DefaultSortingIndex { get { return GetSelectedTheme(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn); } }
+		public string[] ColumnHeadings { get; }
+		public int DefaultSortingIndex { get { return GetSelectedIndex(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn); } }
+
 		public ListSortDirection DefaultSortDirection
 		{
-			get { return defaultSortDirection; }
-			set { defaultSortDirection = value; }
+			get => defaultSortDirection;
+			set => defaultSortDirection = value;
 		}
 		public bool DefaultSortAsc
 		{
-			get { return DefaultSortDirection == ListSortDirection.Ascending; }
-			set { DefaultSortDirection = value ? ListSortDirection.Ascending : ListSortDirection.Descending; }
+			get => DefaultSortDirection == ListSortDirection.Ascending;
+			set => DefaultSortDirection = value ? ListSortDirection.Ascending : ListSortDirection.Descending;
 		}
 		public bool DefaultSortDesc
 		{
-			get { return DefaultSortDirection == ListSortDirection.Descending; }
-			set { DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending; }
+			get => DefaultSortDirection == ListSortDirection.Descending;
+			set => DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending;
 		}
 
-		public List<string> Themes { get; protected set; }
-		public int ThemeIndex { get { return GetSelectedTheme(Themes, AppGlobal.Settings.Theme); } }
+		public string[] Themes { get; }
+		public int ThemeIndex => GetSelectedIndex(Themes, AppGlobal.Settings.Theme);
 
-		public List<string> Accents { get; protected set; }
-		public int AccentIndex { get { return GetSelectedTheme(Accents, AppGlobal.Settings.Accent); } }
+		public string[] Accents { get; }
+		public int AccentIndex => GetSelectedIndex(Accents, AppGlobal.Settings.Accent);
 
 		public ObservableCollection<Category> Categories
 		{
@@ -80,20 +83,42 @@ namespace SeriesTracker.ViewModels
 			IgnoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
 			UseListedName = AppGlobal.Settings.UseListedName;
 
-			ColumnHeadings = WindowMainNew.ColumnHeadings;
+			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
 
-			DateFormats = new List<string> { "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy", "d/M/yyyy", "d MMM yyyy", "dd MMM yyyy", "d MMMM yyyy", "dd MMMM yyyy", "dd MMM, ddd", "d MMM, ddd" };
+			DateFormats = new[]
+			{
+				"dd/MM/yyyy",
+				"dd/M/yyyy",
+				"d/MM/yyyy",
+				"d/M/yyyy",
+				"d MMM yyyy",
+				"dd MMM yyyy",
+				"d MMMM yyyy",
+				"dd MMMM yyyy",
+				"dd MMM, ddd",
+				"d MMM, ddd"
+			};
 			DefaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
 
-			Themes = new List<string> { "BaseLight", "BaseDark" };
-			Accents = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+			Themes = new[] { "BaseLight", "BaseDark" };
+			Accents = new[]
+			{
+				"Red", "Green", "Blue",
+				"Purple", "Orange", "Lime",
+				"Emerald", "Teal", "Cyan",
+				"Cobalt", "Indigo", "Violet",
+				"Pink", "Magenta", "Crimson",
+				"Amber", "Yellow", "Brown",
+				"Olive", "Steel", "Mauve",
+				"Taupe", "Sienna"
+			};
 
 			Categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}
 
-		private int GetSelectedTheme(List<string> list, string selected)
+		private int GetSelectedIndex(string[] list, string selected)
 		{
-			for (int i = 0; i < list.Count; i++)
+			for (int i = 0; i < list.Length; i++)
 			{
 				if (selected == list[i])
 					return i;
