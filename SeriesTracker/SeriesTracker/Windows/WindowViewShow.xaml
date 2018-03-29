@@ -24,7 +24,7 @@
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
 								<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
 									<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
-									<TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="15 0 0 0" />
+									<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="15 0 0 0" />
 								</StackPanel>
 							</DataTemplate>
 						</ListBox.ItemTemplate>

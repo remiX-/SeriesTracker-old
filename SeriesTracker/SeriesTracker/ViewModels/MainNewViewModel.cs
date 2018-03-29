@@ -14,7 +14,7 @@ namespace SeriesTracker.ViewModels
 	internal class MainNewViewModel : BindableBase
 	{
 		#region Variables
-		public HamburgerMenuItem[] DemoItems { get; }
+		public HamburgerMenuItem[] AppMenu { get; }
 
 		public CollectionViewSource Collection { get; } = new CollectionViewSource();
 
@@ -78,17 +78,18 @@ namespace SeriesTracker.ViewModels
 
 		public MainNewViewModel()
 		{
-			DemoItems = new[]
+			AppMenu = new[]
 			{
 				new HamburgerMenuItem("AddSeries", "Add Series", PackIconKind.Account),
 				new HamburgerMenuItem("ForceUpdate", "Force Update Series", PackIconKind.Update),
 				new HamburgerMenuItem("Updates", "Check for Updates", PackIconKind.Update),
 				new HamburgerMenuItem("NewEpisodes", "Check for New Episodes", PackIconKind.OpenInNew),
 				new HamburgerMenuItem("LocalSeries", "Detect local series paths", PackIconKind.FileFind),
-				new HamburgerMenuItem("Profile", "Profile", PackIconKind.Account),
-				new HamburgerMenuItem("Settings", "Settings", PackIconKind.Settings),
-				new HamburgerMenuItem("Exit", "Exit", PackIconKind.ExitToApp)
+				new HamburgerMenuItem("Profile", PackIconKind.Account),
+				new HamburgerMenuItem("Settings", PackIconKind.Settings),
+				new HamburgerMenuItem("Exit", PackIconKind.ExitToApp)
 			};
+
 			myTitle = AppGlobal.AssemblyTitle;
 			UserEmail = AppGlobal.User.Email;
 			Username = AppGlobal.User.Username;
@@ -147,40 +148,47 @@ namespace SeriesTracker.ViewModels
 	public class HamburgerMenuItem : BindableBase
 	{
 		private string id;
-		private string name;
+		private string description;
 		private PackIconKind icon;
 
 		private object content;
 
 		public string Id
 		{
-			get { return id; }
-			set { SetProperty(ref id, value); }
+			get => id;
+			set => SetProperty(ref id, value);
 		}
 
-		public string Name
+		public string Description
 		{
-			get { return name; }
-			set { SetProperty(ref name, value); }
+			get => description;
+			set => SetProperty(ref description, value);
 		}
 
 		public PackIconKind Icon
 		{
-			get { return icon; }
-			set { SetProperty(ref icon, value); }
+			get => icon;
+			set => SetProperty(ref icon, value);
 		}
 
 
 		public object Content
 		{
-			get { return content; }
-			set { SetProperty(ref content, value); }
+			get => content;
+			set => SetProperty(ref content, value);
 		}
 
-		public HamburgerMenuItem(string id, string name, PackIconKind icon)
+		public HamburgerMenuItem(string id, string description, PackIconKind icon)
 		{
 			this.id = id;
-			this.name = name;
+			this.description = description;
+			this.icon = icon;
+		}
+
+		public HamburgerMenuItem(string id, PackIconKind icon)
+		{
+			this.id = id;
+			this.description = id;
 			this.icon = icon;
 		}
 

@@ -26,13 +26,13 @@
 								  DockPanel.Dock="Top"
 								  HorizontalAlignment="Right" Margin="16"
 								  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-					<ListBox x:Name="DemoItemsListBox" ItemsSource="{Binding DemoItems}" Margin="0 16 0 16">
+					<ListBox x:Name="AppMenuListBox" ItemsSource="{Binding AppMenu}" Margin="0 16 0 16">
 						<ListBox.ItemTemplate>
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
 								<Grid>
 									<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
 										<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
-										<TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="15 0 0 0" />
+										<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="15 0 0 0" />
 									</StackPanel>
 									<Separator VerticalAlignment="Bottom" />
 								</Grid>
@@ -118,13 +118,19 @@
 					materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 					<DataGrid.Resources>
-						<ContextMenu x:Key="cm_DataGridHeader" ItemsSource="{Binding Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" Width="200">
+						<ContextMenu x:Key="cm_DataGridHeader"
+									 ItemsSource="{Binding Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+									 Width="200">
 							<ContextMenu.ItemTemplate>
 								<DataTemplate>
-									<MenuItem Header="{Binding Header}" IsCheckable="True" IsChecked="{Binding Visibility, Converter={StaticResource VisibilityToBoolConv}}" Margin="-30 -7" />
+									<MenuItem Header="{Binding Header}"
+											  IsCheckable="True"
+											  IsChecked="{Binding Visibility, Converter={StaticResource VisibilityToBoolConv}}"
+											  Margin="-30 -7" />
 								</DataTemplate>
 							</ContextMenu.ItemTemplate>
 						</ContextMenu>
+						
 						<ContextMenu x:Key="cm_DataGridRow" Opened="DataGrid_ContextMenu_Opened">
 							<MenuItem x:Name="View" Header="View" Click="CM_View_Click" />
 							<MenuItem x:Name="Update" Header="Update">
