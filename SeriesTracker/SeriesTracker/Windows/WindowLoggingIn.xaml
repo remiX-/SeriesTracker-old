@@ -8,7 +8,7 @@
 	WindowStartupLocation="CenterScreen"
 	Style="{StaticResource ReWindowNoBorder}">
 	<Window.DataContext>
-		<ViewModels:ViewLoggingInViewModel/>
+		<ViewModels:LoggingInViewModel />
 	</Window.DataContext>
 	<Grid>
 		<Label x:Name="lbl_text"  Content="{Binding LoginText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

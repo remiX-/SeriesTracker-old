@@ -13,9 +13,6 @@ namespace SeriesTracker.ViewModels
 
 		public HamburgerMenuItem[] MenuItems { get; }
 
-		private static readonly ObservableCollection<ViewShowMenuItem> AppMenu = new ObservableCollection<ViewShowMenuItem>();
-		public ObservableCollection<ViewShowMenuItem> Menu => AppMenu;
-
 		#region Variables
 		#region Fields
 		private string myTitle;

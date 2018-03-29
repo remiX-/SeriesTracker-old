@@ -177,14 +177,11 @@
     <Compile Include="ViewModels\AddShowViewModel.cs" />
     <Compile Include="ViewModels\MainNewViewModel.cs" />
     <Compile Include="ViewModels\MyAccountViewModel.cs" />
-    <Compile Include="ViewModels\TestViewModel.cs" />
-    <Compile Include="ViewModels\TestMenuItem.cs" />
-    <Compile Include="ViewModels\ViewShowMenuItem.cs" />
     <Compile Include="ViewModels\SetCategoryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ShowViewModel.cs" />
-    <Compile Include="ViewModels\ViewLoggingInViewModel.cs" />
+    <Compile Include="ViewModels\LoggingInViewModel.cs" />
     <Compile Include="ViewModels\ViewShowViewModel.cs" />
     <Compile Include="Views\Seasons.xaml.cs">
       <DependentUpon>Seasons.xaml</DependentUpon>
