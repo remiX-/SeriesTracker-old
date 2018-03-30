@@ -1020,6 +1020,9 @@ namespace SeriesTracker.Windows
 		{
 			if (AppMenuListBox.SelectedItem == null) return;
 
+			// Close drawer
+			MenuToggleButton.IsChecked = false;
+
 			var selected = AppMenuListBox.SelectedItem as HamburgerMenuItem;
 			switch (selected.Id)
 			{
@@ -1037,9 +1040,6 @@ namespace SeriesTracker.Windows
 
 			// Deselect item
 			AppMenuListBox.SelectedItem = null;
-
-			// Close drawer
-			MenuToggleButton.IsChecked = false;
 		}
 
 		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
