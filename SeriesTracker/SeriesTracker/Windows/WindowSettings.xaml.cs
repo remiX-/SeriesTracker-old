@@ -1,4 +1,6 @@
-﻿using SeriesTracker.Core;
+﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
+using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
@@ -41,8 +43,8 @@ namespace SeriesTracker.Windows
 
 			cmb_DateFormat.SelectionChanged += Cmb_DateFormat_SelectionChanged;
 
-			cmb_Theme.SelectionChanged += Cmb_Theme_SelectionChanged;
-			cmb_Accent.SelectionChanged += Cmb_Theme_SelectionChanged;
+			cmb_Primary.SelectionChanged += Cmb_Primary_SelectionChanged;
+			cmb_Accent.SelectionChanged += Cmb_Accent_SelectionChanged;
 		}
 		#endregion
 
@@ -52,15 +54,27 @@ namespace SeriesTracker.Windows
 			MyViewModel.ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, cmb_DateFormat.SelectedItem.ToString());
 		}
 
-		private void Cmb_Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		//private void Cmb_Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		//{
+		//	if (cmb_Theme.SelectedItem == null || cmb_Accent.SelectedItem == null)
+		//		return;
+
+		//	string theme = cmb_Theme.SelectedItem.ToString();
+		//	string accent = cmb_Accent.SelectedItem.ToString();
+
+		//	//ThemeManager.ChangeAppStyle(this, ThemeManager.GetAccent(accent), ThemeManager.GetAppTheme(theme));
+		//}
+
+		private void Cmb_Primary_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (cmb_Theme.SelectedItem == null || cmb_Accent.SelectedItem == null)
-				return;
 
-			string theme = cmb_Theme.SelectedItem.ToString();
-			string accent = cmb_Accent.SelectedItem.ToString();
+			new PaletteHelper().ReplacePrimaryColor((Swatch)cmb_Primary.SelectedItem);
+		}
 
-			//ThemeManager.ChangeAppStyle(this, ThemeManager.GetAccent(accent), ThemeManager.GetAppTheme(theme));
+		private void Cmb_Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+
+			new PaletteHelper().ReplaceAccentColor((Swatch)cmb_Primary.SelectedItem);
 		}
 		#endregion
 
@@ -189,15 +203,15 @@ namespace SeriesTracker.Windows
 			AppGlobal.Settings.DefaultSortDirection = MyViewModel.DefaultSortDirection;
 
 			// Theme & Accent
-			string theme = cmb_Theme.SelectedItem.ToString();
-			string accent = cmb_Accent.SelectedItem.ToString();
-			if (AppGlobal.Settings.Theme != theme || AppGlobal.Settings.Accent != accent)
-			{
-				AppGlobal.Settings.Theme = theme;
-				AppGlobal.Settings.Accent = accent;
+			//string theme = cmb_Theme.SelectedItem.ToString();
+			//string accent = cmb_Accent.SelectedItem.ToString();
+			//if (AppGlobal.Settings.Theme != theme || AppGlobal.Settings.Accent != accent)
+			//{
+			//	AppGlobal.Settings.Theme = theme;
+			//	AppGlobal.Settings.Accent = accent;
 
-				changes.Add("UpdateTheme");
-			}
+			//	changes.Add("UpdateTheme");
+			//}
 			#endregion
 
 			#region Extra

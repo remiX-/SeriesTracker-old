@@ -1,4 +1,7 @@
-﻿using Prism.Mvvm;
+﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
+using Prism.Mvvm;
+using SeriesTracker.Controls;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.Windows;
@@ -6,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace SeriesTracker.ViewModels
 {
@@ -75,7 +79,14 @@ namespace SeriesTracker.ViewModels
 			get { return categories; }
 			set { SetProperty(ref categories, value); }
 		}
+
+		public IEnumerable<Swatch> Swatches { get; }
 		#endregion
+
+		public ICommand ToggleBaseCommand { get; } = new WPFCommandImplementation(o => ApplyBase((bool)o));
+
+		public ICommand ApplyPrimaryCommand { get; } = new WPFCommandImplementation(o => ApplyPrimary((Swatch)o));
+		public ICommand ApplyAccentCommand { get; } = new WPFCommandImplementation(o => ApplyAccent((Swatch)o));
 		#endregion
 
 		public SettingsViewModel()
@@ -113,6 +124,8 @@ namespace SeriesTracker.ViewModels
 				"Taupe", "Sienna"
 			};
 
+			Swatches = new SwatchesProvider().Swatches;
+
 			Categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}
 
@@ -125,6 +138,21 @@ namespace SeriesTracker.ViewModels
 			}
 
 			return 0;
+		}
+
+		private static void ApplyBase(bool isDark)
+		{
+			new PaletteHelper().SetLightDark(isDark);
+		}
+
+		private static void ApplyPrimary(Swatch swatch)
+		{
+			new PaletteHelper().ReplacePrimaryColor(swatch);
+		}
+
+		private static void ApplyAccent(Swatch swatch)
+		{
+			new PaletteHelper().ReplaceAccentColor(swatch);
 		}
 	}
 }

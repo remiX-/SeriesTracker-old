@@ -138,6 +138,7 @@
     <Compile Include="Controllers\ModelMethods\UserMethods.cs" />
     <Compile Include="Controllers\Repositories\IUserRepository.cs" />
     <Compile Include="Controls\VisibilityToBoolConverter.cs" />
+    <Compile Include="Controls\WPFCommandImplementation.cs" />
     <Compile Include="Core\AppGlobal.cs" />
     <Compile Include="Core\AppPrivate.cs" />
     <Compile Include="Core\CommonMethods.cs" />

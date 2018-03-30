@@ -46,7 +46,7 @@
 					</StackPanel>
 
 					<Label Content="View Default Sorting" Margin="0,10,0,0" />
-					<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
 						<ComboBox x:Name="cmb_DefaultSorting"
 								  HorizontalAlignment="Left"
 								  VerticalAlignment="Top"
@@ -57,20 +57,27 @@
 						<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" />
 					</StackPanel>
 
-					<Label Content="Theme" Margin="0,10,0,0" Visibility="Collapsed" />
-					<ComboBox x:Name="cmb_Theme"
+					<Label Content="Primary" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<ComboBox x:Name="cmb_Primary"
 							  Margin="0,5,0,0"
 							  Width="165"
-							  ItemsSource="{Binding Themes}"
-							  SelectedIndex="{Binding ThemeIndex, Mode=OneTime}"
-							  Visibility="Collapsed" />
+							  ItemsSource="{Binding Swatches, Mode=OneTime}"
+							  SelectedIndex="0" />
+						
+						<StackPanel Orientation="Horizontal" Margin="8">
+							<TextBlock VerticalAlignment="Center">Light</TextBlock>
+							<ToggleButton Margin="8 0 16 0" Command="{Binding ToggleBaseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
+							<TextBlock VerticalAlignment="Center">Dark</TextBlock>
+						</StackPanel>
+					</StackPanel>
 
 					<Label Content="Accent" Margin="0,10,0,0" />
 					<ComboBox x:Name="cmb_Accent"
 							  Margin="0,5,0,0"
 							  Width="165"
-							  ItemsSource="{Binding Accents}"
-							  SelectedIndex="{Binding AccentIndex, Mode=OneTime}" />
+							  ItemsSource="{Binding Swatches, Mode=OneTime}" />
+					<!--SelectedIndex="{Binding AccentIndex, Mode=OneTime}" />-->
 				</StackPanel>
 			</GroupBox>
 
