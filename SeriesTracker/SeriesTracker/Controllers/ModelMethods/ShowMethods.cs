@@ -87,83 +87,6 @@ namespace SeriesTracker
 			return show;
 		}
 
-		private async Task<EztvTorrent> GetMagnetForEpisode(Show show, Episode episode, bool getHD = false)
-		{
-			try
-			{
-				string url = show.GetEZTVLink();
-
-				if (string.IsNullOrEmpty(url)) return null;
-
-
-				EztvAPI eztvData = await Request.ExecuteAndDeserializeAsync<EztvAPI>("GET", $"https://eztv.ag/api/get-torrents?imdb_id={show.ImdbId.Substring(2)}&limit=100");
-				var torrents = eztvData.Torrents;
-				var episodeLinks = new List<EztvTorrent>();
-
-				foreach (EztvTorrent torrent in torrents)
-				{
-					bool magnetLinkIsHD = torrent.IsHD();
-
-					foreach (string format in episodeFormats)
-					{
-						string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
-
-						if (torrent.Torrent_Url.ToLower().Contains(fullEpisode))
-						{
-							episodeLinks.Add(torrent);
-							break;
-						}
-					}
-				}
-
-				foreach (EztvTorrent link in episodeLinks)
-				{
-					if (getHD && link.IsHD())
-					{
-						return link;
-					}
-				}
-
-				//CQ htmlText;
-				//using (WebClient client = new WebClient())
-				//{
-				//	htmlText = await client.DownloadStringTaskAsync(url);
-				//}
-
-				//if (htmlText == null) return null;
-
-				//List<IDomObject> magnetLinks = htmlText.Select("a[class='magnet']").ToList();
-				//List<string> episodeMagnetLinks = new List<string>();
-
-				//foreach (var obj in magnetLinks)
-				//{
-				//	string magnetLink = obj.GetAttribute("href");
-				//	bool magnetLinkIsHD = magnetLink.Contains("720p") || magnetLink.Contains("1080p");
-
-				//	foreach (string format in episodeFormats)
-				//	{
-				//		string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
-
-				//		if (magnetLink.ToLower().Contains(fullEpisode))
-				//		{
-				//			episodeMagnetLinks.Add(magnetLink);
-				//			break;
-				//			//if (getHD && magnetLinkIsHD)
-				//			//	return magnetLink;
-				//		}
-				//	}
-				//}
-
-
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
-
-			return null;
-		}
-
 		public Eztv GetEztvShowDetails(string showName)
 		{
 			try
@@ -298,6 +221,80 @@ namespace SeriesTracker
 			}
 
 			return false;
+		}
+
+		private async Task<EztvTorrent> GetMagnetForEpisode(Show show, Episode episode, bool getHD = false)
+		{
+			try
+			{
+				//string url = show.GetEZTVLink();
+
+				//if (string.IsNullOrEmpty(url)) return null;
+
+				EztvAPI eztvData = await Request.ExecuteAndDeserializeAsync<EztvAPI>("GET", $"https://eztv.ag/api/get-torrents?imdb_id={show.ImdbId.Substring(2)}&limit=100");
+				var torrents = eztvData.Torrents;
+				var episodeLinks = new List<EztvTorrent>();
+
+				foreach (EztvTorrent torrent in torrents)
+				{
+					bool magnetLinkIsHD = torrent.IsHD();
+
+					foreach (string format in episodeFormats)
+					{
+						string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
+
+						if (torrent.Torrent_Url.ToLower().Contains(fullEpisode))
+						{
+							episodeLinks.Add(torrent);
+							break;
+						}
+					}
+				}
+
+				foreach (EztvTorrent link in episodeLinks)
+				{
+					if ((getHD && link.IsHD()) || (!getHD && !link.IsHD()))
+					{
+						return link;
+					}
+				}
+
+				//CQ htmlText;
+				//using (WebClient client = new WebClient())
+				//{
+				//	htmlText = await client.DownloadStringTaskAsync(url);
+				//}
+
+				//if (htmlText == null) return null;
+
+				//List<IDomObject> magnetLinks = htmlText.Select("a[class='magnet']").ToList();
+				//List<string> episodeMagnetLinks = new List<string>();
+
+				//foreach (var obj in magnetLinks)
+				//{
+				//	string magnetLink = obj.GetAttribute("href");
+				//	bool magnetLinkIsHD = magnetLink.Contains("720p") || magnetLink.Contains("1080p");
+
+				//	foreach (string format in episodeFormats)
+				//	{
+				//		string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
+
+				//		if (magnetLink.ToLower().Contains(fullEpisode))
+				//		{
+				//			episodeMagnetLinks.Add(magnetLink);
+				//			break;
+				//			//if (getHD && magnetLinkIsHD)
+				//			//	return magnetLink;
+				//		}
+				//	}
+				//}
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+
+			return null;
 		}
 
 		public async Task<List<EztvTorrent>> GetEpisodeTorrentList(Show show, Episode episode)

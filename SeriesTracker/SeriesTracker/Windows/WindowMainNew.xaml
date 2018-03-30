@@ -21,16 +21,16 @@
 	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<materialDesign:DrawerHost.LeftDrawerContent>
-				<DockPanel MinWidth="212">
+				<DockPanel MinWidth="220">
 					<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
 								  DockPanel.Dock="Top"
 								  HorizontalAlignment="Right" Margin="16"
 								  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-					<ListBox x:Name="AppMenuListBox" ItemsSource="{Binding AppMenu}" Margin="0 16 0 16">
+					<ListBox x:Name="AppMenuListBox" ItemsSource="{Binding AppMenu}" Margin="0 0 0 16">
 						<ListBox.ItemTemplate>
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
-								<Grid>
-									<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
+								<Grid Width="220">
+									<StackPanel Orientation="Horizontal" Margin="10 8">
 										<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
 										<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="15 0 0 0" />
 									</StackPanel>
@@ -43,7 +43,7 @@
 			</materialDesign:DrawerHost.LeftDrawerContent>
 
 			<DockPanel>
-				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Top">
+				<materialDesign:ColorZone Mode="PrimaryDark" Padding="16" DockPanel.Dock="Top">
 					<DockPanel>
 						<materialDesign:PopupBox DockPanel.Dock="Right" Margin="20 0 0 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
 							<StackPanel>
@@ -101,7 +101,7 @@
 					</DockPanel>
 				</materialDesign:ColorZone>
 
-				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Bottom">
+				<materialDesign:ColorZone Padding="16" DockPanel.Dock="Bottom">
 					<DockPanel>
 						<Label DockPanel.Dock="Left" Style="{StaticResource lbl-default-center-left}" Content="{Binding Status}" />
 						<Label DockPanel.Dock="Right" Style="{StaticResource lbl-default-center-right}" Content="{Binding Product}" />
