@@ -14,18 +14,21 @@
 	<materialDesign:DialogHost Identifier="ViewShowRootDialog">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<materialDesign:DrawerHost.LeftDrawerContent>
-				<DockPanel MinWidth="212">
+				<DockPanel MinWidth="220">
 					<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
 								  DockPanel.Dock="Top"
 								  HorizontalAlignment="Right" Margin="16"
 								  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-					<ListBox x:Name="HamburgerListBox" ItemsSource="{Binding MenuItems}" Margin="0 16 0 16">
+					<ListBox x:Name="HamburgerListBox" ItemsSource="{Binding MenuItems}">
 						<ListBox.ItemTemplate>
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
-								<StackPanel Orientation="Horizontal" Margin="10 0 16 0">
-									<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
-									<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="15 0 0 0" />
-								</StackPanel>
+								<Grid>
+									<StackPanel Orientation="Horizontal" Margin="16 10">
+										<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
+										<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="16 0 0 0" />
+									</StackPanel>
+									<Separator VerticalAlignment="Bottom" />
+								</Grid>
 							</DataTemplate>
 						</ListBox.ItemTemplate>
 					</ListBox>

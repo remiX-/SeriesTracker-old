@@ -907,12 +907,12 @@ namespace SeriesTracker.Windows
 			WindowAddShow win = new WindowAddShow();
 			win.ShowDialog();
 
-			if (win.selectedShow == null)
+			if (win.SelectedShow == null)
 				return;
 
-			MyViewModel.SetStatus($"Loading data for {win.selectedShow.SeriesName}");
+			MyViewModel.SetStatus($"Loading data for {win.SelectedShow.SeriesName}");
 
-			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
+			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.SelectedShow.Id);
 
 			// Add to database
 			SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);

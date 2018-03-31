@@ -255,7 +255,9 @@ namespace SeriesTracker.Views
 
 			foreach (Episode episode in MyViewModel.Episodes)
 			{
-				if (!File.Exists(episode.LocalImagePath))
+				FileInfo fi = new FileInfo(episode.LocalImagePath);
+
+				if (!fi.Exists || fi.Length == 0)
 				{
 					try
 					{

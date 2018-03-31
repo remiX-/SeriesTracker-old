@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using SeriesTracker.Models;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
 {
@@ -12,13 +13,26 @@ namespace SeriesTracker.ViewModels
 		#region Fields
 		private string myTitle;
 
+		private string status;
+		private Brush statusForeground;
 		#endregion
 
 		#region Properties
 		public string MyTitle
 		{
-			get { return myTitle; }
-			set { SetProperty(ref myTitle, value); }
+			get => myTitle;
+			set => SetProperty(ref myTitle, value);
+		}
+
+		public string Status
+		{
+			get => status;
+			set => SetProperty(ref status, value);
+		}
+		public Brush StatusForeground
+		{
+			get => statusForeground;
+			set => SetProperty(ref statusForeground, value);
 		}
 		#endregion
 		#endregion
@@ -26,6 +40,15 @@ namespace SeriesTracker.ViewModels
 		public AddShowViewModel()
 		{
 			MyTitle = "Add Show";
+
+			Status = "Ready";
+			StatusForeground = Brushes.Green;
+		}
+
+		public void SetStatus(string str, Brush colour = null)
+		{
+			Status = str;
+			StatusForeground = colour;
 		}
 	}
 }

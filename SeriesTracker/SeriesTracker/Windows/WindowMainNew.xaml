@@ -26,13 +26,13 @@
 								  DockPanel.Dock="Top"
 								  HorizontalAlignment="Right" Margin="16"
 								  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-					<ListBox x:Name="AppMenuListBox" ItemsSource="{Binding AppMenu}" Margin="0 0 0 16">
+					<ListBox x:Name="AppMenuListBox" ItemsSource="{Binding AppMenu}">
 						<ListBox.ItemTemplate>
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
-								<Grid Width="220">
-									<StackPanel Orientation="Horizontal" Margin="10 8">
+								<Grid>
+									<StackPanel Orientation="Horizontal" Margin="16 10">
 										<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
-										<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="15 0 0 0" />
+										<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="16 0 0 0" />
 									</StackPanel>
 									<Separator VerticalAlignment="Bottom" />
 								</Grid>
@@ -108,15 +108,9 @@
 					</DockPanel>
 				</materialDesign:ColorZone>
 
-				<DataGrid
-					x:Name="view_DataGridView"
-					Margin="0 0 0 0"
-					ItemsSource="{Binding Collection.View}"
-					IsReadOnly="True" CanUserSortColumns="True" CanUserResizeRows="False" CanUserAddRows="False"
-					AutoGenerateColumns="False"
-					Sorting="DataGrid_Sorting" MouseDoubleClick="DataGrid_RowDoubleClick"
-					materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-					materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+				<DataGrid x:Name="view_DataGridView" 
+						  ItemsSource="{Binding Collection.View}" 
+						  Sorting="DataGrid_Sorting" MouseDoubleClick="DataGrid_RowDoubleClick">
 					<DataGrid.Resources>
 						<ContextMenu x:Key="cm_DataGridHeader"
 									 ItemsSource="{Binding Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"

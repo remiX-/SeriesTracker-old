@@ -170,6 +170,10 @@
 			<!--#endregion-->
 
 			<!--#region General Controls-->
+			<Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}">
+				<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+			</Style>
+			
 			<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
 				<Setter Property="Padding" Value="0" />
 				<!--<Setter Property="Width" Value="220" />-->
@@ -187,8 +191,15 @@
 			<Style TargetType="{x:Type ListView}" BasedOn="{StaticResource MaterialDesignListView}">
 				<Setter Property="BorderThickness" Value="1" />
 			</Style>
+			
 			<Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource MaterialDesignDataGrid}">
-				<Setter Property="BorderThickness" Value="1" />
+				<Setter Property="IsReadOnly" Value="True" />
+				<Setter Property="CanUserSortColumns" Value="True" />
+				<Setter Property="CanUserResizeRows" Value="False" />
+				<Setter Property="CanUserAddRows" Value="False" />
+				<Setter Property="AutoGenerateColumns" Value="False" />
+				<Setter Property="materialDesign:DataGridAssist.CellPadding" Value="8" />
+				<Setter Property="materialDesign:DataGridAssist.ColumnHeaderPadding" Value="8" />
 			</Style>
 			<!--#endregion -->
 		</ResourceDictionary>
