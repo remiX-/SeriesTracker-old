@@ -150,6 +150,9 @@
     <Compile Include="Controllers\ModelMethods\ShowMethods.cs" />
     <Compile Include="Core\AppSettings.cs" />
     <Compile Include="Core\Request.cs" />
+    <Compile Include="Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\EpisodeDownloadsDialog.xaml.cs">
       <DependentUpon>EpisodeDownloadsDialog.xaml</DependentUpon>
     </Compile>
@@ -179,6 +182,8 @@
     <Compile Include="ProgressDialog\ProgressDialogSettings.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="ViewModels\AddShowViewModel.cs" />
+    <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainNewViewModel.cs" />
     <Compile Include="ViewModels\MyAccountViewModel.cs" />
     <Compile Include="ViewModels\SetCategoryViewModel.cs" />
@@ -208,6 +213,10 @@
     <Compile Include="Windows\WindowViewShow.xaml.cs">
       <DependentUpon>WindowViewShow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\EpisodeDownloadsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -244,12 +253,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="formAbout.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="formAbout.Designer.cs">
-      <DependentUpon>formAbout.cs</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -303,9 +306,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="formAbout.resx">
-      <DependentUpon>formAbout.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
