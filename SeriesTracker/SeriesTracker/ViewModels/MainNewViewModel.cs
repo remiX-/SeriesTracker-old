@@ -1,13 +1,18 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Prism.Commands;
 using Prism.Mvvm;
+using SeriesTracker.Controls;
 using SeriesTracker.Core;
+using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
+using SeriesTracker.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace SeriesTracker.ViewModels
 {
@@ -73,6 +78,8 @@ namespace SeriesTracker.ViewModels
 		}
 
 		public string Product { get; }
+
+		public ICommand HelpCommand => new WPFCommandImplementation(ShowWindowAboutDialog);
 		#endregion
 		#endregion
 
@@ -81,10 +88,10 @@ namespace SeriesTracker.ViewModels
 			AppMenu = new[]
 			{
 				new HamburgerMenuItem("AddSeries", "Add Series", PackIconKind.Account),
-				new HamburgerMenuItem("ForceUpdate", "Force Update Series", PackIconKind.Update),
-				new HamburgerMenuItem("Updates", "Check for Updates", PackIconKind.Update),
+				new HamburgerMenuItem("ForceUpdateSeries", "Force Update Series", PackIconKind.Update),
+				new HamburgerMenuItem("CheckUpdates", "Check for Updates", PackIconKind.Update),
 				new HamburgerMenuItem("NewEpisodes", "Check for New Episodes", PackIconKind.OpenInNew),
-				new HamburgerMenuItem("LocalSeries", "Detect local series paths", PackIconKind.FileFind),
+				new HamburgerMenuItem("DetectLocalSeries", "Detect local series paths", PackIconKind.FileFind),
 				new HamburgerMenuItem("Profile", PackIconKind.Account),
 				new HamburgerMenuItem("Settings", PackIconKind.Settings),
 				new HamburgerMenuItem("Exit", PackIconKind.ExitToApp)
@@ -142,6 +149,14 @@ namespace SeriesTracker.ViewModels
 		public void SetStatus(string status)
 		{
 			Status = status;
+		}
+
+		private async void ShowWindowAboutDialog(object o)
+		{
+			var view = new AboutDialog();
+
+			//show the dialog
+			var result = await DialogHost.Show(view, "RootDialog");
 		}
 	}
 
