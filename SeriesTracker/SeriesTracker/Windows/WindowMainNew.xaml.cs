@@ -43,7 +43,7 @@ namespace SeriesTracker.Windows
 		private Timer ShowChecker;
 
 		// Shortcut command keys
-		//private Dictionary<Key, Task> commands = new Dictionary<Key, Task>();
+		private Dictionary<Key, ExecutedRoutedEventHandler> commands = new Dictionary<Key, ExecutedRoutedEventHandler>();
 
 		// Grid view settings
 		private SeriesView currentView = SeriesView.List;
@@ -65,6 +65,8 @@ namespace SeriesTracker.Windows
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
+			//MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
+
 			await Startup();
 
 			AppMenuListBox.SelectionChanged += AppMenuListBox_SelectionChanged;
@@ -270,24 +272,26 @@ namespace SeriesTracker.Windows
 
 		private void SetupShortcuts()
 		{
-			//commands.Add(Key.S, Menu_Settings_Click);
+			commands.Add(Key.N, async delegate { await DoAppMenuAction("AddSeries"); });
+			commands.Add(Key.O, async delegate { await DoAppMenuAction("ForceUpdateSeries"); });
+			commands.Add(Key.U, async delegate { await DoAppMenuAction("CheckUpdates"); });
+			commands.Add(Key.E, async delegate { await DoAppMenuAction("NewEpisodes"); });
+			commands.Add(Key.L, async delegate { await DoAppMenuAction("DetectLocalSeries"); });
 
-			//commands.Add(Key.N, await AddSeries);
-			//commands.Add(Key.O, Menu_Series_ForceUpdate_Click);
-			//commands.Add(Key.U, Menu_Series_CheckForUpdates_Click);
-			//commands.Add(Key.E, Menu_Series_CheckForNewEpisodes_Click);
-			//commands.Add(Key.L, Menu_Series_DetectLocal_Click);
+			commands.Add(Key.P, async delegate { await DoAppMenuAction("Profile"); });
+			commands.Add(Key.S, async delegate { await DoAppMenuAction("Settings"); });
+			commands.Add(Key.X, async delegate { await DoAppMenuAction("Exit"); });
 
-			//commands.Add(Key.C, CM_Copy_Click);
+			commands.Add(Key.C, delegate { CM_Copy_Click(null, null); });
 
-			//commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
+			commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
 
-			//foreach (var kvp in commands)
-			//{
-			//	RoutedCommand newCmd = new RoutedCommand();
-			//	newCmd.InputGestures.Add(new KeyGesture(kvp.Key, ModifierKeys.Control));
-			//	CommandBindings.Add(new CommandBinding(newCmd, kvp.Value));
-			//}
+			foreach (var kvp in commands)
+			{
+				RoutedCommand newCmd = new RoutedCommand();
+				newCmd.InputGestures.Add(new KeyGesture(kvp.Key, ModifierKeys.Control));
+				CommandBindings.Add(new CommandBinding(newCmd, kvp.Value));
+			}
 		}
 
 		private void SetupNetChange()
@@ -297,7 +301,7 @@ namespace SeriesTracker.Windows
 				if (!e.IsAvailable)
 				{
 					MyViewModel.MyTitle = "Offline";
-					//PopupNotification("Internet connection lost. Some features have been disabled");
+					PopupNotification("Internet connection lost. Some features have been disabled");
 				}
 			};
 		}
@@ -722,7 +726,8 @@ namespace SeriesTracker.Windows
 
 				Clipboard.SetText(returnText);
 
-				//PopupNotification("Text copied to clipboard");
+				PopupNotification("Text copied to clipboard");
+				MainSnackbar.MessageQueue.Enqueue("Text copied to clipboard");
 			}
 		}
 
@@ -900,7 +905,6 @@ namespace SeriesTracker.Windows
 		#region HamburgerMenu
 		private async Task AddSeries()
 		{
-
 			// 257655 - arrow
 			// 279121 - flash
 
@@ -1024,22 +1028,28 @@ namespace SeriesTracker.Windows
 			MenuToggleButton.IsChecked = false;
 
 			var selected = AppMenuListBox.SelectedItem as HamburgerMenuItem;
-			switch (selected.Id)
+			// Do action
+			await DoAppMenuAction(selected.Id);
+
+			// Deselect item
+			AppMenuListBox.SelectedItem = null;
+		}
+
+		private async Task DoAppMenuAction(string selected)
+		{
+			switch (selected)
 			{
 				case "AddSeries": await AddSeries(); break;
-				case "ForceUpdate": await UpdateShows(AppGlobal.User.Shows); break;
-				case "Updates": await CheckForUpdates(); break;
+				case "ForceUpdateSeries": await UpdateShows(AppGlobal.User.Shows); break;
+				case "CheckUpdates": await CheckForUpdates(); break;
 				case "NewEpisodes": await CheckForNewEpisodes(); break;
-				case "LocalSeries": DetectLocalSeriesPaths(); break;
+				case "DetectLocalSeries": DetectLocalSeriesPaths(); break;
 
 				case "Profile": ViewProfile(); break;
 				case "Settings": OpenSettings(); break;
 				case "Exit": Close(); break;
 				default: break;
 			}
-
-			// Deselect item
-			AppMenuListBox.SelectedItem = null;
 		}
 
 		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
