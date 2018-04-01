@@ -4,18 +4,40 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
 	StartupUri="Windows/WindowLogin.xaml" Startup="Application_Startup">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<!-- Material Design -->
-				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Red.xaml" />
+
+				<!-- primary color -->
+				<!--<ResourceDictionary>
+					<SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Primary100}"/>
+					<SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary100Foreground}"/>
+					<SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource Primary500}"/>
+					<SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource Primary500Foreground}"/>
+					<SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource Primary700}"/>
+					<SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Primary700Foreground}"/>
+				</ResourceDictionary>-->
+
+				<!-- secondary colour -->
+				<!--<ResourceDictionary>
+					<SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource Accent200}"/>
+					<SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource Accent200Foreground}"/>
+				</ResourceDictionary>-->
+
+				<!-- Include the Dragablz Material Design style -->
+				<ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 
-			<Style x:Key="ReWindow" TargetType="{x:Type Window}">
+			<!--#region Windows-->
+			<Style x:Key="STWindow" TargetType="{x:Type Window}">
+				<Setter Property="ResizeMode" Value="CanResizeWithGrip" />
 				<Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
 				<Setter Property="TextElement.FontWeight" Value="Regular" />
 				<Setter Property="TextElement.FontSize" Value="13" />
@@ -25,14 +47,21 @@
 				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 			</Style>
 
-			<Style x:Key="ReWindowNoBorder" TargetType="{x:Type Window}" BasedOn="{StaticResource ReWindow}">
+			<Style x:Key="STWindowNoBorder" TargetType="{x:Type Window}" BasedOn="{StaticResource STWindow}">
+				<Setter Property="ResizeMode" Value="NoResize" />
 				<Setter Property="WindowStyle" Value="None" />
 				<Setter Property="AllowsTransparency" Value="True" />
 				<Setter Property="BorderThickness" Value="1" />
 				<Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
 			</Style>
 
-			<!--#region Buttons -->
+			<Style x:Key="STWindowNoResize" TargetType="{x:Type Window}" BasedOn="{StaticResource STWindow}">
+				<Setter Property="ResizeMode" Value="NoResize" />
+				<Setter Property="ShowInTaskbar" Value="False" />
+			</Style>
+			<!--#endregion-->
+
+			<!--#region Buttons-->
 			<!-- Types -->
 			<Style x:Key="btn-default" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
 				<Setter Property="Height" Value="26"/>
@@ -187,7 +216,7 @@
 			</Style>
 			<!--#endregion -->
 
-			<!--#region ListView -->
+			<!--#region ListView-->
 			<Style TargetType="{x:Type ListView}" BasedOn="{StaticResource MaterialDesignListView}">
 				<Setter Property="BorderThickness" Value="1" />
 			</Style>
@@ -202,6 +231,8 @@
 				<Setter Property="materialDesign:DataGridAssist.ColumnHeaderPadding" Value="8" />
 			</Style>
 			<!--#endregion -->
+
+			<Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>

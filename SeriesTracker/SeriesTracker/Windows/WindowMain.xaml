@@ -8,8 +8,7 @@
 	Icon="../Resources/mainIcon.ico"
 	Width="1024" Height="576" MinWidth="1024" MinHeight="576"
 	Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" Closed="Window_Closed" StateChanged="Window_StateChanged" Activated="Window_Activated"
-	ResizeMode="CanResizeWithGrip"
-	Style="{StaticResource ReWindow}">
+	Style="{StaticResource STWindow}">
 	<Window.Resources>
 		<local:VisibilityToBoolConverter x:Key="VisibilityToBoolConv"/>
 	</Window.Resources>

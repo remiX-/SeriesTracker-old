@@ -6,9 +6,9 @@
 	x:Class="SeriesTracker.Windows.WindowAddShow"
 	Title="Add a show"
 	Height="350" Width="610"
-	ShowInTaskbar="False" ResizeMode="NoResize"
+	ShowInTaskbar="False"
 	Loaded="Window_Loaded"
-	Style="{StaticResource ReWindow}">
+	Style="{StaticResource STWindowNoResize}">
 	<Window.DataContext>
 		<ViewModels:AddShowViewModel/>
 	</Window.DataContext>

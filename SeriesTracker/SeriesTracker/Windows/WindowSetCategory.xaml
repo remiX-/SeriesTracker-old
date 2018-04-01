@@ -6,7 +6,7 @@
 	Title="{Binding MyTitle}"
 	Height="250" Width="300"
 	Loaded="Window_Loaded"
-	Style="{StaticResource ReWindow}">
+	Style="{StaticResource STWindowNoResize}">
 	<Window.DataContext>
 		<ViewModels:SetCategoryViewModel/>
 	</Window.DataContext>

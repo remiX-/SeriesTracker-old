@@ -4,11 +4,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
 	Title="Settings"
-	Height="500" Width="740"
-	ShowInTaskbar="False" ResizeMode="NoResize"
-	BorderThickness="2"
+	Width="740" Height="500"
 	Loaded="Window_Loaded"
-	Style="{StaticResource ReWindow}">
+	Style="{StaticResource STWindowNoResize}">
 	<Window.DataContext>
 		<ViewModels:SettingsViewModel/>
 	</Window.DataContext>

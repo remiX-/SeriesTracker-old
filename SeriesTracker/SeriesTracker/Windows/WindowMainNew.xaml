@@ -2,15 +2,14 @@
 	x:Class="SeriesTracker.Windows.WindowMainNew" 
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-	xmlns:local="clr-namespace:SeriesTracker" 
-	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+	xmlns:local="clr-namespace:SeriesTracker"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
 	Title="{Binding MyTitle}"
 	Icon="../Resources/mainIcon.ico"
 	Width="1024" Height="576" MinWidth="1024" MinHeight="576"
 	Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" Closed="Window_Closed" StateChanged="Window_StateChanged" Activated="Window_Activated"
-	ResizeMode="CanResizeWithGrip"
-	Style="{StaticResource ReWindow}">
+	Style="{StaticResource STWindow}">
 	<Window.DataContext>
 		<ViewModels:MainNewViewModel/>
 	</Window.DataContext>
@@ -21,7 +20,7 @@
 	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<materialDesign:DrawerHost.LeftDrawerContent>
-				<DockPanel MinWidth="220">
+				<DockPanel MinWidth="230">
 					<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
 								  DockPanel.Dock="Top"
 								  HorizontalAlignment="Right" Margin="16"

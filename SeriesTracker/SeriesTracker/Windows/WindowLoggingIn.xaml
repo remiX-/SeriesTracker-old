@@ -6,7 +6,7 @@
 	Height="100" Width="300"
 	Loaded="Window_Loaded" MouseDown="Window_MouseDown"
 	WindowStartupLocation="CenterScreen"
-	Style="{StaticResource ReWindowNoBorder}">
+	Style="{StaticResource STWindowNoBorder}">
 	<Window.DataContext>
 		<ViewModels:LoggingInViewModel />
 	</Window.DataContext>

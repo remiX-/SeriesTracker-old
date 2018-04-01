@@ -7,7 +7,7 @@
 	Width="1024" Height="576" MinWidth="1024" MinHeight="576"
 	ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
 	Activated="Window_Activated" Loaded="Window_Loaded" Closed="Window_Closed" SizeChanged="Window_SizeChanged" Initialized="Window_Initialized"
-	Style="{StaticResource ReWindow}">
+	Style="{StaticResource STWindow}">
 	<Window.DataContext>
 		<ViewModels:ViewShowViewModel />
 	</Window.DataContext>
