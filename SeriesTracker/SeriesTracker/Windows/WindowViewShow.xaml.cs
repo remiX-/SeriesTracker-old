@@ -43,8 +43,8 @@ namespace SeriesTracker.Windows
 			MyViewModel = DataContext as ViewShowViewModel;
 			MyViewModel.SetShow(ViewingShow);
 
-			Width = AppGlobal.Settings.LayoutViewShow.Width;
-			Height = AppGlobal.Settings.LayoutViewShow.Height;
+			Width = AppGlobal.Settings.Windows["ViewShow"].Width;
+			Height = AppGlobal.Settings.Windows["ViewShow"].Height;
 			Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
 			Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
 
@@ -58,7 +58,7 @@ namespace SeriesTracker.Windows
 		{
 			if (!hasWindowInit)
 			{
-				WindowState = AppGlobal.Settings.LayoutViewShow.Maximized ? WindowState.Maximized : WindowState.Normal;
+				WindowState = AppGlobal.Settings.Windows["ViewShow"].Maximized ? WindowState.Maximized : WindowState.Normal;
 
 				hasWindowInit = true;
 			}
@@ -68,11 +68,11 @@ namespace SeriesTracker.Windows
 		{
 			if (WindowState != WindowState.Maximized)
 			{
-				AppGlobal.Settings.LayoutViewShow.Width = Width;
-				AppGlobal.Settings.LayoutViewShow.Height = Height;
+				AppGlobal.Settings.Windows["ViewShow"].Width = Width;
+				AppGlobal.Settings.Windows["ViewShow"].Height = Height;
 			}
 
-			AppGlobal.Settings.LayoutViewShow.Maximized = WindowState == WindowState.Maximized;
+			AppGlobal.Settings.Windows["ViewShow"].Maximized = WindowState == WindowState.Maximized;
 			AppGlobal.Settings.Save();
 		}
 

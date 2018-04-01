@@ -19,8 +19,12 @@ namespace SeriesTracker.ViewModels
 		#region Fields
 		private bool ignoreBrackets;
 		private bool useListedName;
+		private bool startOnWindowsStart;
+
 		private string exampleDate;
 		private ListSortDirection defaultSortDirection;
+
+		private bool isDark;
 
 		private ObservableCollection<Category> categories;
 		#endregion
@@ -38,10 +42,14 @@ namespace SeriesTracker.ViewModels
 			set => useListedName = value;
 		}
 
+		public bool StartOnWindowsStart
+		{
+			get => startOnWindowsStart;
+			set => startOnWindowsStart = value;
+		}
+
 		public string[] DateFormats { get; }
 		public int DateFormatIndex => GetSelectedIndex(DateFormats, AppGlobal.Settings.DateFormat);
-
-		//public string GetExampleDate() => exampleDate;
 
 		public string ExampleDate
 		{
@@ -50,7 +58,7 @@ namespace SeriesTracker.ViewModels
 		}
 
 		public string[] ColumnHeadings { get; }
-		public int DefaultSortingIndex { get { return GetSelectedIndex(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn); } }
+		public int DefaultSortingIndex => GetSelectedIndex(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn);
 
 		public ListSortDirection DefaultSortDirection
 		{
@@ -68,31 +76,33 @@ namespace SeriesTracker.ViewModels
 			set => DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending;
 		}
 
-		public string[] Themes { get; }
-		public int ThemeIndex => GetSelectedIndex(Themes, AppGlobal.Settings.Theme);
-
-		public string[] Accents { get; }
-		public int AccentIndex => GetSelectedIndex(Accents, AppGlobal.Settings.Accent);
+		public bool IsDark
+		{
+			get => isDark;
+			set => SetProperty(ref isDark, value);
+		}
+		public IEnumerable<Swatch> Swatches { get; }
+		public IEnumerable<string> SwatchesString { get; }
+		public IEnumerable<string> SwatchesAccent { get; }
+		public int PrimaryIndex => GetSelectedIndex(SwatchesString, AppGlobal.Settings.Primary);
+		public int AccentIndex => GetSelectedIndex(SwatchesAccent, AppGlobal.Settings.Accent);
 
 		public ObservableCollection<Category> Categories
 		{
-			get { return categories; }
-			set { SetProperty(ref categories, value); }
+			get => categories;
+			set => SetProperty(ref categories, value);
 		}
 
-		public IEnumerable<Swatch> Swatches { get; }
+		public ICommand ToggleBaseCommand { get; } = new WPFCommandImplementation(o => ApplyBase((bool)o));
 		#endregion
 
-		public ICommand ToggleBaseCommand { get; } = new WPFCommandImplementation(o => ApplyBase((bool)o));
-
-		public ICommand ApplyPrimaryCommand { get; } = new WPFCommandImplementation(o => ApplyPrimary((Swatch)o));
-		public ICommand ApplyAccentCommand { get; } = new WPFCommandImplementation(o => ApplyAccent((Swatch)o));
 		#endregion
 
 		public SettingsViewModel()
 		{
 			IgnoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
 			UseListedName = AppGlobal.Settings.UseListedName;
+			StartOnWindowsStart = AppGlobal.Settings.StartOnWindowsStart;
 
 			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
 
@@ -111,20 +121,10 @@ namespace SeriesTracker.ViewModels
 			};
 			DefaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
 
-			Themes = new[] { "BaseLight", "BaseDark" };
-			Accents = new[]
-			{
-				"Red", "Green", "Blue",
-				"Purple", "Orange", "Lime",
-				"Emerald", "Teal", "Cyan",
-				"Cobalt", "Indigo", "Violet",
-				"Pink", "Magenta", "Crimson",
-				"Amber", "Yellow", "Brown",
-				"Olive", "Steel", "Mauve",
-				"Taupe", "Sienna"
-			};
-
+			IsDark = AppGlobal.Settings.IsDarkTheme;
 			Swatches = new SwatchesProvider().Swatches;
+			SwatchesString = Swatches.Select(swatch => swatch.Name);
+			SwatchesAccent = Swatches.Where(swatch => swatch.IsAccented).Select(swatch => swatch.Name);
 
 			Categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}
@@ -140,19 +140,14 @@ namespace SeriesTracker.ViewModels
 			return 0;
 		}
 
+		private int GetSelectedIndex(IEnumerable<string> list, string selected)
+		{
+			return GetSelectedIndex(list.ToArray(), selected);
+		}
+
 		private static void ApplyBase(bool isDark)
 		{
 			new PaletteHelper().SetLightDark(isDark);
-		}
-
-		private static void ApplyPrimary(Swatch swatch)
-		{
-			new PaletteHelper().ReplacePrimaryColor(swatch);
-		}
-
-		private static void ApplyAccent(Swatch swatch)
-		{
-			new PaletteHelper().ReplaceAccentColor(swatch);
 		}
 	}
 }

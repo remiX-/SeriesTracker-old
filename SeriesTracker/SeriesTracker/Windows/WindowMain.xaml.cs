@@ -90,7 +90,7 @@ namespace SeriesTracker.Windows
 		{
 			if (!windowHasInit)
 			{
-				WindowState = AppGlobal.Settings.LayoutMain.Maximized ? WindowState.Maximized : WindowState.Normal;
+				WindowState = AppGlobal.Settings.Windows["Main"].Maximized ? WindowState.Maximized : WindowState.Normal;
 
 				windowHasInit = true;
 			}
@@ -100,14 +100,12 @@ namespace SeriesTracker.Windows
 		{
 			if (WindowState != WindowState.Maximized)
 			{
-				AppGlobal.Settings.LayoutMain.Width = Width;
-				AppGlobal.Settings.LayoutMain.Height = Height;
+				AppGlobal.Settings.Windows["Main"].Width = Width;
+				AppGlobal.Settings.Windows["Main"].Height = Height;
 			}
 
-			AppGlobal.Settings.LayoutMain.Maximized = WindowState == WindowState.Maximized;
-
+			AppGlobal.Settings.Windows["Main"].Maximized = WindowState == WindowState.Maximized;
 			AppGlobal.Settings.SaveColumnSetting(view_DataGridView.Columns.ToList(), false);
-
 			AppGlobal.Settings.Save();
 
 			if (WindowViewShow != null && WindowViewShow.IsLoaded)
@@ -711,8 +709,8 @@ namespace SeriesTracker.Windows
 			view_DetailView.Visibility = currentView == SeriesView.Detail ? Visibility.Visible : Visibility.Hidden;
 			view_GridView.Visibility = currentView == SeriesView.Grid ? Visibility.Visible : Visibility.Hidden;
 
-			Width = AppGlobal.Settings.LayoutMain.Width;
-			Height = AppGlobal.Settings.LayoutMain.Height;
+			Width = AppGlobal.Settings.Windows["Main"].Width;
+			Height = AppGlobal.Settings.Windows["Main"].Height;
 			Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
 			Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
 

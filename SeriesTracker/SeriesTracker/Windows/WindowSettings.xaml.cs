@@ -54,27 +54,14 @@ namespace SeriesTracker.Windows
 			MyViewModel.ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, cmb_DateFormat.SelectedItem.ToString());
 		}
 
-		//private void Cmb_Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		//{
-		//	if (cmb_Theme.SelectedItem == null || cmb_Accent.SelectedItem == null)
-		//		return;
-
-		//	string theme = cmb_Theme.SelectedItem.ToString();
-		//	string accent = cmb_Accent.SelectedItem.ToString();
-
-		//	//ThemeManager.ChangeAppStyle(this, ThemeManager.GetAccent(accent), ThemeManager.GetAppTheme(theme));
-		//}
-
 		private void Cmb_Primary_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-
-			new PaletteHelper().ReplacePrimaryColor((Swatch)cmb_Primary.SelectedItem);
+			new PaletteHelper().ReplacePrimaryColor((string)cmb_Primary.SelectedItem);
 		}
 
 		private void Cmb_Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-
-			new PaletteHelper().ReplaceAccentColor((Swatch)cmb_Primary.SelectedItem);
+			new PaletteHelper().ReplaceAccentColor((string)cmb_Accent.SelectedItem);
 		}
 		#endregion
 
@@ -185,11 +172,6 @@ namespace SeriesTracker.Windows
 			List<string> changes = new List<string>();
 
 			#region General
-			// Check if some settings changed
-			if (AppGlobal.Settings.LocalSeriesFolder != txt_SeriesFolder.Text)
-			{
-				changes.Add("UpdateFolders");
-			}
 
 			if (AppGlobal.Settings.UseListedName != cb_ListedName.IsChecked || AppGlobal.Settings.IgnoreBracketsInNames != cb_IgnoreBrackets.IsChecked)
 			{
@@ -203,19 +185,26 @@ namespace SeriesTracker.Windows
 			AppGlobal.Settings.DefaultSortDirection = MyViewModel.DefaultSortDirection;
 
 			// Theme & Accent
-			//string theme = cmb_Theme.SelectedItem.ToString();
-			//string accent = cmb_Accent.SelectedItem.ToString();
-			//if (AppGlobal.Settings.Theme != theme || AppGlobal.Settings.Accent != accent)
-			//{
-			//	AppGlobal.Settings.Theme = theme;
-			//	AppGlobal.Settings.Accent = accent;
+			bool isDark = MyViewModel.IsDark;
+			string primary = cmb_Primary.SelectedItem.ToString();
+			string accent = cmb_Accent.SelectedItem.ToString();
+			if (AppGlobal.Settings.Primary != primary || AppGlobal.Settings.Accent != accent)
+			{
+				AppGlobal.Settings.IsDarkTheme = isDark;
+				AppGlobal.Settings.Primary = primary;
+				AppGlobal.Settings.Accent = accent;
 
-			//	changes.Add("UpdateTheme");
-			//}
+				//changes.Add("UpdateTheme");
+			}
 			#endregion
 
 			#region Extra
-			AppGlobal.Settings.LocalSeriesFolder = txt_SeriesFolder.Text;
+			if (AppGlobal.Settings.LocalSeriesFolder != txt_SeriesFolder.Text)
+			{
+				AppGlobal.Settings.LocalSeriesFolder = txt_SeriesFolder.Text;
+
+				changes.Add("UpdateFolders");
+			}
 
 			if (categoriesToAdd.Count > 0 || categoriesToDelete.Count > 0)
 			{
