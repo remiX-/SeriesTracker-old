@@ -1,5 +1,6 @@
 ﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,9 @@ namespace SeriesTracker.Windows
 	public partial class WindowLogin : Window
 	{
 		#region Variables
+		// ViewModel
+		private LoginViewModel MyViewModel;
+
 		private WindowLoggingIn window_LoggedIn;
 		#endregion
 
@@ -58,6 +62,11 @@ namespace SeriesTracker.Windows
 				lbl_Register_Info.Content = "No internet connection";
 				btn_Register.IsEnabled = false;
 			}
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			MyViewModel = DataContext as LoginViewModel;
 		}
 
 		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
