@@ -654,18 +654,32 @@ namespace SeriesTracker.Windows
 
 		private void DataGrid_ContextMenu_Opened(object sender, RoutedEventArgs e)
 		{
-			//ContextMenu cm = (ContextMenu)sender;
+			ContextMenu cm = (ContextMenu)sender;
 
-			//if (view_DataGridView.SelectedItems.Count == 1)
-			//{
-			//	cm.FindChild<MenuItem>("View").Visibility = Visibility.Visible;
-			//	cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Visible;
-			//}
-			//else if (view_DataGridView.SelectedItems.Count > 1)
-			//{
-			//	cm.FindChild<MenuItem>("View").Visibility = Visibility.Collapsed;
-			//	cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Collapsed;
-			//}
+			if (view_DataGridView.SelectedItems.Count == 1)
+			{
+				foreach (var item in cm.Items)
+				{
+					MenuItem _item = item as MenuItem;
+					if (_item == null) continue;
+					if (_item.Name == "View" || _item.Name == "SetCategory")
+					{
+						_item.Visibility = Visibility.Visible;
+					}
+				}
+			}
+			else if (view_DataGridView.SelectedItems.Count > 1)
+			{
+				foreach (var item in cm.Items)
+				{
+					MenuItem _item = item as MenuItem;
+					if (_item == null) continue;
+					if (_item.Name == "View" || _item.Name == "SetCategory")
+					{
+						_item.Visibility = Visibility.Collapsed;
+					}
+				}
+			}
 		}
 
 		private void DataGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
@@ -842,26 +856,13 @@ namespace SeriesTracker.Windows
 				if (torrents == null || torrents.Count == 0)
 				{
 					PopupNotification($"Failed to find last episode for {show.SeriesName}");
+					MyViewModel.ResetStatus();
 					return;
 				}
 
-				var view = new EpisodeDownloadsDialog(torrents);
-
-				//show the dialog
-				await DialogHost.Show(view, "RootDialog");
+				await DialogHost.Show(new EpisodeDownloadsDialog(torrents), "RootDialog");
 
 				MyViewModel.ResetStatus();
-
-				//List<Show> shows = view_DataGridView.SelectedItems.Cast<Show>().ToList();
-
-				//foreach (Show show in shows)
-				//{
-				//	bool success = await MethodCollection.DownloadEpisode(show, show.LatestEpisode);
-				//	if (!success)
-				//	{
-				//		MessageBox.Show("Failed to find last episode for " + show.SeriesName);
-				//	}
-				//}
 			}
 			catch (Exception ex)
 			{
@@ -1037,6 +1038,8 @@ namespace SeriesTracker.Windows
 
 		private async Task DoAppMenuAction(string selected)
 		{
+			if (MyViewModel.IsBusy) return;
+
 			switch (selected)
 			{
 				case "AddSeries": await AddSeries(); break;

@@ -22,7 +22,7 @@
 								<materialDesign:PackIcon Kind="Magnet" Margin="0 0 0 0" />
 							</Button>
 
-							<TextBlock Text="{Binding Size, StringFormat=[{0}]\t}" VerticalAlignment="Center" />
+							<TextBlock Text="{Binding Size, StringFormat=[{0}]}" VerticalAlignment="Center" />
 							<TextBlock Text="{Binding Title}" VerticalAlignment="Center" />
 						</DockPanel>
 					</DataTemplate>

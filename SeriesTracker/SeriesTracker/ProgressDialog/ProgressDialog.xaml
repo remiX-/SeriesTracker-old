@@ -4,7 +4,7 @@
 		Height="100" Width="300" MinHeight="70" MinWidth="300"
 		Closing="OnClosing"
 		ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
-		Style="{StaticResource ReWindowNoBorder}" >
+		Style="{StaticResource STWindowNoBorder}" >
 	<DockPanel Margin="10">
 		<Grid DockPanel.Dock="Bottom">
 			<Grid.ColumnDefinitions>

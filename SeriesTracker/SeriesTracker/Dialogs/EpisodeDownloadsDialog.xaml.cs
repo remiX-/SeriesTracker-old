@@ -10,15 +10,6 @@ namespace SeriesTracker.Dialogs
 	{
 		public List<EztvTorrent> Items { get; set;  }
 
-		//public EpisodeDownloadsDialog()
-		//{
-		//	Items.Add(new EztvTorrent
-		//	{
-		//		Title = "Test",
-		//		Size_bytes = (1024^3).ToString()
-		//	});
-		//}
-
 		public EpisodeDownloadsDialog() { }
 
 		public EpisodeDownloadsDialog(List<EztvTorrent> eztvTorrents)
