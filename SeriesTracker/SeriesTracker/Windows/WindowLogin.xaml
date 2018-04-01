@@ -2,14 +2,19 @@
 	x:Class="SeriesTracker.Windows.WindowLogin"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
 	Title="Login or Register"
 	Icon="../Resources/mainIcon.ico"
 	Height="350" Width="500"
 	Initialized="Window_Initialized" MouseDown="Window_MouseDown"
-	WindowStartupLocation="CenterScreen" ShowInTaskbar="True" Visibility="Hidden"
-	Style="{StaticResource ReWindow}">
+	WindowStartupLocation="CenterScreen"
+	Style="{StaticResource STWindow}">
 	<Grid Margin="10">
-		<TabControl x:Name="tc">
+		<dragablz:TabablzControl x:Name="tc" FixedHeaderCount="2">
+			<dragablz:TabablzControl.InterTabController>
+				<dragablz:InterTabController />
+			</dragablz:TabablzControl.InterTabController>
 			<TabItem Header="Login">
 				<Grid>
 					<Grid.RowDefinitions>
@@ -33,7 +38,7 @@
 
 					<CheckBox Grid.Row="3" Grid.Column="2" x:Name="cb_RememberMe" Content="Remember me" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="CB_RememberMe_CheckChange" Unchecked="CB_RememberMe_CheckChange" />
 
-					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Bottom">
 						<Label x:Name="lbl_Login_Info" Content="Label" Margin="0,0,0,10" HorizontalAlignment="Center" />
 						<Button x:Name="btn_Login" Style="{StaticResource btn-default-bottom-center}" Content="Login" Click="Btn_Login_Click" />
 					</StackPanel>
@@ -71,12 +76,12 @@
 					<Label Grid.Row="5" Grid.Column="0" Content="Confirm Password*" VerticalAlignment="Center" HorizontalAlignment="Right" />
 					<PasswordBox Grid.Row="5" Grid.Column="3" x:Name="txt_Register_ConfirmPassword" KeyDown="Register_KeyPress" VerticalAlignment="Center" />
 
-					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Bottom">
 						<Label x:Name="lbl_Register_Info" Content="Label" Margin="0,0,0,10" HorizontalAlignment="Center" />
 						<Button x:Name="btn_Register" Style="{StaticResource btn-default-bottom-center}" Content="Register" Click="Btn_Register_Click" />
 					</StackPanel>
 				</Grid>
 			</TabItem>
-		</TabControl>
+		</dragablz:TabablzControl>
 	</Grid>
 </Window>
