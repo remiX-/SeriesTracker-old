@@ -156,6 +156,9 @@
     <Compile Include="Dialogs\EpisodeDownloadsDialog.xaml.cs">
       <DependentUpon>EpisodeDownloadsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ProgressDialog.xaml.cs">
+      <DependentUpon>ProgressDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SampleMessageDialog.xaml.cs">
       <DependentUpon>SampleMessageDialog.xaml</DependentUpon>
     </Compile>
@@ -220,6 +223,10 @@
     <Page Include="Dialogs\EpisodeDownloadsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\ProgressDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\SampleMessageDialog.xaml">
       <SubType>Designer</SubType>
