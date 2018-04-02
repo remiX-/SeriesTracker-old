@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,42 +42,34 @@ namespace SeriesTracker.Windows
 			MyViewModel = DataContext as ViewShowViewModel;
 			MyViewModel.SetShow(ViewingShow);
 
+			// Setup events
+			SizeChanged += Window_SizeChanged;
+			Closed += Window_Closed;
+
 			Width = AppGlobal.Settings.Windows["ViewShow"].Width;
 			Height = AppGlobal.Settings.Windows["ViewShow"].Height;
 			Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
 			Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
 
-			await Startup();
-
 			HamburgerListBox.SelectionChanged += HamburgerListBox_SelectionChanged;
-			HamburgerListBox.SelectedIndex = 0;
+
+			WindowState = AppGlobal.Settings.Windows["ViewShow"].Maximized ? WindowState.Maximized : WindowState.Normal;
+
+			await Startup();
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
 		{
-			if (!hasWindowInit)
-			{
-				WindowState = AppGlobal.Settings.Windows["ViewShow"].Maximized ? WindowState.Maximized : WindowState.Normal;
+			//if (!hasWindowInit)
+			//{
+			//	WindowState = AppGlobal.Settings.Windows["ViewShow"].Maximized ? WindowState.Maximized : WindowState.Normal;
 
-				hasWindowInit = true;
-			}
-		}
-
-		private void Window_Closed(object sender, EventArgs e)
-		{
-			if (WindowState != WindowState.Maximized)
-			{
-				AppGlobal.Settings.Windows["ViewShow"].Width = Width;
-				AppGlobal.Settings.Windows["ViewShow"].Height = Height;
-			}
-
-			AppGlobal.Settings.Windows["ViewShow"].Maximized = WindowState == WindowState.Maximized;
-			AppGlobal.Settings.Save();
+			//	hasWindowInit = true;
+			//}
 		}
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			if (MyViewModel == null) return;
 			if (e.PreviousSize.Height == 0 && e.PreviousSize.Width == 0) return;
 
 			for (int i = 0; i < actorResize.GetLength(0); i++)
@@ -94,14 +85,26 @@ namespace SeriesTracker.Windows
 				}
 			}
 		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			if (WindowState != WindowState.Maximized)
+			{
+				AppGlobal.Settings.Windows["ViewShow"].Width = Width;
+				AppGlobal.Settings.Windows["ViewShow"].Height = Height;
+			}
+
+			AppGlobal.Settings.Windows["ViewShow"].Maximized = WindowState == WindowState.Maximized;
+			AppGlobal.Settings.Save();
+		}
 		#endregion
 
 		#region Startup
 		private async Task Startup()
 		{
-			//MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
-
 			SetupDirectories();
+
+			HamburgerListBox.SelectedIndex = 0;
 
 			await LoadBannerAsync();
 		}
