@@ -184,18 +184,10 @@ namespace SeriesTracker.Windows
 			AppGlobal.Settings.DefaultSortColumn = MyViewModel.ColumnHeadings[cmb_DefaultSorting.SelectedIndex];
 			AppGlobal.Settings.DefaultSortDirection = MyViewModel.DefaultSortDirection;
 
-			// Theme & Accent
-			bool isDark = MyViewModel.IsDark;
-			string primary = cmb_Primary.SelectedItem.ToString();
-			string accent = cmb_Accent.SelectedItem.ToString();
-			if (AppGlobal.Settings.Primary != primary || AppGlobal.Settings.Accent != accent)
-			{
-				AppGlobal.Settings.IsDarkTheme = isDark;
-				AppGlobal.Settings.Primary = primary;
-				AppGlobal.Settings.Accent = accent;
-
-				//changes.Add("UpdateTheme");
-			}
+			// Theme
+			AppGlobal.Settings.IsDarkTheme = MyViewModel.IsDark;
+			AppGlobal.Settings.Primary = MyViewModel.Primary;
+			AppGlobal.Settings.Accent = MyViewModel.Accent;
 			#endregion
 
 			#region Extra

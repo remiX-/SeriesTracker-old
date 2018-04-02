@@ -10,7 +10,7 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<!-- Material Design -->
-				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Red.xaml" />
@@ -210,7 +210,7 @@
 			</Style>
 			<!--#endregion -->
 
-			<!--#region ListView-->
+			<!--#region Views-->
 			<Style TargetType="{x:Type ListView}" BasedOn="{StaticResource MaterialDesignListView}">
 				<Setter Property="BorderThickness" Value="1" />
 			</Style>

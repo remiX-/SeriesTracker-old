@@ -53,7 +53,7 @@
 							  Margin="0,5,0,0"
 							  Width="165"
 							  ItemsSource="{Binding SwatchesString, Mode=OneTime}"
-							  SelectedIndex="{Binding PrimaryIndex, Mode=OneTime}" />
+							  SelectedItem="{Binding Primary}" />
 
 					<StackPanel Orientation="Horizontal" Margin="16 0">
 						<TextBlock VerticalAlignment="Center">Light</TextBlock>
@@ -67,7 +67,7 @@
 							  Margin="0,5,0,0"
 							  Width="165"
 							  ItemsSource="{Binding SwatchesAccent, Mode=OneTime}"
-							  SelectedIndex="{Binding AccentIndex, Mode=OneTime}" />
+							  SelectedItem="{Binding Accent}" />
 			</StackPanel>
 		</GroupBox>
 

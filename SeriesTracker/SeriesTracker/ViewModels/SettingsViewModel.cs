@@ -25,6 +25,8 @@ namespace SeriesTracker.ViewModels
 		private ListSortDirection defaultSortDirection;
 
 		private bool isDark;
+		private string primary;
+		private string accent;
 
 		private ObservableCollection<Category> categories;
 		#endregion
@@ -76,16 +78,14 @@ namespace SeriesTracker.ViewModels
 			set => DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending;
 		}
 
-		public bool IsDark
-		{
-			get => isDark;
-			set => SetProperty(ref isDark, value);
-		}
+		public bool IsDark { get => isDark; set => SetProperty(ref isDark, value); }
+		public string Primary { get => primary; set => SetProperty(ref primary, value); }
+		public string Accent { get => accent; set => SetProperty(ref accent, value); }
 		public IEnumerable<Swatch> Swatches { get; }
-		public IEnumerable<string> SwatchesString { get; }
-		public IEnumerable<string> SwatchesAccent { get; }
-		public int PrimaryIndex => GetSelectedIndex(SwatchesString, AppGlobal.Settings.Primary);
-		public int AccentIndex => GetSelectedIndex(SwatchesAccent, AppGlobal.Settings.Accent);
+		public string[] SwatchesString { get; }
+		public string[] SwatchesAccent { get; }
+		//public int PrimaryIndex => GetSelectedIndex(SwatchesString, AppGlobal.Settings.Primary);
+		//public int AccentIndex => GetSelectedIndex(SwatchesAccent, AppGlobal.Settings.Accent);
 
 		public ObservableCollection<Category> Categories
 		{
@@ -100,9 +100,9 @@ namespace SeriesTracker.ViewModels
 
 		public SettingsViewModel()
 		{
-			IgnoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
-			UseListedName = AppGlobal.Settings.UseListedName;
-			StartOnWindowsStart = AppGlobal.Settings.StartOnWindowsStart;
+			ignoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
+			useListedName = AppGlobal.Settings.UseListedName;
+			startOnWindowsStart = AppGlobal.Settings.StartOnWindowsStart;
 
 			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
 
@@ -119,14 +119,17 @@ namespace SeriesTracker.ViewModels
 				"dd MMM, ddd",
 				"d MMM, ddd"
 			};
-			DefaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
+			defaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
 
-			IsDark = AppGlobal.Settings.IsDarkTheme;
 			Swatches = new SwatchesProvider().Swatches;
-			SwatchesString = Swatches.Select(swatch => swatch.Name);
-			SwatchesAccent = Swatches.Where(swatch => swatch.IsAccented).Select(swatch => swatch.Name);
+			SwatchesString = Swatches.Select(swatch => swatch.Name).ToArray();
+			SwatchesAccent = Swatches.Where(swatch => swatch.IsAccented).Select(swatch => swatch.Name).ToArray();
 
-			Categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
+			isDark = AppGlobal.Settings.IsDarkTheme;
+			primary = GetSelectedItem(SwatchesString, AppGlobal.Settings.Primary);
+			accent = GetSelectedItem(SwatchesString, AppGlobal.Settings.Accent);
+
+			categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}
 
 		private int GetSelectedIndex(string[] list, string selected)
@@ -140,9 +143,9 @@ namespace SeriesTracker.ViewModels
 			return 0;
 		}
 
-		private int GetSelectedIndex(IEnumerable<string> list, string selected)
+		private string GetSelectedItem(string[] list, string selected)
 		{
-			return GetSelectedIndex(list.ToArray(), selected);
+			return list[GetSelectedIndex(list, selected)];
 		}
 
 		private static void ApplyBase(bool isDark)
