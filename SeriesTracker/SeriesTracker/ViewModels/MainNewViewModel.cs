@@ -27,6 +27,8 @@ namespace SeriesTracker.ViewModels
 
 		#region Fields
 		private string myTitle;
+
+		private List<Category> categories;
 		private Category filterCategory;
 		private string filterText;
 		private int gridViewColumnCount;
@@ -47,16 +49,17 @@ namespace SeriesTracker.ViewModels
 		public Category FilterCategory
 		{
 			get => filterCategory;
-			set { SetProperty(ref filterCategory, value); RefreshView(); }
+			set
+			{
+				SetProperty(ref filterCategory, value);
+				if (value != null)
+					RefreshView();
+			}
 		}
 		public List<Category> Categories
 		{
-			get
-			{
-				List<Category> cat = AppGlobal.User.Categories.OrderBy(x => x.Name).ToList();
-				cat.Insert(0, new Category(0, "All"));
-				return cat;
-			}
+			get => categories;
+			set => SetProperty(ref categories, value);
 		}
 
 		public string FilterText
@@ -97,11 +100,12 @@ namespace SeriesTracker.ViewModels
 				new HamburgerMenuItem("Exit", PackIconKind.ExitToApp)
 			};
 
-			myTitle = AppGlobal.AssemblyTitle;
+			MyTitle = AppGlobal.User.Username;
 			UserEmail = AppGlobal.User.Email;
 			Username = AppGlobal.User.Username;
 
-			filterCategory = Categories[0];
+			RefreshCategory(false);
+
 			status = "Ready";
 			Product = $"Made by {AppGlobal.AssemblyCompany} v{AppGlobal.AssemblyVersion}";
 
@@ -120,9 +124,22 @@ namespace SeriesTracker.ViewModels
 			}
 		}
 
-		public void RefreshCategory()
+		public void RefreshCategory(bool refreshMvvm)
 		{
-			RaisePropertyChanged("Categories");
+			List<Category> cat = new List<Category>
+			{
+				new Category(0, "All")
+			};
+			cat.AddRange(AppGlobal.User.Categories.OrderBy(category => category.Name));
+
+			Categories = cat;
+			if (filterCategory == null)
+			{
+				if (refreshMvvm)
+					FilterCategory = categories[0];
+				else
+					filterCategory = categories[0];
+			}
 		}
 
 		private void Filter(object sender, FilterEventArgs e)

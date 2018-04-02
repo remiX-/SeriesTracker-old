@@ -65,7 +65,7 @@ namespace SeriesTracker.Windows
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			//MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
+			MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
 
 			await Startup();
 
@@ -105,20 +105,20 @@ namespace SeriesTracker.Windows
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			//if (e.PreviousSize.Height == 0 && e.PreviousSize.Width == 0) return;
+			if (e.PreviousSize.Height == 0 && e.PreviousSize.Width == 0) return;
 
-			//for (int i = 0; i < gridResize.GetLength(0); i++)
-			//{
-			//	if (e.NewSize.Width <= gridResize[i, 0] || i == gridResize.GetLength(0) - 1)
-			//	{
-			//		if (MyViewModel.GridViewColumnCount != gridResize[i, 1])
-			//		{
-			//			MyViewModel.GridViewColumnCount = gridResize[i, 1];
-			//		}
+			for (int i = 0; i < gridResize.GetLength(0); i++)
+			{
+				if (e.NewSize.Width <= gridResize[i, 0] || i == gridResize.GetLength(0) - 1)
+				{
+					if (MyViewModel.GridViewColumnCount != gridResize[i, 1])
+					{
+						MyViewModel.GridViewColumnCount = gridResize[i, 1];
+					}
 
-			//		break;
-			//	}
-			//}
+					break;
+				}
+			}
 		}
 
 		private void Window_StateChanged(object sender, EventArgs e)
@@ -147,13 +147,9 @@ namespace SeriesTracker.Windows
 		#region Tray Icon Events
 		private void NotifyIcon_MouseDoubleClick(object sender, WinForms.MouseEventArgs e)
 		{
-			if (e == null || e.Button == WinForms.MouseButtons.Left)
+			if (e != null && e.Button == WinForms.MouseButtons.Left)
 			{
-				if (WindowState == WindowState.Normal)
-				{
-					WindowState = WindowState.Minimized;
-				}
-				else
+				if (WindowState == WindowState.Minimized)
 				{
 					Show();
 
@@ -198,16 +194,19 @@ namespace SeriesTracker.Windows
 		{
 			MyViewModel = DataContext as MainNewViewModel;
 
+			// Setup events
+			StateChanged += Window_StateChanged;
+			SizeChanged += Window_SizeChanged;
+			Closed += Window_Closed;
+
 			view_DataGridView.Visibility = currentView == SeriesView.List ? Visibility.Visible : Visibility.Hidden;
 			//view_DetailView.Visibility = currentView == SeriesView.Detail ? Visibility.Visible : Visibility.Hidden;
-			//view_GridView.Visibility = currentView == SeriesView.Grid ? Visibility.Visible : Visibility.Hidden;
+			view_GridView.Visibility = currentView == SeriesView.Grid ? Visibility.Visible : Visibility.Hidden;
 
 			Width = AppGlobal.Settings.Windows["Main"].Width;
 			Height = AppGlobal.Settings.Windows["Main"].Height;
 			Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
 			Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
-
-			//view_DataGridView.Sorting += DataGrid_Sorting;
 
 			// Column settings
 			var columns = view_DataGridView.Columns.ToList();
@@ -1055,14 +1054,28 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+		private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
 		{
-			var sampleMessageDialog = new SampleMessageDialog
-			{
-				Message = { Text = "Hello" }
-			};
+			Button btn = sender as Button;
 
-			await DialogHost.Show(sampleMessageDialog, "RootDialog");
+			if (btn.Content.ToString() == "DataGridView")
+			{
+				if (currentView == SeriesView.List) return;
+
+				currentView = SeriesView.List;
+
+				view_DataGridView.Visibility = Visibility.Visible;
+				view_GridView.Visibility = Visibility.Hidden;
+			}
+			else
+			{
+				if (currentView == SeriesView.Grid) return;
+
+				currentView = SeriesView.Grid;
+
+				view_DataGridView.Visibility = Visibility.Hidden;
+				view_GridView.Visibility = Visibility.Visible;
+			}
 		}
 
 		private void SettingsClosedHandler(List<string> changes)
@@ -1079,7 +1092,7 @@ namespace SeriesTracker.Windows
 
 			if (changes.Contains("UpdateCategory"))
 			{
-				MyViewModel.RefreshCategory();
+				MyViewModel.RefreshCategory(true);
 			}
 
 			//if (changes.Contains("UpdateTheme"))
