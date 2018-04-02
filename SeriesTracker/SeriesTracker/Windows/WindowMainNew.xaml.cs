@@ -1119,5 +1119,26 @@ namespace SeriesTracker.Windows
 			Close();
 		}
 		#endregion
+
+		#region Test
+		private async void MenuPopupButton_Test_OnClick(object sender, RoutedEventArgs e)
+		{
+			await StartProgress();
+		}
+
+		private async Task StartProgress()
+		{
+			var result = await DialogHost.Show(new Dialogs.ProgressDialog(), "RootDialog", OpenedEventHandler);
+		}
+
+		private async void OpenedEventHandler(object sender, DialogOpenedEventArgs eventArgs)
+		{
+			await Task.Delay(3000);
+
+			eventArgs.Session.Close(false);
+			//Task.Delay(TimeSpan.FromSeconds(3))
+			//	.ContinueWith((t, _) => eventArgs.Session.Close(false), null, TaskScheduler.FromCurrentSynchronizationContext());
+		}
+		#endregion
 	}
 }
