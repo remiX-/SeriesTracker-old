@@ -178,10 +178,17 @@
 					<DockPanel>
 						<materialDesign:PopupBox DockPanel.Dock="Right" Margin="20 0 0 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
 							<StackPanel>
-								<Button Content="DataGridView" Click="MenuPopupButton_OnClick"/>
+								<TextBlock Margin="15" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" TextTrimming="CharacterEllipsis" Text="{Binding Username}"/>
+								<Separator Margin="4,0" />
+								<MenuItem ToolTip="View" Header="View">
+									<MenuItem.Icon>
+										<materialDesign:PackIcon Kind="Account" Opacity="1" />
+									</MenuItem.Icon>
+								</MenuItem>
+								<!--<Button Content="DataGridView" Click="MenuPopupButton_OnClick"/>
 								<Button Content="GridView" Click="MenuPopupButton_OnClick"/>
-								<Separator/>
-								<Button Content="Test 1" Click="MenuPopupButton_Test_OnClick"/>
+								<Separator />
+								<Button Content="Test 1" Click="MenuPopupButton_Test_OnClick"/>-->
 							</StackPanel>
 						</materialDesign:PopupBox>
 						
