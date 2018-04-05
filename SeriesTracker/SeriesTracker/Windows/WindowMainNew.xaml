@@ -52,6 +52,7 @@
 						  x:Name="view_DataGridView" 
 						  ItemsSource="{Binding Collection.View}" 
 						  Sorting="DataGrid_Sorting"
+						  Visibility="Hidden"
 						  MouseDoubleClick="DataGrid_RowDoubleClick">
 					<DataGrid.Resources>
 						<ContextMenu x:Key="cm_DataGridHeader"
@@ -192,7 +193,7 @@
 							</StackPanel>
 						</materialDesign:PopupBox>
 						
-						<materialDesign:ColorZone Mode="Standard"
+						<materialDesign:ColorZone Mode="PrimaryDark"
 												  DockPanel.Dock="Right"
 												  Padding="0"
 												  Margin="16 0 0 0"
@@ -221,7 +222,7 @@
 							</Grid>
 						</materialDesign:ColorZone>
 
-						<materialDesign:ColorZone Mode="Standard"
+						<materialDesign:ColorZone Mode="PrimaryDark"
 												  DockPanel.Dock="Right"
 												  Padding="8 0"
 												  CornerRadius="2"
