@@ -139,6 +139,8 @@ namespace SeriesTracker.Windows
 		#region Action Events
 		private void ClearFilter_Click(object sender, RoutedEventArgs e)
 		{
+			if (txt_FilterText.Text == string.Empty) return;
+
 			txt_FilterText.Text = string.Empty;
 			txt_FilterText.Focus();
 		}
