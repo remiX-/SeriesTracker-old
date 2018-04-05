@@ -2,11 +2,12 @@
 	x:Class="SeriesTracker.Windows.WindowSettings"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
 	Title="Settings"
-	Width="740" Height="500"
+	Width="740" Height="550"
 	Loaded="Window_Loaded"
-	Style="{StaticResource STWindowNoResize}">
+	Style="{StaticResource STWindow}">
 	<Window.DataContext>
 		<ViewModels:SettingsViewModel/>
 	</Window.DataContext>
@@ -47,27 +48,39 @@
 					<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" />
 				</StackPanel>
 
-				<Label Content="Primary" Margin="0,10,0,0" />
+				<Label Content="Theme" Margin="0,10,0,0" />
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<ComboBox x:Name="cmb_Primary"
+					<ComboBox x:Name="cmb_Theme"
+							  materialDesign:ComboBoxAssist.ClassicMode="True"
+							  materialDesign:ComboBoxAssist.ShowSelectedItem="True"
 							  Margin="0,5,0,0"
 							  Width="165"
-							  ItemsSource="{Binding SwatchesString, Mode=OneTime}"
-							  SelectedItem="{Binding Primary}" />
+							  ItemsSource="{Binding Themes, Mode=OneTime}"
+							  SelectedItem="{Binding Theme}" />
 
 					<StackPanel Orientation="Horizontal" Margin="16 0">
 						<TextBlock VerticalAlignment="Center">Light</TextBlock>
-						<ToggleButton Margin="8 0 16 0" IsChecked="{Binding IsDark}" Command="{Binding ToggleBaseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
+						<ToggleButton Margin="8 0 16 0" IsChecked="{Binding IsDark}" Command="{Binding ToggleBaseCommand}" />
 						<TextBlock VerticalAlignment="Center">Dark</TextBlock>
 					</StackPanel>
 				</StackPanel>
 
+				<Label Content="Primary" Margin="0,10,0,0" />
+				<ComboBox x:Name="cmb_Primary"
+						  materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+						  Margin="0,5,0,0"
+						  Width="165"
+						  ItemsSource="{Binding SwatchesString, Mode=OneTime}"
+						  SelectedItem="{Binding Primary}" />
+
 				<Label Content="Accent" Margin="0,10,0,0" />
 				<ComboBox x:Name="cmb_Accent"
-							  Margin="0,5,0,0"
-							  Width="165"
-							  ItemsSource="{Binding SwatchesAccent, Mode=OneTime}"
-							  SelectedItem="{Binding Accent}" />
+						  materialDesign:ComboBoxAssist.ClassicMode="True"
+						  materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+						  Margin="0,5,0,0"
+						  Width="165"
+						  ItemsSource="{Binding SwatchesAccent, Mode=OneTime}"
+						  SelectedItem="{Binding Accent}" />
 			</StackPanel>
 		</GroupBox>
 

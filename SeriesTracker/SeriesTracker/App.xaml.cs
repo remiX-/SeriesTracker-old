@@ -40,9 +40,9 @@ namespace SeriesTracker
 			else
 				AppGlobal.Settings = new AppSettings(true);
 
-			new PaletteHelper().SetLightDark(AppGlobal.Settings.IsDarkTheme);
-			new PaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Primary);
-			new PaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Accent);
+			new SeriesTrackerPaletteHelper().SetLightDark(AppGlobal.Settings.Theme.Type, AppGlobal.Settings.Theme.IsDark);
+			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Theme.Primary);
+			new SeriesTrackerPaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Theme.Accent);
 		}
 	}
 }

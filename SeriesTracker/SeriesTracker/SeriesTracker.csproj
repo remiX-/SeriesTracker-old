@@ -150,6 +150,7 @@
     <Compile Include="Controllers\ModelMethods\ShowMethods.cs" />
     <Compile Include="Core\AppSettings.cs" />
     <Compile Include="Core\Request.cs" />
+    <Compile Include="Core\SeriesTrackerPaletteHelper.cs" />
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
@@ -233,6 +234,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProgressDialog\ProgressDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SeriesTrackerTheme.Light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SeriesTrackerTheme.Dark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SeriesTrackerTheme.Defaults.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SeriesTrackerTheme.Overrides.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -56,12 +56,12 @@ namespace SeriesTracker.Windows
 
 		private void Cmb_Primary_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			new PaletteHelper().ReplacePrimaryColor((string)cmb_Primary.SelectedItem);
+			new SeriesTrackerPaletteHelper().ReplacePrimaryColor((string)cmb_Primary.SelectedItem);
 		}
 
 		private void Cmb_Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			new PaletteHelper().ReplaceAccentColor((string)cmb_Accent.SelectedItem);
+			new SeriesTrackerPaletteHelper().ReplaceAccentColor((string)cmb_Accent.SelectedItem);
 		}
 		#endregion
 
@@ -185,9 +185,10 @@ namespace SeriesTracker.Windows
 			AppGlobal.Settings.DefaultSortDirection = MyViewModel.DefaultSortDirection;
 
 			// Theme
-			AppGlobal.Settings.IsDarkTheme = MyViewModel.IsDark;
-			AppGlobal.Settings.Primary = MyViewModel.Primary;
-			AppGlobal.Settings.Accent = MyViewModel.Accent;
+			AppGlobal.Settings.Theme.Type = MyViewModel.Theme;
+			AppGlobal.Settings.Theme.IsDark = MyViewModel.IsDark;
+			AppGlobal.Settings.Theme.Primary = MyViewModel.Primary;
+			AppGlobal.Settings.Theme.Accent = MyViewModel.Accent;
 			#endregion
 
 			#region Extra

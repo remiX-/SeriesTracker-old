@@ -26,9 +26,7 @@ namespace SeriesTracker.Core
 		public string DefaultSortColumn { get; set; }
 		public ListSortDirection DefaultSortDirection { get; set; }
 
-		public bool IsDarkTheme { get; set; }
-		public string Primary { get; set; }
-		public string Accent { get; set; }
+		public Theme Theme { get; set; }
 
 		// Extra Tab
 		public string LocalSeriesFolder { get; set; }
@@ -128,9 +126,13 @@ namespace SeriesTracker.Core
 			// General
 			DateFormat = "dd/MM/yyyy";
 
-			IsDarkTheme = true;
-			Primary = "bluegrey";
-			Accent = "red";
+			Theme = new Theme
+			{
+				Type = "SeriesTracker",
+				IsDark = true,
+				Primary = "bluegrey",
+				Accent = "green"
+			};
 
 			// Columns
 			ColumnSettings = new List<ColumnSetting>();
@@ -156,6 +158,14 @@ namespace SeriesTracker.Core
 			Height = height;
 			Maximized = maximized;
 		}
+	}
+
+	public class Theme
+	{
+		public string Type { get; set; }
+		public bool IsDark { get; set; }
+		public string Primary { get; set; }
+		public string Accent { get; set; }
 	}
 
 	public class Series

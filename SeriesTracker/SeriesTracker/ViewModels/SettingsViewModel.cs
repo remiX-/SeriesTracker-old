@@ -1,7 +1,6 @@
 ﻿using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
+using Prism.Commands;
 using Prism.Mvvm;
-using SeriesTracker.Controls;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.Windows;
@@ -24,6 +23,7 @@ namespace SeriesTracker.ViewModels
 		private string exampleDate;
 		private ListSortDirection defaultSortDirection;
 
+		public string theme;
 		private bool isDark;
 		private string primary;
 		private string accent;
@@ -78,22 +78,19 @@ namespace SeriesTracker.ViewModels
 			set => DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending;
 		}
 
+		public string Theme { get => theme; set { SetProperty(ref theme, value); ApplyBase(); } }
 		public bool IsDark { get => isDark; set => SetProperty(ref isDark, value); }
 		public string Primary { get => primary; set => SetProperty(ref primary, value); }
 		public string Accent { get => accent; set => SetProperty(ref accent, value); }
+
+		public string[] Themes { get; }
 		public IEnumerable<Swatch> Swatches { get; }
 		public string[] SwatchesString { get; }
 		public string[] SwatchesAccent { get; }
-		//public int PrimaryIndex => GetSelectedIndex(SwatchesString, AppGlobal.Settings.Primary);
-		//public int AccentIndex => GetSelectedIndex(SwatchesAccent, AppGlobal.Settings.Accent);
 
-		public ObservableCollection<Category> Categories
-		{
-			get => categories;
-			set => SetProperty(ref categories, value);
-		}
+		public ObservableCollection<Category> Categories { get => categories; set => SetProperty(ref categories, value); }
 
-		public ICommand ToggleBaseCommand { get; } = new WPFCommandImplementation(o => ApplyBase((bool)o));
+		public ICommand ToggleBaseCommand => new DelegateCommand(ApplyBase);
 		#endregion
 
 		#endregion
@@ -121,13 +118,15 @@ namespace SeriesTracker.ViewModels
 			};
 			defaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
 
+			Themes = new[] { "SeriesTracker", "MaterialDesign" };
 			Swatches = new SwatchesProvider().Swatches;
 			SwatchesString = Swatches.Select(swatch => swatch.Name).ToArray();
 			SwatchesAccent = Swatches.Where(swatch => swatch.IsAccented).Select(swatch => swatch.Name).ToArray();
 
-			isDark = AppGlobal.Settings.IsDarkTheme;
-			primary = GetSelectedItem(SwatchesString, AppGlobal.Settings.Primary);
-			accent = GetSelectedItem(SwatchesString, AppGlobal.Settings.Accent);
+			isDark = AppGlobal.Settings.Theme.IsDark;
+			theme = GetSelectedItem(Themes, AppGlobal.Settings.Theme.Type);
+			primary = GetSelectedItem(SwatchesString, AppGlobal.Settings.Theme.Primary);
+			accent = GetSelectedItem(SwatchesString, AppGlobal.Settings.Theme.Accent);
 
 			categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}
@@ -148,9 +147,9 @@ namespace SeriesTracker.ViewModels
 			return list[GetSelectedIndex(list, selected)];
 		}
 
-		private static void ApplyBase(bool isDark)
+		private void ApplyBase()
 		{
-			new PaletteHelper().SetLightDark(isDark);
+			new SeriesTrackerPaletteHelper().SetLightDark(theme, isDark);
 		}
 	}
 }
