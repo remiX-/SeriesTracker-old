@@ -36,7 +36,7 @@
 			</materialDesign:DrawerHost.LeftDrawerContent>
 
 			<DockPanel>
-				<materialDesign:ColorZone Mode="Dark" Padding="16" DockPanel.Dock="Top">
+				<materialDesign:ColorZone Mode="Standard" Padding="16" DockPanel.Dock="Top">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
