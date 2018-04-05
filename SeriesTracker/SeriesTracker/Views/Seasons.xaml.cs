@@ -20,6 +20,7 @@ namespace SeriesTracker.Views
 		private ViewShowViewModel MyViewModel;
 
 		private bool busy = false;
+		private bool cancel = false;
 
 		private bool treeViewOpen = false;
 
@@ -117,6 +118,17 @@ namespace SeriesTracker.Views
 
 		private async void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
+			if (busy)
+			{
+				cancel = true;
+
+				while (busy)
+				{
+					await Task.Delay(250);
+				}
+			}
+
+			busy = true;
 			TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
 			if (item == null) return;
 
@@ -129,6 +141,9 @@ namespace SeriesTracker.Views
 
 			MyViewModel.ViewingSeason = newSeason;
 			await RefreshEpisodeView();
+
+			busy = false;
+			cancel = false;
 		}
 
 		private async void CM_MarkEpisodeWatched_Click(object sender, RoutedEventArgs e)
@@ -255,6 +270,8 @@ namespace SeriesTracker.Views
 
 			foreach (Episode episode in MyViewModel.Episodes)
 			{
+				if (cancel) break;
+
 				FileInfo fi = new FileInfo(episode.LocalImagePath);
 
 				if (!fi.Exists || fi.Length == 0)
