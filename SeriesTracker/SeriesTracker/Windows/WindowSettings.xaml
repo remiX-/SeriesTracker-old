@@ -16,40 +16,46 @@
 			<Button Style="{StaticResource btn-default-bottom-right}" Content="Save" Margin="0,0,5,0" Click="Btn_Accept_Click" IsDefault="True" />
 			<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="5,0,0,0" Click="Btn_Cancel_Click" IsCancel="True" />
 		</StackPanel>
-		
-		<GroupBox Header="General" Margin="0 0 5 0">
-			<StackPanel Margin="10">
-				<CheckBox x:Name="cb_IgnoreBrackets" Content="Ignore brackets in names" IsChecked="{Binding IgnoreBrackets}" />
 
-				<CheckBox x:Name="cb_ListedName" Content="Place 'The' at end of names" Margin="0,10,0,0" IsChecked="{Binding UseListedName}" />
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			
+			<GroupBox Grid.Column="0" Header="General" Margin="0 0 5 0">
+				<StackPanel Margin="10">
+					<CheckBox x:Name="cb_IgnoreBrackets" Content="Ignore brackets in names" IsChecked="{Binding IgnoreBrackets}" />
 
-				<CheckBox Content="Start on Windows start" Margin="0,10,0,0" IsChecked="{Binding StartOnWindowsStart}" />
+					<CheckBox x:Name="cb_ListedName" Content="Place 'The' at end of names" Margin="0,10,0,0" IsChecked="{Binding UseListedName}" />
 
-				<Label Content="Date Format" Margin="0,10,0,0" />
-				<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
-					<ComboBox x:Name="cmb_DateFormat"
+					<CheckBox Content="Start on Windows start" Margin="0,10,0,0" IsChecked="{Binding StartOnWindowsStart}" />
+
+					<Label Content="Date Format" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
+						<ComboBox x:Name="cmb_DateFormat"
 							  Width="165"
 							  ItemsSource="{Binding DateFormats}"
 							  SelectedItem="{Binding DateFormat}"/>
-					
-					<Label Content="{Binding ExampleDate}" Margin="10,0,0,0" VerticalAlignment="Center" />
-				</StackPanel>
 
-				<Label Content="View Default Sorting" Margin="0,10,0,0" />
-				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<ComboBox x:Name="cmb_DefaultSorting"
+						<Label Content="{Binding ExampleDate}" Margin="10,0,0,0" VerticalAlignment="Center" />
+					</StackPanel>
+
+					<Label Content="View Default Sorting" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<ComboBox x:Name="cmb_DefaultSorting"
 							  
 							  Width="165"
 							  ItemsSource="{Binding ColumnHeadings}"
 							  SelectedItem="{Binding DefaultSort}"/>
-					
-					<RadioButton Content="Asc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortAsc}" VerticalAlignment="Center" />
-					<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" VerticalAlignment="Center" />
-				</StackPanel>
 
-				<Label Content="Theme" Margin="0,10,0,0" />
-				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<ComboBox x:Name="cmb_Theme"
+						<RadioButton Content="Asc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortAsc}" VerticalAlignment="Center" />
+						<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" VerticalAlignment="Center" />
+					</StackPanel>
+
+					<Label Content="Theme" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<ComboBox x:Name="cmb_Theme"
 							  materialDesign:ComboBoxAssist.ClassicMode="True"
 							  materialDesign:ComboBoxAssist.ShowSelectedItem="True"
 							  Margin="0,5,0,0"
@@ -57,59 +63,60 @@
 							  ItemsSource="{Binding Themes, Mode=OneTime}"
 							  SelectedItem="{Binding Theme}" />
 
-					<StackPanel Orientation="Horizontal" Margin="16 0">
-						<TextBlock VerticalAlignment="Center">Light</TextBlock>
-						<ToggleButton Margin="8 0 16 0" IsChecked="{Binding IsDark}" Command="{Binding ToggleBaseCommand}" />
-						<TextBlock VerticalAlignment="Center">Dark</TextBlock>
+						<StackPanel Orientation="Horizontal" Margin="16 0">
+							<TextBlock VerticalAlignment="Center">Light</TextBlock>
+							<ToggleButton Margin="8 0 16 0" IsChecked="{Binding IsDark}" Command="{Binding ToggleBaseCommand}" />
+							<TextBlock VerticalAlignment="Center">Dark</TextBlock>
+						</StackPanel>
 					</StackPanel>
-				</StackPanel>
 
-				<Label Content="Primary" Margin="0,10,0,0" />
-				<ComboBox x:Name="cmb_Primary"
+					<Label Content="Primary" Margin="0,10,0,0" />
+					<ComboBox x:Name="cmb_Primary"
 						  materialDesign:ComboBoxAssist.ShowSelectedItem="True"
 						  Margin="0,5,0,0"
 						  Width="165"
 						  ItemsSource="{Binding SwatchesString, Mode=OneTime}"
 						  SelectedItem="{Binding Primary}" />
 
-				<Label Content="Accent" Margin="0,10,0,0" />
-				<ComboBox x:Name="cmb_Accent"
+					<Label Content="Accent" Margin="0,10,0,0" />
+					<ComboBox x:Name="cmb_Accent"
 						  materialDesign:ComboBoxAssist.ClassicMode="True"
 						  materialDesign:ComboBoxAssist.ShowSelectedItem="True"
 						  Margin="0,5,0,0"
 						  Width="165"
 						  ItemsSource="{Binding SwatchesAccent, Mode=OneTime}"
 						  SelectedItem="{Binding Accent}" />
-			</StackPanel>
-		</GroupBox>
-
-		<GroupBox Header="Extra" Margin="5 0 0 0">
-			<StackPanel Margin="10">
-				<Label Content="Local Series Folder" />
-				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<TextBox Text="{Binding LocalSeriesFolder, UpdateSourceTrigger=LostFocus}"/>
-					<Button Style="{StaticResource btn-default-top-right}" Content="Browse" Margin="10,0,0,0" Click="Btn_SeriesBrowse_Click"/>
 				</StackPanel>
+			</GroupBox>
 
-				<Label Content="User Lists" Margin="0,10,0,0" />
-				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<TextBox x:Name="txt_Category" KeyDown="Txt_Category_KeyPress" />
-					<Button Style="{StaticResource btn-default-top-right}" Content="Add" Margin="10,0,0,0" Click="Btn_AddCategory_Click" />
-				</StackPanel>
+			<GroupBox Grid.Column="1" Header="Extra" Margin="5 0 0 0">
+				<StackPanel Margin="10">
+					<Label Content="Local Series Folder" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<TextBox Text="{Binding LocalSeriesFolder, UpdateSourceTrigger=LostFocus}"/>
+						<Button Style="{StaticResource btn-default-top-right}" Content="Browse" Margin="10,0,0,0" Click="Btn_SeriesBrowse_Click"/>
+					</StackPanel>
 
-				<ListBox x:Name="lb_Categories"
+					<Label Content="User Lists" Margin="0,10,0,0" />
+					<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+						<TextBox x:Name="txt_Category" KeyDown="Txt_Category_KeyPress" />
+						<Button Style="{StaticResource btn-default-top-right}" Content="Add" Margin="10,0,0,0" Click="Btn_AddCategory_Click" />
+					</StackPanel>
+
+					<ListBox x:Name="lb_Categories"
 						 Margin="0,10,0,0"
 						 ContextMenuOpening="Lb_Categories_ContextMenuOpening"
 						 ItemsSource="{Binding Categories}"
 						 DisplayMemberPath="Name"
 						 SelectedValuePath="CategoryID">
-					<ListBox.ContextMenu>
-						<ContextMenu>
-							<MenuItem x:Name="cm_Remove" Header="Remove" Click="Cm_Remove_Click"/>
-						</ContextMenu>
-					</ListBox.ContextMenu>
-				</ListBox>
-			</StackPanel>
-		</GroupBox>
+						<ListBox.ContextMenu>
+							<ContextMenu>
+								<MenuItem x:Name="cm_Remove" Header="Remove" Click="Cm_Remove_Click"/>
+							</ContextMenu>
+						</ListBox.ContextMenu>
+					</ListBox>
+				</StackPanel>
+			</GroupBox>
+		</Grid>
 	</DockPanel>
 </Window>
