@@ -52,10 +52,10 @@ namespace SeriesTracker
 
 		public async Task<Show> RetrieveTvdbDataForSeriesAsync(int TvdbID)
 		{
-			TvdbAPI showData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", string.Format("https://api.thetvdb.com/series/{0}", TvdbID));
-			TvdbAPI actorData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", string.Format("https://api.thetvdb.com/series/{0}/actors", TvdbID));
-			TvdbAPI posterData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", string.Format("https://api.thetvdb.com/series/{0}/images/query?keyType=poster", TvdbID));
-			TvdbAPI bannerData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", string.Format("https://api.thetvdb.com/series/{0}/images/query?keyType=series", TvdbID));
+			ReturnResult<TvdbAPI> showData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}");
+			ReturnResult<TvdbAPI> actorData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}/actors");
+			ReturnResult<TvdbAPI> posterData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}/images/query?keyType=poster");
+			ReturnResult<TvdbAPI> bannerData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}/images/query?keyType=series");
 
 			List<Episode> episodes = new List<Episode>();
 			string next = "1";
@@ -63,7 +63,7 @@ namespace SeriesTracker
 			{
 				do
 				{
-					TvdbAPI episodeData = Request.ExecuteAndDeserialize("GET", string.Format("https://api.thetvdb.com/series/{0}/episodes?page={1}", TvdbID, next));
+					TvdbAPI episodeData = Request.ExecuteAndDeserialize("GET", $"https://api.thetvdb.com/series/{TvdbID}/episodes?page={next}");
 
 					var nextEpisodes = JsonConvert.DeserializeObject<List<Episode>>(episodeData.Data.ToString());
 					episodes.AddRange(nextEpisodes);
@@ -73,11 +73,11 @@ namespace SeriesTracker
 			});
 
 			// Put data together
-			Show show = JsonConvert.DeserializeObject<Show>(showData.Data.ToString());
-			show.Actors = JsonConvert.DeserializeObject<List<Actor>>(actorData.Data.ToString()).ToList();
+			Show show = JsonConvert.DeserializeObject<Show>(showData.Result.Data.ToString());
+			show.Actors = JsonConvert.DeserializeObject<List<Actor>>(actorData.Result.Data.ToString()).ToList();
 			show.Episodes = episodes;
-			show.Posters = JsonConvert.DeserializeObject<List<Image>>(posterData.Data.ToString());
-			show.Banners = JsonConvert.DeserializeObject<List<Image>>(bannerData.Data.ToString());
+			show.Posters = JsonConvert.DeserializeObject<List<Image>>(posterData.Result.Data.ToString());
+			show.Banners = JsonConvert.DeserializeObject<List<Image>>(bannerData.Result.Data.ToString());
 
 			show.DoWork();
 
@@ -227,37 +227,19 @@ namespace SeriesTracker
 		{
 			try
 			{
-				//string url = show.GetEZTVLink();
+				var episodeTorrents = await GetEpisodeTorrentList(show, episode);
 
-				//if (string.IsNullOrEmpty(url)) return null;
-
-				EztvAPI eztvData = await Request.ExecuteAndDeserializeAsync<EztvAPI>("GET", $"https://eztv.ag/api/get-torrents?imdb_id={show.ImdbId.Substring(2)}&limit=100");
-				var torrents = eztvData.Torrents;
-				var episodeLinks = new List<EztvTorrent>();
-
-				foreach (EztvTorrent torrent in torrents)
-				{
-					bool magnetLinkIsHD = torrent.IsHD();
-
-					foreach (string format in episodeFormats)
-					{
-						string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
-
-						if (torrent.Torrent_Url.ToLower().Contains(fullEpisode))
-						{
-							episodeLinks.Add(torrent);
-							break;
-						}
-					}
-				}
-
-				foreach (EztvTorrent link in episodeLinks)
+				foreach (EztvTorrent link in episodeTorrents)
 				{
 					if ((getHD && link.IsHD()) || (!getHD && !link.IsHD()))
 					{
 						return link;
 					}
 				}
+
+				//string url = show.GetEZTVLink();
+
+				//if (string.IsNullOrEmpty(url)) return null;
 
 				//CQ htmlText;
 				//using (WebClient client = new WebClient())
@@ -306,8 +288,8 @@ namespace SeriesTracker
 				if (string.IsNullOrEmpty(url)) return null;
 
 
-				EztvAPI eztvData = await Request.ExecuteAndDeserializeAsync<EztvAPI>("GET", $"https://eztv.ag/api/get-torrents?imdb_id={show.ImdbId.Substring(2)}&limit=100");
-				var torrents = eztvData.Torrents;
+				ReturnResult<EztvAPI> eztvData = await Request.ExecuteAndDeserializeAsync<EztvAPI>("GET", $"https://eztv.ag/api/get-torrents?imdb_id={show.ImdbId.Substring(2)}&limit=100");
+				var torrents = eztvData.Result.Torrents;
 				var episodeTorrents = new List<EztvTorrent>();
 
 				foreach (EztvTorrent torrent in torrents)

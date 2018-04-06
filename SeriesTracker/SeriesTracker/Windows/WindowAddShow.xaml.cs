@@ -66,11 +66,11 @@ namespace SeriesTracker.Windows
 				MyViewModel.SetStatus("Searching...", Brushes.Yellow);
 
 				string url = $"https://api.thetvdb.com/search/series?name={Uri.EscapeUriString(searchString)}";
-				TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
+				ReturnResult<TvdbAPI> jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
 
-				if (jsonData.Error == null)
+				if (jsonData.Result.Error == null)
 				{
-					List<Show> results = JsonConvert.DeserializeObject<List<Show>>(jsonData.Data.ToString())
+					List<Show> results = JsonConvert.DeserializeObject<List<Show>>(jsonData.Result.Data.ToString())
 						.Where(x => !x.SeriesName.Contains("Series Not Permitted"))
 						.ToList();
 					results.ForEach(s => s.SetupVariables());

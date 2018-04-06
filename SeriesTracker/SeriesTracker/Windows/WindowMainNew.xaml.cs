@@ -313,23 +313,26 @@ namespace SeriesTracker.Windows
 
 			try
 			{
-				TvdbAPI data = new TvdbAPI
-				{
-					Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NjAzMTIsImlkIjoiIiwib3JpZ19pYXQiOjE1MjE0NzM5MTJ9.2EJfa2BaDK6HELVqIiBp05os-bnvqdpNcVK-GkO2YM-cAxU3RXhHTBkvZUD02Bk9Zsby6NTxc-Tgqc3y5ftuL198BIAP5iZf_bdI9P262vBhrVwUL0a2zKhUZue3pTrNMOEiXiwu8ZOrOMuNF0qVFXd8HIO-Ax2S3K1lD4TZmujg6KGo4sW0DtSvN40spNID7DRw1cvJ7ye8xfznz1jnqg_H5Rxef1U7ASavuACX-puDZ29fADwR27ZYrb67oYqCywRhiNXuJskuFBeMuXkzofQEo9tygEN3L_cYS5S8UUxngI8InXSlNRw0_d1B7QSIYXxN7YEE5zEYO5nTpprKAg"
-				};
+				//TvdbAPI data = new TvdbAPI
+				//{
+				//	Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NjAzMTIsImlkIjoiIiwib3JpZ19pYXQiOjE1MjE0NzM5MTJ9.2EJfa2BaDK6HELVqIiBp05os-bnvqdpNcVK-GkO2YM-cAxU3RXhHTBkvZUD02Bk9Zsby6NTxc-Tgqc3y5ftuL198BIAP5iZf_bdI9P262vBhrVwUL0a2zKhUZue3pTrNMOEiXiwu8ZOrOMuNF0qVFXd8HIO-Ax2S3K1lD4TZmujg6KGo4sW0DtSvN40spNID7DRw1cvJ7ye8xfznz1jnqg_H5Rxef1U7ASavuACX-puDZ29fADwR27ZYrb67oYqCywRhiNXuJskuFBeMuXkzofQEo9tygEN3L_cYS5S8UUxngI8InXSlNRw0_d1B7QSIYXxN7YEE5zEYO5nTpprKAg"
+				//};
+
+				PopupNotification("Failed to contact theTVDB api!");
+				return;
 
 				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
-				data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
+				ReturnResult<TvdbAPI> data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
-				if (data != null && !string.IsNullOrEmpty(data.Token))
+				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
 				{
-					AppGlobal.thetvdbToken = data.Token;
+					AppGlobal.thetvdbToken = data.Result.Token;
 				}
 				else
 				{
 					GoOfflineMode();
 
-					MessageBox.Show("Failed to contact theTVDB api!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					PopupNotification("Failed to contact theTVDB api!");
 				}
 			}
 			catch (Exception ex)
@@ -509,11 +512,11 @@ namespace SeriesTracker.Windows
 
 			// Check for show updates
 			string url = string.Format("https://api.thetvdb.com/updated/query?fromTime={0}", Properties.Settings.Default.TvdbUpdateEpochTime);
-			TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
+			ReturnResult<TvdbAPI> jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
 
-			if (jsonData.Data != null)
+			if (jsonData.Result.Data != null)
 			{
-				List<TvdbUpdate> tvdbUpdates = JsonConvert.DeserializeObject<List<TvdbUpdate>>(jsonData.Data.ToString());
+				List<TvdbUpdate> tvdbUpdates = JsonConvert.DeserializeObject<List<TvdbUpdate>>(jsonData.Result.Data.ToString());
 
 				string _s = "Need to update {0} shows:";
 				List<Show> updates = new List<Show>();

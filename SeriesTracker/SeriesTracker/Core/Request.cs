@@ -39,7 +39,7 @@ namespace SeriesTracker.Core
 		//	return Execute(verb, url, null);
 		//}
 
-		public static async Task<object> ExecuteAsync(string verb, string url, string obj)
+		public static async Task<RequestResult> ExecuteAsync(string verb, string url, string obj)
 		{
 			var HttpRequest = CreateRequest(url, verb);
 
@@ -52,12 +52,22 @@ namespace SeriesTracker.Core
 			{
 				using (HttpWebResponse Response = (HttpWebResponse)(await HttpRequest.GetResponseAsync()))
 				{
-					return await ReadResponseAsync(Response);
+					return new RequestResult
+					{
+						Success = true,
+						Response = await ReadResponseAsync(Response)
+					};
 				}
 			}
 			catch (WebException error)
 			{
-				return ReadResponseFromError(error);
+				return new RequestResult
+				{
+					Success = false,
+					Error = error,
+					ErrorMessage = error.Message,
+					Response = ReadResponseFromError(error)
+				};
 			}
 		}
 
@@ -77,13 +87,21 @@ namespace SeriesTracker.Core
 			return ExecuteAndDeserialize(verb, url, null);
 		}
 
-		public static async Task<T> ExecuteAndDeserializeAsync<T>(string verb, string url, string obj)
+		public static async Task<ReturnResult<T>> ExecuteAndDeserializeAsync<T>(string verb, string url, string obj)
 		{
-			object response = await ExecuteAsync(verb, url, obj);
-			return await Task.Run(() => JsonConvert.DeserializeObject<T>(response.ToString()));
+			RequestResult response = await ExecuteAsync(verb, url, obj);
+
+			var returnResult = new ReturnResult<T> { RequestResult = response };
+
+			if (response.Success)
+			{
+				returnResult.Result = await Task.Run(() => JsonConvert.DeserializeObject<T>(response.Response.ToString()));
+			}
+
+			return returnResult;
 		}
 
-		public static async Task<T> ExecuteAndDeserializeAsync<T>(string verb, string url)
+		public static async Task<ReturnResult<T>> ExecuteAndDeserializeAsync<T>(string verb, string url)
 		{
 			return await ExecuteAndDeserializeAsync<T>(verb, url, null);
 		}
@@ -156,5 +174,22 @@ namespace SeriesTracker.Core
 				return streamReader.ReadToEnd();
 			}
 		}
+	}
+
+	public class RequestResult
+	{
+		public bool Success { get; set; }
+		public WebException Error { get; set; }
+		public string ErrorMessage { get; set; }
+
+		public object Response { get; set; }
+		//public T Result { get; set; }
+	}
+
+	public class ReturnResult<T>
+	{
+		public RequestResult RequestResult { get; set; }
+		
+		public T Result { get; set; }
 	}
 }
