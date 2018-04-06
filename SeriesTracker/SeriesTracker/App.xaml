@@ -10,15 +10,16 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<!-- Material Design -->
-				<ResourceDictionary Source="SeriesTrackerTheme.Light.xaml" />
-				<ResourceDictionary Source="SeriesTrackerTheme.Defaults.xaml" />
+				<ResourceDictionary Source="Themes/SeriesTrackerTheme.Light.xaml" />
+
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Red.xaml" />
 				<!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Blue.xaml" />-->
 				<!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.xaml" />-->
 
-				<ResourceDictionary Source="SeriesTrackerTheme.Overrides.xaml" />
+				<ResourceDictionary Source="Themes/SeriesTrackerTheme.Overrides.xaml" />
 
 				<!-- Include the Dragablz Material Design style -->
 				<ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MaterialDesign.xaml"/>

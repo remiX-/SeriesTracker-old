@@ -23,7 +23,7 @@ namespace SeriesTracker.Core
 					source = $"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.{(isDark ? "Dark" : "Light")}.xaml";
 					break;
 				default:
-					source = $"pack://application:,,,/{typeof(App).Namespace};component/SeriesTrackerTheme.{(isDark ? "Dark" : "Light")}.xaml";
+					source = $"pack://application:,,,/{typeof(App).Namespace};component/Themes/SeriesTrackerTheme.{(isDark ? "Dark" : "Light")}.xaml";
 					break;
 			}
 			var newResourceDictionary = new ResourceDictionary() { Source = new Uri(source) };

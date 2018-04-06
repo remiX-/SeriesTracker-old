@@ -154,6 +154,9 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddUserListDialog.xaml.cs">
+      <DependentUpon>AddUserListDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\EpisodeDownloadsDialog.xaml.cs">
       <DependentUpon>EpisodeDownloadsDialog.xaml</DependentUpon>
     </Compile>
@@ -221,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Dialogs\AddUserListDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\EpisodeDownloadsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -237,19 +244,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SeriesTrackerTheme.Light.xaml">
+    <Page Include="Themes\SeriesTrackerTheme.Light.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SeriesTrackerTheme.Dark.xaml">
+    <Page Include="Themes\SeriesTrackerTheme.Dark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SeriesTrackerTheme.Defaults.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SeriesTrackerTheme.Overrides.xaml">
+    <Page Include="Themes\SeriesTrackerTheme.Overrides.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
