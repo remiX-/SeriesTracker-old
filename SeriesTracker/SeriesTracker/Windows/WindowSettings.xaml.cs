@@ -39,21 +39,12 @@ namespace SeriesTracker.Windows
 		{
 			MyViewModel = DataContext as SettingsViewModel;
 
-			txt_SeriesFolder.Text = AppGlobal.Settings.LocalSeriesFolder;
-
-			cmb_DateFormat.SelectionChanged += Cmb_DateFormat_SelectionChanged;
-
 			cmb_Primary.SelectionChanged += Cmb_Primary_SelectionChanged;
 			cmb_Accent.SelectionChanged += Cmb_Accent_SelectionChanged;
 		}
 		#endregion
 
 		#region General
-		private void Cmb_DateFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			MyViewModel.ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, cmb_DateFormat.SelectedItem.ToString());
-		}
-
 		private void Cmb_Primary_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			new SeriesTrackerPaletteHelper().ReplacePrimaryColor((string)cmb_Primary.SelectedItem);
@@ -67,49 +58,21 @@ namespace SeriesTracker.Windows
 
 		#region Extra Group
 		#region Folders
-		private void btn_SeriesBrowse_Click(object sender, RoutedEventArgs e)
+		private void Btn_SeriesBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			WinForms.FolderBrowserDialog fbd = new WinForms.FolderBrowserDialog
 			{
 				Description = "Select the folder where your series are stored",
-				SelectedPath = txt_SeriesFolder.Text
+				SelectedPath = MyViewModel.LocalSeriesFolder
 			};
 
 			if (fbd.ShowDialog() == WinForms.DialogResult.OK)
-				txt_SeriesFolder.Text = fbd.SelectedPath;
+				MyViewModel.LocalSeriesFolder = fbd.SelectedPath;
 		}
-
-		//private void btn_MoviesBrowse_Click(object sender, RoutedEventArgs e)
-		//{
-		//	System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-		//	fbd.Description = "Select the folder where your movies are stored";
-		//	fbd.SelectedPath = txt_MoviesFolder.Text;
-
-		//	if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-		//		txt_MoviesFolder.Text = fbd.SelectedPath;
-		//}
-
-		private void txt_SeriesFolder_LostFocus(object sender, RoutedEventArgs e)
-		{
-			if (txt_SeriesFolder.Text.Length > 0 && !Directory.Exists(txt_SeriesFolder.Text))
-			{
-				MessageBox.Show("Path '" + txt_SeriesFolder.Text + "' does not exist", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Error);
-				txt_SeriesFolder.Text = "";
-			}
-		}
-
-		//private void txt_MoviesFolder_LostFocus(object sender, RoutedEventArgs e)
-		//{
-		//	if (txt_MoviesFolder.Text.Length > 0 && !Directory.Exists(txt_MoviesFolder.Text))
-		//	{
-		//		MessageBox.Show("Path '" + txt_MoviesFolder.Text + "' does not exist", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Error);
-		//		txt_MoviesFolder.Text = "";
-		//	}
-		//}
 		#endregion
 
 		#region Categories
-		private void btn_AddCategory_Click(object sender, RoutedEventArgs e)
+		private void Btn_AddCategory_Click(object sender, RoutedEventArgs e)
 		{
 			string newCategory = txt_Category.Text.Trim();
 
@@ -131,22 +94,22 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void txt_Category_KeyPress(object sender, KeyEventArgs e)
+		private void Txt_Category_KeyPress(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter)
 			{
-				btn_AddCategory_Click(this, null);
+				Btn_AddCategory_Click(this, null);
 				e.Handled = true;
 			}
 		}
 
-		private void lb_Categories_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+		private void Lb_Categories_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
 			if (lb_Categories.SelectedItems.Count == 0)
 				lb_Categories.ContextMenu.IsOpen = false;
 		}
 
-		private void cm_Remove_Click(object sender, RoutedEventArgs e)
+		private void Cm_Remove_Click(object sender, RoutedEventArgs e)
 		{
 			if (lb_Categories.SelectedIndex == -1)
 				return;
@@ -165,7 +128,7 @@ namespace SeriesTracker.Windows
 		#endregion
 		#endregion
 
-		private async void btn_Accept_Click(object sender, RoutedEventArgs e)
+		private async void Btn_Accept_Click(object sender, RoutedEventArgs e)
 		{
 			//ShowOverlay();
 
@@ -180,8 +143,8 @@ namespace SeriesTracker.Windows
 
 			AppGlobal.Settings.IgnoreBracketsInNames = MyViewModel.IgnoreBrackets;
 			AppGlobal.Settings.UseListedName = MyViewModel.UseListedName;
-			AppGlobal.Settings.DateFormat = MyViewModel.DateFormats[cmb_DateFormat.SelectedIndex];
-			AppGlobal.Settings.DefaultSortColumn = MyViewModel.ColumnHeadings[cmb_DefaultSorting.SelectedIndex];
+			AppGlobal.Settings.DateFormat = MyViewModel.DateFormat;
+			AppGlobal.Settings.DefaultSortColumn = MyViewModel.DefaultSort;
 			AppGlobal.Settings.DefaultSortDirection = MyViewModel.DefaultSortDirection;
 
 			// Theme
@@ -192,9 +155,9 @@ namespace SeriesTracker.Windows
 			#endregion
 
 			#region Extra
-			if (AppGlobal.Settings.LocalSeriesFolder != txt_SeriesFolder.Text)
+			if (AppGlobal.Settings.LocalSeriesFolder != MyViewModel.LocalSeriesFolder)
 			{
-				AppGlobal.Settings.LocalSeriesFolder = txt_SeriesFolder.Text;
+				AppGlobal.Settings.LocalSeriesFolder = MyViewModel.LocalSeriesFolder;
 
 				changes.Add("UpdateFolders");
 			}
@@ -231,7 +194,7 @@ namespace SeriesTracker.Windows
 			Close();
 		}
 
-		private void btn_Cancel_Click(object sender, RoutedEventArgs e)
+		private void Btn_Cancel_Click(object sender, RoutedEventArgs e)
 		{
 			Close();
 		}

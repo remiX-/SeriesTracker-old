@@ -4,10 +4,13 @@ using Prism.Mvvm;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.Windows;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SeriesTracker.ViewModels
@@ -20,7 +23,10 @@ namespace SeriesTracker.ViewModels
 		private bool useListedName;
 		private bool startOnWindowsStart;
 
+		private string dateFormat;
 		private string exampleDate;
+
+		private string defaultSort;
 		private ListSortDirection defaultSortDirection;
 
 		public string theme;
@@ -28,10 +34,13 @@ namespace SeriesTracker.ViewModels
 		private string primary;
 		private string accent;
 
+		private string localSeriesFolder;
+
 		private ObservableCollection<Category> categories;
 		#endregion
 
 		#region Properties
+		#region General
 		public bool IgnoreBrackets
 		{
 			get => ignoreBrackets;
@@ -53,14 +62,22 @@ namespace SeriesTracker.ViewModels
 		public string[] DateFormats { get; }
 		public int DateFormatIndex => GetSelectedIndex(DateFormats, AppGlobal.Settings.DateFormat);
 
-		public string ExampleDate
+		public string DateFormat
 		{
-			get => exampleDate;
-			set => SetProperty(ref exampleDate, value);
+			get => dateFormat;
+			set
+			{
+				SetProperty(ref dateFormat, value);
+
+				ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, dateFormat);
+			}
 		}
 
+		public string ExampleDate { get => exampleDate; set => SetProperty(ref exampleDate, value); }
+
 		public string[] ColumnHeadings { get; }
-		public int DefaultSortingIndex => GetSelectedIndex(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn);
+
+		public string DefaultSort { get => defaultSort; set => SetProperty(ref defaultSort, value); }
 
 		public ListSortDirection DefaultSortDirection
 		{
@@ -93,6 +110,26 @@ namespace SeriesTracker.ViewModels
 		public ICommand ToggleBaseCommand => new DelegateCommand(ApplyBase);
 		#endregion
 
+		#region Extra
+		public string LocalSeriesFolder
+		{
+			get { return localSeriesFolder; }
+			set
+			{
+				if (value.Length > 0 && value.Substring(value.Length - 1) != "/")
+					value += "/";
+
+				if (!Directory.Exists(value))
+				{
+					MessageBox.Show($"Path '{value}' does not exist", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Error);
+					value = string.Empty;
+				}
+
+				SetProperty(ref localSeriesFolder, value);
+			}
+		}
+		#endregion
+		#endregion
 		#endregion
 
 		public SettingsViewModel()
@@ -100,8 +137,6 @@ namespace SeriesTracker.ViewModels
 			ignoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
 			useListedName = AppGlobal.Settings.UseListedName;
 			startOnWindowsStart = AppGlobal.Settings.StartOnWindowsStart;
-
-			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
 
 			DateFormats = new[]
 			{
@@ -116,7 +151,11 @@ namespace SeriesTracker.ViewModels
 				"dd MMM, ddd",
 				"d MMM, ddd"
 			};
+			DateFormat = GetSelectedItem(DateFormats, AppGlobal.Settings.DateFormat);
+
+			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
 			defaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
+			defaultSort = GetSelectedItem(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn);
 
 			Themes = new[] { "SeriesTracker", "MaterialDesign" };
 			Swatches = new SwatchesProvider().Swatches;
@@ -127,6 +166,8 @@ namespace SeriesTracker.ViewModels
 			theme = GetSelectedItem(Themes, AppGlobal.Settings.Theme.Type);
 			primary = GetSelectedItem(SwatchesString, AppGlobal.Settings.Theme.Primary);
 			accent = GetSelectedItem(SwatchesString, AppGlobal.Settings.Theme.Accent);
+
+			localSeriesFolder = AppGlobal.Settings.LocalSeriesFolder;
 
 			categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}

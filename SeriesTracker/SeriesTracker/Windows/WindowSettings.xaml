@@ -13,8 +13,8 @@
 	</Window.DataContext>
 	<DockPanel Margin="10">
 		<StackPanel DockPanel.Dock="Bottom" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-			<Button Style="{StaticResource btn-default-bottom-right}" Content="Save" Margin="0,0,5,0" Click="btn_Accept_Click" IsDefault="True" />
-			<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="5,0,0,0" Click="btn_Cancel_Click" IsCancel="True" />
+			<Button Style="{StaticResource btn-default-bottom-right}" Content="Save" Margin="0,0,5,0" Click="Btn_Accept_Click" IsDefault="True" />
+			<Button Style="{StaticResource btn-default-bottom-right}" Content="Cancel" Margin="5,0,0,0" Click="Btn_Cancel_Click" IsCancel="True" />
 		</StackPanel>
 		
 		<GroupBox Header="General" Margin="0 0 5 0">
@@ -28,24 +28,23 @@
 				<Label Content="Date Format" Margin="0,10,0,0" />
 				<StackPanel Orientation="Horizontal"  Margin="0,5,0,0">
 					<ComboBox x:Name="cmb_DateFormat"
-								  HorizontalAlignment="Left"
-								  VerticalAlignment="Top"
-								  Width="165"
-								  ItemsSource="{Binding DateFormats}"
-								  SelectedIndex="{Binding DateFormatIndex, Mode=OneTime}" />
+							  Width="165"
+							  ItemsSource="{Binding DateFormats}"
+							  SelectedItem="{Binding DateFormat}"/>
+					
 					<Label Content="{Binding ExampleDate}" Margin="10,0,0,0" VerticalAlignment="Center" />
 				</StackPanel>
 
 				<Label Content="View Default Sorting" Margin="0,10,0,0" />
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
 					<ComboBox x:Name="cmb_DefaultSorting"
-								  HorizontalAlignment="Left"
-								  VerticalAlignment="Top"
-								  Width="165"
-								  ItemsSource="{Binding ColumnHeadings}"
-								  SelectedIndex="{Binding DefaultSortingIndex, Mode=OneTime}" />
-					<RadioButton Content="Asc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortAsc}" />
-					<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" />
+							  
+							  Width="165"
+							  ItemsSource="{Binding ColumnHeadings}"
+							  SelectedItem="{Binding DefaultSort}"/>
+					
+					<RadioButton Content="Asc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortAsc}" VerticalAlignment="Center" />
+					<RadioButton Content="Desc" Margin="10,0,0,0" IsChecked="{Binding DefaultSortDesc}" VerticalAlignment="Center" />
 				</StackPanel>
 
 				<Label Content="Theme" Margin="0,10,0,0" />
@@ -88,25 +87,25 @@
 			<StackPanel Margin="10">
 				<Label Content="Local Series Folder" />
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<TextBox x:Name="txt_SeriesFolder" LostFocus="txt_SeriesFolder_LostFocus"/>
-					<Button Style="{StaticResource btn-default-top-right}" Content="Browse" Margin="10,0,0,0" Click="btn_SeriesBrowse_Click"/>
+					<TextBox Text="{Binding LocalSeriesFolder, UpdateSourceTrigger=LostFocus}"/>
+					<Button Style="{StaticResource btn-default-top-right}" Content="Browse" Margin="10,0,0,0" Click="Btn_SeriesBrowse_Click"/>
 				</StackPanel>
 
 				<Label Content="User Lists" Margin="0,10,0,0" />
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-					<TextBox x:Name="txt_Category" KeyDown="txt_Category_KeyPress" />
-					<Button Style="{StaticResource btn-default-top-right}" Content="Add" Margin="10,0,0,0" Click="btn_AddCategory_Click" />
+					<TextBox x:Name="txt_Category" KeyDown="Txt_Category_KeyPress" />
+					<Button Style="{StaticResource btn-default-top-right}" Content="Add" Margin="10,0,0,0" Click="Btn_AddCategory_Click" />
 				</StackPanel>
 
 				<ListBox x:Name="lb_Categories"
 						 Margin="0,10,0,0"
-						 ContextMenuOpening="lb_Categories_ContextMenuOpening"
+						 ContextMenuOpening="Lb_Categories_ContextMenuOpening"
 						 ItemsSource="{Binding Categories}"
 						 DisplayMemberPath="Name"
 						 SelectedValuePath="CategoryID">
 					<ListBox.ContextMenu>
 						<ContextMenu>
-							<MenuItem x:Name="cm_Remove" Header="Remove" Click="cm_Remove_Click"/>
+							<MenuItem x:Name="cm_Remove" Header="Remove" Click="Cm_Remove_Click"/>
 						</ContextMenu>
 					</ListBox.ContextMenu>
 				</ListBox>
