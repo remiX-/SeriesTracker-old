@@ -1,7 +1,9 @@
 ﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Mvvm;
 using SeriesTracker.Core;
+using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
 using SeriesTracker.Windows;
 using System;
@@ -10,8 +12,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.ViewModels
 {
@@ -96,9 +100,9 @@ namespace SeriesTracker.ViewModels
 		}
 
 		public string Theme { get => theme; set { SetProperty(ref theme, value); ApplyBase(); } }
-		public bool IsDark { get => isDark; set => SetProperty(ref isDark, value); }
-		public string Primary { get => primary; set => SetProperty(ref primary, value); }
-		public string Accent { get => accent; set => SetProperty(ref accent, value); }
+		public bool IsDark { get => isDark; set { SetProperty(ref isDark, value); ApplyBase(); } }
+		public string Primary { get => primary; set { SetProperty(ref primary, value); ApplyPrimary(); } }
+		public string Accent { get => accent; set { SetProperty(ref accent, value); ApplyAccent(); }  }
 
 		public string[] Themes { get; }
 		public IEnumerable<Swatch> Swatches { get; }
@@ -107,7 +111,8 @@ namespace SeriesTracker.ViewModels
 
 		public ObservableCollection<Category> Categories { get => categories; set => SetProperty(ref categories, value); }
 
-		public ICommand ToggleBaseCommand => new DelegateCommand(ApplyBase);
+		public ICommand BrowseSeriesFolderCommand => new DelegateCommand(BrowseSeriesFolder);
+		public ICommand UserListAddCommand => new DelegateCommand(UserListAdd);
 		#endregion
 
 		#region Extra
@@ -190,7 +195,53 @@ namespace SeriesTracker.ViewModels
 
 		private void ApplyBase()
 		{
-			new SeriesTrackerPaletteHelper().SetLightDark(theme, isDark);
+			new SeriesTrackerPaletteHelper().SetLightDark(Theme, IsDark);
+		}
+
+		private void ApplyPrimary()
+		{
+			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(Primary);
+		}
+
+		private void ApplyAccent()
+		{
+			new SeriesTrackerPaletteHelper().ReplaceAccentColor(Accent);
+		}
+
+		private async void UserListAdd()
+		{
+			AddUserListDialog view = new AddUserListDialog();
+
+			var result = await DialogHost.Show(view, "SettingsDialog");
+
+			if (result is bool && !(bool)result)return;
+
+			string newCategory = view.txt_Name.Text;
+
+			if (string.IsNullOrEmpty(newCategory))
+				return;
+
+			bool exists = Categories.Any(x => x.Name.ToLower() == newCategory.ToLower());
+			if (!exists)
+			{
+				Category toAdd = new Category(CommonMethods.TitleCase(newCategory));
+
+				//categoriesToAdd.Add(toAdd);
+
+				Categories.Add(toAdd);
+			}
+		}
+
+		private void BrowseSeriesFolder()
+		{
+			WinForms.FolderBrowserDialog fbd = new WinForms.FolderBrowserDialog
+			{
+				Description = "Select the folder where your series are stored",
+				SelectedPath = LocalSeriesFolder
+			};
+
+			if (fbd.ShowDialog() == WinForms.DialogResult.OK)
+				LocalSeriesFolder = fbd.SelectedPath;
 		}
 	}
 }

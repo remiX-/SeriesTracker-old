@@ -1,11 +1,7 @@
-﻿using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,71 +34,12 @@ namespace SeriesTracker.Windows
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			MyViewModel = DataContext as SettingsViewModel;
-
-			cmb_Primary.SelectionChanged += Cmb_Primary_SelectionChanged;
-			cmb_Accent.SelectionChanged += Cmb_Accent_SelectionChanged;
-		}
-		#endregion
-
-		#region General
-		private void Cmb_Primary_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			new SeriesTrackerPaletteHelper().ReplacePrimaryColor((string)cmb_Primary.SelectedItem);
-		}
-
-		private void Cmb_Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			new SeriesTrackerPaletteHelper().ReplaceAccentColor((string)cmb_Accent.SelectedItem);
 		}
 		#endregion
 
 		#region Extra Group
-		#region Folders
-		private void Btn_SeriesBrowse_Click(object sender, RoutedEventArgs e)
-		{
-			WinForms.FolderBrowserDialog fbd = new WinForms.FolderBrowserDialog
-			{
-				Description = "Select the folder where your series are stored",
-				SelectedPath = MyViewModel.LocalSeriesFolder
-			};
-
-			if (fbd.ShowDialog() == WinForms.DialogResult.OK)
-				MyViewModel.LocalSeriesFolder = fbd.SelectedPath;
-		}
-		#endregion
 
 		#region Categories
-		private void Btn_AddCategory_Click(object sender, RoutedEventArgs e)
-		{
-			string newCategory = txt_Category.Text.Trim();
-
-			if (string.IsNullOrEmpty(newCategory))
-				return;
-
-			bool exists = MyViewModel.Categories.Any(x => x.Name.ToLower() == newCategory.ToLower());
-			if (!exists)
-			{
-				newCategory = CommonMethods.TitleCase(newCategory);
-
-				Category toAdd = new Category(newCategory);
-
-				categoriesToAdd.Add(toAdd);
-
-				txt_Category.Text = "";
-
-				MyViewModel.Categories.Add(toAdd);
-			}
-		}
-
-		private void Txt_Category_KeyPress(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Enter)
-			{
-				Btn_AddCategory_Click(this, null);
-				e.Handled = true;
-			}
-		}
-
 		private void Lb_Categories_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
 			if (lb_Categories.SelectedItems.Count == 0)
