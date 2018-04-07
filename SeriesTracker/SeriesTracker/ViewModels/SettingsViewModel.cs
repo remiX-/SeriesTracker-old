@@ -12,7 +12,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using WinForms = System.Windows.Forms;
@@ -41,6 +40,7 @@ namespace SeriesTracker.ViewModels
 		private string localSeriesFolder;
 
 		private ObservableCollection<Category> categories;
+		private Category category;
 		#endregion
 
 		#region Properties
@@ -110,9 +110,18 @@ namespace SeriesTracker.ViewModels
 		public string[] SwatchesAccent { get; }
 
 		public ObservableCollection<Category> Categories { get => categories; set => SetProperty(ref categories, value); }
+		public Category Category
+		{
+			get => category;
+			set => SetProperty(ref category, value);
+		}
 
 		public ICommand BrowseSeriesFolderCommand => new DelegateCommand(BrowseSeriesFolder);
+
 		public ICommand UserListAddCommand => new DelegateCommand(UserListAdd);
+		public ICommand UserListRemoveCommand => new DelegateCommand(UserListRemove);
+
+		public string NewUserList { get; set; }
 		#endregion
 
 		#region Extra
@@ -210,26 +219,25 @@ namespace SeriesTracker.ViewModels
 
 		private async void UserListAdd()
 		{
-			AddUserListDialog view = new AddUserListDialog();
+			NewUserList = string.Empty;
 
-			var result = await DialogHost.Show(view, "SettingsDialog");
+			var result = await DialogHost.Show(new AddUserListDialog(), "SettingsDialog");
+			if (result is bool && !(bool)result) return;
 
-			if (result is bool && !(bool)result)return;
+			if (string.IsNullOrEmpty(NewUserList)) return;
 
-			string newCategory = view.txt_Name.Text;
-
-			if (string.IsNullOrEmpty(newCategory))
-				return;
-
-			bool exists = Categories.Any(x => x.Name.ToLower() == newCategory.ToLower());
+			bool exists = Categories.Any(x => x.Name.ToLower() == NewUserList.ToLower());
 			if (!exists)
 			{
-				Category toAdd = new Category(CommonMethods.TitleCase(newCategory));
-
-				//categoriesToAdd.Add(toAdd);
+				Category toAdd = new Category(CommonMethods.TitleCase(NewUserList));
 
 				Categories.Add(toAdd);
 			}
+		}
+
+		private void UserListRemove()
+		{
+			Categories.Remove(Category);
 		}
 
 		private void BrowseSeriesFolder()
