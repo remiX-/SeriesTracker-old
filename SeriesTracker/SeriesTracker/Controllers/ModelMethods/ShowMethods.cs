@@ -300,7 +300,7 @@ namespace SeriesTracker
 					{
 						string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
 
-						if (torrent.Torrent_Url.ToLower().Contains(fullEpisode))
+						if (torrent.Title.ToLower().Contains(fullEpisode))
 						{
 							episodeTorrents.Add(torrent);
 							break;
@@ -328,7 +328,7 @@ namespace SeriesTracker
 				if (torrent != null)
 				{
 					hasMagnet = true;
-					CommonMethods.StartProcess(torrent.Torrent_Url);
+					CommonMethods.StartProcess(torrent.Magnet_Url);
 				}
 			}
 

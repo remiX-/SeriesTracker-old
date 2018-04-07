@@ -42,10 +42,12 @@ namespace SeriesTracker.Models
 		private int id;
 		private string hash;
 
+		private string title;
 		private string filename;
+
 		private string episode_url;
 		private string torrent_url;
-		private string title;
+		private string magnet_url;
 
 
 		private string date_released_unix;
@@ -54,10 +56,12 @@ namespace SeriesTracker.Models
 		public int Id { get => id; set => id = value; }
 		public string Hash { get => hash; set => hash = value; }
 
+		public string Title { get => title; set => title = value; }
 		public string Filename { get => filename; set => filename = value; }
+
 		public string Episode_Url { get => episode_url; set => episode_url = value; }
 		public string Torrent_Url { get => torrent_url; set => torrent_url = value; }
-		public string Title { get => title; set => title = value; }
+		public string Magnet_Url { get => magnet_url; set => magnet_url = value; }
 
 		public string Date_Released_Unix { get => date_released_unix; set => date_released_unix = value; }
 		public string Size_Bytes { get => size_bytes; set => size_bytes = value; }
