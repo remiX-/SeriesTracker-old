@@ -9,7 +9,6 @@ namespace SeriesTracker.Core
 		public static Database Db = new Database();
 
 		// Tvdb settings
-		public static string thetvAPIKey = "36D8AD8AE0103B6C";
 		public static string thetvdbToken = "";
 		public static int thetvdbTimezone = -4;
 

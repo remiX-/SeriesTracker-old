@@ -321,7 +321,7 @@ namespace SeriesTracker.Windows
 				PopupNotification("Failed to contact theTVDB api!");
 				return;
 
-				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
+				JObject jObject = new JObject { ["apikey"] = AppPrivate.thetvdbAPIKey };
 				ReturnResult<TvdbAPI> data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
 				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))

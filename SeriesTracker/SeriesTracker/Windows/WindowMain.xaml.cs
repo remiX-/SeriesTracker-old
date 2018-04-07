@@ -822,7 +822,7 @@ namespace SeriesTracker.Windows
 				//	Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjEzOTE4MjMsImlkIjoiIiwib3JpZ19pYXQiOjE1MjEzMDU0MjN9.NSjcWGyXbKtejG6aw07yr2xVtY1GKeBsZi1VO-vxScTl9-Dtjn1Fw30wlakP333yjcnxV2e_h_P7MWAls3NXaqiBv5fxfhX2kRyB5kG3mra9AVTEkIZ26LndeUcyTDtyHGldmPWRNyWCa3mHQlC2k7zQcqm2KzddA-HGMAIyjw9n0PBhbba6ZFAgJLFdFdXYL8OeZqRTojxUr-3vVPlSFMEwspzzzLohSlt2XLeUBcgY866k3Qhx9bdUFiK456-Y-kLzG0gkewknBC84bw35AO1r2mDKWX5uCqebWnlgsbzK6Kae3qcm4v-xLju_T-kCJvIp4xT9EoCmESeqKu6cuA"
 				//};
 
-				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
+				JObject jObject = new JObject { ["apikey"] = AppPrivate.thetvdbAPIKey };
 				ReturnResult<TvdbAPI> data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
 				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
