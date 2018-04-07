@@ -1,13 +1,15 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.ViewModels;
+﻿using SeriesTracker.ViewModels;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowLoggingIn : MetroWindow
+	public partial class WindowLoggingIn : Window
 	{
+		#region Variables
 		// ViewModel
-		private ViewLoggingInViewModel MyViewModel;
+		private LoggingInViewModel MyViewModel;
+		#endregion
 
 		public string LoginText { get; set; }
 
@@ -16,9 +18,9 @@ namespace SeriesTracker.Windows
 			InitializeComponent();
 		}
 
-		private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			MyViewModel = (ViewLoggingInViewModel)DataContext;
+			MyViewModel = DataContext as LoggingInViewModel;
 			MyViewModel.LoginText += Properties.Settings.Default.UserEmail;
 		}
 

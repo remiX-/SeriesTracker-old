@@ -23,7 +23,7 @@ namespace SeriesTracker.Core
 			FilesDirectory = Path.Combine(RootDirectory, "files");
 			SeriesDirectory = Path.Combine(RootDirectory, "series");
 
-			SettingsFile = Path.Combine(FilesDirectory, "settings.xml");
+			SettingsFile = Path.Combine(FilesDirectory, "settings.json");
 			EztvIDFile = Path.Combine(FilesDirectory, "eztvid");
 		}
 	}

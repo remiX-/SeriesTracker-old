@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace SeriesTracker
+namespace SeriesTracker.Utilities.Converters
 {
 	[ValueConversion(typeof(Visibility), typeof(bool))]
 	public class VisibilityToBoolConverter : IValueConverter
@@ -12,8 +12,7 @@ namespace SeriesTracker
 			return (Visibility)value == Visibility.Visible;
 		}
 
-		public object ConvertBack(object value, Type targetType, object parameter,
-			System.Globalization.CultureInfo culture)
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
 			if ((bool)value) return Visibility.Visible;
 			else return Visibility.Collapsed;

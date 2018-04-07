@@ -14,6 +14,8 @@ namespace SeriesTracker
 {
 	public class ShowMethods : IShowRepository
 	{
+		string[] episodeFormats = { "s{0:d2}e{1:d2}", "{0}x{1:d2}", "{0:d2}x{1:d2}" };
+
 		public Show RetrieveTvdbDataForSeries(int TvdbID)
 		{
 			TvdbAPI showData = Request.ExecuteAndDeserialize("GET", string.Format("https://api.thetvdb.com/series/{0}", TvdbID));
@@ -50,10 +52,10 @@ namespace SeriesTracker
 
 		public async Task<Show> RetrieveTvdbDataForSeriesAsync(int TvdbID)
 		{
-			TvdbAPI showData = await Request.ExecuteAndDeserializeAsync("GET", string.Format("https://api.thetvdb.com/series/{0}", TvdbID));
-			TvdbAPI actorData = await Request.ExecuteAndDeserializeAsync("GET", string.Format("https://api.thetvdb.com/series/{0}/actors", TvdbID));
-			TvdbAPI posterData = await Request.ExecuteAndDeserializeAsync("GET", string.Format("https://api.thetvdb.com/series/{0}/images/query?keyType=poster", TvdbID));
-			TvdbAPI bannerData = await Request.ExecuteAndDeserializeAsync("GET", string.Format("https://api.thetvdb.com/series/{0}/images/query?keyType=series", TvdbID));
+			ReturnResult<TvdbAPI> showData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}");
+			ReturnResult<TvdbAPI> actorData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}/actors");
+			ReturnResult<TvdbAPI> posterData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}/images/query?keyType=poster");
+			ReturnResult<TvdbAPI> bannerData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", $"https://api.thetvdb.com/series/{TvdbID}/images/query?keyType=series");
 
 			List<Episode> episodes = new List<Episode>();
 			string next = "1";
@@ -61,7 +63,7 @@ namespace SeriesTracker
 			{
 				do
 				{
-					TvdbAPI episodeData = Request.ExecuteAndDeserialize("GET", string.Format("https://api.thetvdb.com/series/{0}/episodes?page={1}", TvdbID, next));
+					TvdbAPI episodeData = Request.ExecuteAndDeserialize("GET", $"https://api.thetvdb.com/series/{TvdbID}/episodes?page={next}");
 
 					var nextEpisodes = JsonConvert.DeserializeObject<List<Episode>>(episodeData.Data.ToString());
 					episodes.AddRange(nextEpisodes);
@@ -71,11 +73,11 @@ namespace SeriesTracker
 			});
 
 			// Put data together
-			Show show = JsonConvert.DeserializeObject<Show>(showData.Data.ToString());
-			show.Actors = JsonConvert.DeserializeObject<List<Actor>>(actorData.Data.ToString()).ToList();
+			Show show = JsonConvert.DeserializeObject<Show>(showData.Result.Data.ToString());
+			show.Actors = JsonConvert.DeserializeObject<List<Actor>>(actorData.Result.Data.ToString()).ToList();
 			show.Episodes = episodes;
-			show.Posters = JsonConvert.DeserializeObject<List<Image>>(posterData.Data.ToString());
-			show.Banners = JsonConvert.DeserializeObject<List<Image>>(bannerData.Data.ToString());
+			show.Posters = JsonConvert.DeserializeObject<List<Image>>(posterData.Result.Data.ToString());
+			show.Banners = JsonConvert.DeserializeObject<List<Image>>(bannerData.Result.Data.ToString());
 
 			show.DoWork();
 
@@ -83,76 +85,6 @@ namespace SeriesTracker
 			File.WriteAllText(show.LocalJsonPath, JsonConvert.SerializeObject(show));
 
 			return show;
-		}
-
-		public async Task<bool> DownloadEpisode(Show show, Episode episode)
-		{
-			bool hasMagnet = false;
-
-			if (show.HasEztvData())
-			{
-				string magnet = await GetMagnetForEpisode(show.GetEZTVLink(), episode, false);
-				if (!string.IsNullOrWhiteSpace(magnet))
-				{
-					hasMagnet = true;
-					CommonMethods.StartProcess(magnet);
-				}
-			}
-
-			if (!hasMagnet)
-			{
-				string searchText = show.SeriesName;
-				searchText = CommonMethods.GetNameWithoutBrackets(searchText);
-				searchText = CommonMethods.RemoveNonAlphabetLetters(searchText);
-
-				string url = string.Format(AppGlobal.searchURL, searchText, episode.FullEpisodeString);
-				CommonMethods.StartProcess(url);
-			}
-
-			return hasMagnet;
-		}
-
-		public async Task<string> GetMagnetForEpisode(string url, Episode episode, bool getHD = false)
-		{
-			try
-			{
-				if (string.IsNullOrEmpty(url)) return null;
-
-				CQ htmlText;
-				using (WebClient client = new WebClient())
-				{
-					htmlText = await client.DownloadStringTaskAsync(url);
-				}
-
-				if (htmlText == null) return null;
-
-				string[] episodeFormats = { "s{0:d2}e{1:d2}", "{0}x{1:d2}", "{0:d2}x{1:d2}" };
-
-				var magnetLinks = htmlText.Select("a[class='magnet']").ToList();
-				foreach (var obj in magnetLinks)
-				{
-					string magnetLink = obj.GetAttribute("href");
-
-					foreach (string format in episodeFormats)
-					{
-						string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber).ToLower();
-
-						if (magnetLink.ToLower().Contains(fullEpisode) &&
-							(getHD ?
-							(magnetLink.Contains("1080p") || magnetLink.Contains("720p")) :
-							(!magnetLink.Contains("1080p") && !magnetLink.Contains("720p"))))
-						{
-							return magnetLink;
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
-
-			return null;
 		}
 
 		public Eztv GetEztvShowDetails(string showName)
@@ -231,13 +163,13 @@ namespace SeriesTracker
 					}
 				}
 
-				EZTVShowList = EZTVShowList.OrderBy(i => int.Parse(i.ID)).ToList();
+				EZTVShowList = EZTVShowList.OrderBy(i => int.Parse(i.Id)).ToList();
 
 				using (StreamWriter writer = File.AppendText(AppGlobal.Paths.EztvIDFile))
 				{
 					foreach (Eztv e in EZTVShowList)
 					{
-						writer.WriteLine(e.ID + "|" + e.Href + "|" + e.Name);
+						writer.WriteLine(e.Id + "|" + e.Href + "|" + e.Name);
 					}
 				}
 
@@ -275,13 +207,13 @@ namespace SeriesTracker
 					}
 				}
 
-				EZTVShowList = EZTVShowList.OrderBy(i => int.Parse(i.ID)).ToList();
+				EZTVShowList = EZTVShowList.OrderBy(i => int.Parse(i.Id)).ToList();
 
 				using (StreamWriter writer = File.AppendText(AppGlobal.Paths.EztvIDFile))
 				{
 					foreach (Eztv e in EZTVShowList)
 					{
-						await writer.WriteLineAsync(e.ID + "|" + e.Href + "|" + e.Name);
+						await writer.WriteLineAsync(e.Id + "|" + e.Href + "|" + e.Name);
 					}
 				}
 
@@ -289,6 +221,128 @@ namespace SeriesTracker
 			}
 
 			return false;
+		}
+
+		private async Task<EztvTorrent> GetMagnetForEpisode(Show show, Episode episode, bool getHD = false)
+		{
+			try
+			{
+				var episodeTorrents = await GetEpisodeTorrentList(show, episode);
+
+				foreach (EztvTorrent link in episodeTorrents)
+				{
+					if ((getHD && link.IsHD()) || (!getHD && !link.IsHD()))
+					{
+						return link;
+					}
+				}
+
+				//string url = show.GetEZTVLink();
+
+				//if (string.IsNullOrEmpty(url)) return null;
+
+				//CQ htmlText;
+				//using (WebClient client = new WebClient())
+				//{
+				//	htmlText = await client.DownloadStringTaskAsync(url);
+				//}
+
+				//if (htmlText == null) return null;
+
+				//List<IDomObject> magnetLinks = htmlText.Select("a[class='magnet']").ToList();
+				//List<string> episodeMagnetLinks = new List<string>();
+
+				//foreach (var obj in magnetLinks)
+				//{
+				//	string magnetLink = obj.GetAttribute("href");
+				//	bool magnetLinkIsHD = magnetLink.Contains("720p") || magnetLink.Contains("1080p");
+
+				//	foreach (string format in episodeFormats)
+				//	{
+				//		string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
+
+				//		if (magnetLink.ToLower().Contains(fullEpisode))
+				//		{
+				//			episodeMagnetLinks.Add(magnetLink);
+				//			break;
+				//			//if (getHD && magnetLinkIsHD)
+				//			//	return magnetLink;
+				//		}
+				//	}
+				//}
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+
+			return null;
+		}
+
+		public async Task<List<EztvTorrent>> GetEpisodeTorrentList(Show show, Episode episode)
+		{
+			try
+			{
+				string url = show.GetEZTVLink();
+
+				if (string.IsNullOrEmpty(url)) return null;
+
+
+				ReturnResult<EztvAPI> eztvData = await Request.ExecuteAndDeserializeAsync<EztvAPI>("GET", $"https://eztv.ag/api/get-torrents?imdb_id={show.ImdbId.Substring(2)}&limit=100");
+				var torrents = eztvData.Result.Torrents;
+				var episodeTorrents = new List<EztvTorrent>();
+
+				foreach (EztvTorrent torrent in torrents)
+				{
+					bool magnetLinkIsHD = torrent.IsHD();
+
+					foreach (string format in episodeFormats)
+					{
+						string fullEpisode = string.Format(format, episode.AiredSeason, episode.AiredEpisodeNumber);
+
+						if (torrent.Title.ToLower().Contains(fullEpisode))
+						{
+							episodeTorrents.Add(torrent);
+							break;
+						}
+					}
+				}
+
+				return episodeTorrents;
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+
+			return null;
+		}
+
+		public async Task<bool> DownloadEpisode(Show show, Episode episode)
+		{
+			bool hasMagnet = false;
+
+			if (show.HasEztvData())
+			{
+				EztvTorrent torrent = await GetMagnetForEpisode(show, episode, true);
+				if (torrent != null)
+				{
+					hasMagnet = true;
+					CommonMethods.StartProcess(torrent.Magnet_Url);
+				}
+			}
+
+			if (!hasMagnet)
+			{
+				string searchText = show.SeriesName;
+				searchText = CommonMethods.GetNameWithoutBrackets(searchText);
+				searchText = CommonMethods.RemoveNonAlphabetLetters(searchText);
+
+				string url = string.Format(AppGlobal.searchURL, searchText, episode.FullEpisodeString);
+				CommonMethods.StartProcess(url);
+			}
+
+			return hasMagnet;
 		}
 	}
 }

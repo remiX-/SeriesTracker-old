@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using SeriesTracker.Core;
 using System.IO;
 using System.Threading;
@@ -8,15 +9,16 @@ namespace SeriesTracker
 {
 	public partial class App : Application
 	{
-		private Mutex myMutex;
+		private Mutex AppMutex { get; set; }
 
 		public App()
 		{
+
 		}
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			myMutex = new Mutex(true, AppGlobal.AssemblyTitle, out bool aIsNewInstance);
+			AppMutex = new Mutex(true, AppGlobal.AssemblyTitle, out bool aIsNewInstance);
 			if (!aIsNewInstance)
 			{
 				Current.Shutdown();
@@ -38,7 +40,9 @@ namespace SeriesTracker
 			else
 				AppGlobal.Settings = new AppSettings(true);
 
-			ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
+			new SeriesTrackerPaletteHelper().SetLightDark(AppGlobal.Settings.Theme.Type, AppGlobal.Settings.Theme.IsDark);
+			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Theme.Primary);
+			new SeriesTrackerPaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Theme.Accent);
 		}
 	}
 }

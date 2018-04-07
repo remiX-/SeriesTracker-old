@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace SeriesTracker.ViewModels
 {
-	public class MainViewModel : BindableBase
+	internal class MainViewModel : BindableBase
 	{
 		#region Variables
 		public CollectionViewSource Collection { get; } = new CollectionViewSource();

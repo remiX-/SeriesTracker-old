@@ -1,11 +1,20 @@
-﻿using Prism.Mvvm;
+﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
+using Prism.Commands;
+using Prism.Mvvm;
 using SeriesTracker.Core;
+using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
 using SeriesTracker.Windows;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.ViewModels
 {
@@ -15,91 +24,232 @@ namespace SeriesTracker.ViewModels
 		#region Fields
 		private bool ignoreBrackets;
 		private bool useListedName;
+		private bool startOnWindowsStart;
+
+		private string dateFormat;
 		private string exampleDate;
+
+		private string defaultSort;
 		private ListSortDirection defaultSortDirection;
 
+		public string theme;
+		private bool isDark;
+		private string primary;
+		private string accent;
+
+		private string localSeriesFolder;
+
 		private ObservableCollection<Category> categories;
+		private Category category;
 		#endregion
 
 		#region Properties
+		#region General
 		public bool IgnoreBrackets
 		{
-			get { return ignoreBrackets; }
-			set { ignoreBrackets = value; }
+			get => ignoreBrackets;
+			set => ignoreBrackets = value;
 		}
 
 		public bool UseListedName
 		{
-			get { return useListedName; }
-			set { useListedName = value; }
+			get => useListedName;
+			set => useListedName = value;
 		}
 
-		public List<string> DateFormats { get; protected set; }
-		public int DateFormatIndex { get { return GetSelectedTheme(DateFormats, AppGlobal.Settings.DateFormat); } }
-
-		public string ExampleDate
+		public bool StartOnWindowsStart
 		{
-			get { return exampleDate; }
-			set { SetProperty(ref exampleDate, value); }
+			get => startOnWindowsStart;
+			set => startOnWindowsStart = value;
 		}
 
-		public List<string> ColumnHeadings { get; }
-		public int DefaultSortingIndex { get { return GetSelectedTheme(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn); } }
+		public string[] DateFormats { get; }
+		public int DateFormatIndex => GetSelectedIndex(DateFormats, AppGlobal.Settings.DateFormat);
+
+		public string DateFormat
+		{
+			get => dateFormat;
+			set
+			{
+				SetProperty(ref dateFormat, value);
+
+				ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, dateFormat);
+			}
+		}
+
+		public string ExampleDate { get => exampleDate; set => SetProperty(ref exampleDate, value); }
+
+		public string[] ColumnHeadings { get; }
+
+		public string DefaultSort { get => defaultSort; set => SetProperty(ref defaultSort, value); }
+
 		public ListSortDirection DefaultSortDirection
 		{
-			get { return defaultSortDirection; }
-			set { defaultSortDirection = value; }
+			get => defaultSortDirection;
+			set => defaultSortDirection = value;
 		}
 		public bool DefaultSortAsc
 		{
-			get { return DefaultSortDirection == ListSortDirection.Ascending; }
-			set { DefaultSortDirection = value ? ListSortDirection.Ascending : ListSortDirection.Descending; }
+			get => DefaultSortDirection == ListSortDirection.Ascending;
+			set => DefaultSortDirection = value ? ListSortDirection.Ascending : ListSortDirection.Descending;
 		}
 		public bool DefaultSortDesc
 		{
-			get { return DefaultSortDirection == ListSortDirection.Descending; }
-			set { DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending; }
+			get => DefaultSortDirection == ListSortDirection.Descending;
+			set => DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending;
 		}
 
-		public List<string> Themes { get; protected set; }
-		public int ThemeIndex { get { return GetSelectedTheme(Themes, AppGlobal.Settings.Theme); } }
+		public string Theme { get => theme; set { SetProperty(ref theme, value); ApplyBase(); } }
+		public bool IsDark { get => isDark; set { SetProperty(ref isDark, value); ApplyBase(); } }
+		public string Primary { get => primary; set { SetProperty(ref primary, value); ApplyPrimary(); } }
+		public string Accent { get => accent; set { SetProperty(ref accent, value); ApplyAccent(); }  }
 
-		public List<string> Accents { get; protected set; }
-		public int AccentIndex { get { return GetSelectedTheme(Accents, AppGlobal.Settings.Accent); } }
+		public string[] Themes { get; }
+		public IEnumerable<Swatch> Swatches { get; }
+		public string[] SwatchesString { get; }
+		public string[] SwatchesAccent { get; }
 
-		public ObservableCollection<Category> Categories
+		public ObservableCollection<Category> Categories { get => categories; set => SetProperty(ref categories, value); }
+		public Category Category
 		{
-			get { return categories; }
-			set { SetProperty(ref categories, value); }
+			get => category;
+			set => SetProperty(ref category, value);
 		}
+
+		public ICommand BrowseSeriesFolderCommand => new DelegateCommand(BrowseSeriesFolder);
+
+		public ICommand UserListAddCommand => new DelegateCommand(UserListAdd);
+		public ICommand UserListRemoveCommand => new DelegateCommand(UserListRemove);
+
+		public string NewUserList { get; set; }
+		#endregion
+
+		#region Extra
+		public string LocalSeriesFolder
+		{
+			get { return localSeriesFolder; }
+			set
+			{
+				if (value.Length > 0 && value.Substring(value.Length - 1) != "/")
+					value += "/";
+
+				if (!Directory.Exists(value))
+				{
+					MessageBox.Show($"Path '{value}' does not exist", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Error);
+					value = string.Empty;
+				}
+
+				SetProperty(ref localSeriesFolder, value);
+			}
+		}
+		#endregion
 		#endregion
 		#endregion
 
 		public SettingsViewModel()
 		{
-			IgnoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
-			UseListedName = AppGlobal.Settings.UseListedName;
+			ignoreBrackets = AppGlobal.Settings.IgnoreBracketsInNames;
+			useListedName = AppGlobal.Settings.UseListedName;
+			startOnWindowsStart = AppGlobal.Settings.StartOnWindowsStart;
 
-			ColumnHeadings = WindowMain.ColumnHeadings;
+			DateFormats = new[]
+			{
+				"dd/MM/yyyy",
+				"dd/M/yyyy",
+				"d/MM/yyyy",
+				"d/M/yyyy",
+				"d MMM yyyy",
+				"dd MMM yyyy",
+				"d MMMM yyyy",
+				"dd MMMM yyyy",
+				"dd MMM, ddd",
+				"d MMM, ddd"
+			};
+			DateFormat = GetSelectedItem(DateFormats, AppGlobal.Settings.DateFormat);
 
-			DateFormats = new List<string> { "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy", "d/M/yyyy", "d MMM yyyy", "dd MMM yyyy", "d MMMM yyyy", "dd MMMM yyyy", "dd MMM, ddd", "d MMM, ddd" };
-			DefaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
+			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
+			defaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
+			defaultSort = GetSelectedItem(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn);
 
-			Themes = new List<string> { "BaseLight", "BaseDark" };
-			Accents = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+			Themes = new[] { "SeriesTracker", "MaterialDesign" };
+			Swatches = new SwatchesProvider().Swatches;
+			SwatchesString = Swatches.Select(swatch => swatch.Name).ToArray();
+			SwatchesAccent = Swatches.Where(swatch => swatch.IsAccented).Select(swatch => swatch.Name).ToArray();
 
-			Categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
+			isDark = AppGlobal.Settings.Theme.IsDark;
+			theme = GetSelectedItem(Themes, AppGlobal.Settings.Theme.Type);
+			primary = GetSelectedItem(SwatchesString, AppGlobal.Settings.Theme.Primary);
+			accent = GetSelectedItem(SwatchesString, AppGlobal.Settings.Theme.Accent);
+
+			localSeriesFolder = AppGlobal.Settings.LocalSeriesFolder;
+
+			categories = new ObservableCollection<Category>(AppGlobal.User.Categories.OrderBy(x => x.Name));
 		}
 
-		private int GetSelectedTheme(List<string> list, string selected)
+		private int GetSelectedIndex(string[] list, string selected)
 		{
-			for (int i = 0; i < list.Count; i++)
+			for (int i = 0; i < list.Length; i++)
 			{
 				if (selected == list[i])
 					return i;
 			}
 
 			return 0;
+		}
+
+		private string GetSelectedItem(string[] list, string selected)
+		{
+			return list[GetSelectedIndex(list, selected)];
+		}
+
+		private void ApplyBase()
+		{
+			new SeriesTrackerPaletteHelper().SetLightDark(Theme, IsDark);
+		}
+
+		private void ApplyPrimary()
+		{
+			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(Primary);
+		}
+
+		private void ApplyAccent()
+		{
+			new SeriesTrackerPaletteHelper().ReplaceAccentColor(Accent);
+		}
+
+		private async void UserListAdd()
+		{
+			NewUserList = string.Empty;
+
+			var result = await DialogHost.Show(new AddUserListDialog(), "SettingsDialog");
+			if (result is bool && !(bool)result) return;
+
+			if (string.IsNullOrEmpty(NewUserList)) return;
+
+			bool exists = Categories.Any(x => x.Name.ToLower() == NewUserList.ToLower());
+			if (!exists)
+			{
+				Category toAdd = new Category(CommonMethods.TitleCase(NewUserList));
+
+				Categories.Add(toAdd);
+			}
+		}
+
+		private void UserListRemove()
+		{
+			Categories.Remove(Category);
+		}
+
+		private void BrowseSeriesFolder()
+		{
+			WinForms.FolderBrowserDialog fbd = new WinForms.FolderBrowserDialog
+			{
+				Description = "Select the folder where your series are stored",
+				SelectedPath = LocalSeriesFolder
+			};
+
+			if (fbd.ShowDialog() == WinForms.DialogResult.OK)
+				LocalSeriesFolder = fbd.SelectedPath;
 		}
 	}
 }

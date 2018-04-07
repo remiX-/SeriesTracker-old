@@ -2,7 +2,7 @@
 
 namespace SeriesTracker.ViewModels
 {
-	internal class ViewLoggingInViewModel : BindableBase
+	internal class LoggingInViewModel : BindableBase
 	{
 		#region Variables
 		#region Fields
@@ -12,13 +12,13 @@ namespace SeriesTracker.ViewModels
 		#region Properties
 		public string LoginText
 		{
-			get { return loginText; }
-			set { SetProperty(ref loginText, value); }
+			get => loginText;
+			set => SetProperty(ref loginText, value);
 		}
 		#endregion
 		#endregion
 
-		public ViewLoggingInViewModel()
+		public LoggingInViewModel()
 		{
 			loginText = "Logging in as ";
 		}

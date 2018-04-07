@@ -1,25 +1,24 @@
-﻿using System.ComponentModel;
+﻿using Prism.Mvvm;
+using System.ComponentModel;
 
 namespace SeriesTracker.Models
 {
-	public class Category : INotifyPropertyChanged
+	public class Category : BindableBase
 	{
+		#region Variables
+		private bool isChecked;
+
 		public int CategoryID { get; set; }
 		public string Name { get; set; }
 
 		public int UserShowCategoryID { get; set; }
 
-		private bool isChecked;
 		public bool IsChecked
 		{
-			get { return isChecked; }
-			set
-			{
-				isChecked = value;
-
-				//RaisePropertyChanged("IsChecked");
-			}
+			get => isChecked;
+			set => SetProperty(ref isChecked, value);
 		}
+		#endregion
 
 		public Category()
 		{
@@ -37,15 +36,11 @@ namespace SeriesTracker.Models
 			Name = name;
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
-		protected void RaisePropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
 		public override bool Equals(object obj)
 		{
-			return obj is Category ? CategoryID == (obj as Category).CategoryID : base.Equals(obj);
+			return obj is Category compareTo
+				? CategoryID == compareTo.CategoryID && Name == compareTo.Name
+				: base.Equals(obj);
 		}
 
 		public override int GetHashCode()

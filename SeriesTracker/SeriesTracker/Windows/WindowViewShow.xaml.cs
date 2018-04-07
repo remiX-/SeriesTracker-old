@@ -1,18 +1,19 @@
-﻿using MahApps.Metro.Controls;
+﻿using MaterialDesignThemes.Wpf;
 using SeriesTracker.Core;
+using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowViewShow : MetroWindow
+	public partial class WindowViewShow : Window
 	{
 		#region Variables
 		private ViewShowViewModel MyViewModel;
@@ -31,44 +32,40 @@ namespace SeriesTracker.Windows
 			ViewingShow = show;
 		}
 
+		private void Window_Initialized(object sender, EventArgs e)
+		{
+
+		}
+
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			MyViewModel = DataContext as ViewShowViewModel;
 			MyViewModel.SetShow(ViewingShow);
 
-			// Navigate to the home page.
-			Navigation.Navigation.Frame = new Frame();
-			Navigation.Navigation.Frame.Navigated += SplitViewFrame_OnNavigated;
-			Navigation.Navigation.Navigate(MyViewModel.Menu[0].NavigationDestination);
+			// Setup events
+			SizeChanged += Window_SizeChanged;
+			Closed += Window_Closed;
 
-			Width = AppGlobal.Settings.LayoutViewShow.Width;
-			Height = AppGlobal.Settings.LayoutViewShow.Height;
+			Width = AppGlobal.Settings.Windows["ViewShow"].Width;
+			Height = AppGlobal.Settings.Windows["ViewShow"].Height;
 			Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
 			Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
+
+			HamburgerListBox.SelectionChanged += HamburgerListBox_SelectionChanged;
+
+			WindowState = AppGlobal.Settings.Windows["ViewShow"].Maximized ? WindowState.Maximized : WindowState.Normal;
 
 			await Startup();
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
 		{
-			if (!hasWindowInit)
-			{
-				WindowState = AppGlobal.Settings.LayoutViewShow.Maximized ? WindowState.Maximized : WindowState.Normal;
+			//if (!hasWindowInit)
+			//{
+			//	WindowState = AppGlobal.Settings.Windows["ViewShow"].Maximized ? WindowState.Maximized : WindowState.Normal;
 
-				hasWindowInit = true;
-			}
-		}
-
-		private void Window_Closed(object sender, EventArgs e)
-		{
-			if (WindowState != WindowState.Maximized)
-			{
-				AppGlobal.Settings.LayoutViewShow.Width = Width;
-				AppGlobal.Settings.LayoutViewShow.Height = Height;
-			}
-
-			AppGlobal.Settings.LayoutViewShow.Maximized = WindowState == WindowState.Maximized;
-			AppGlobal.Settings.Save();
+			//	hasWindowInit = true;
+			//}
 		}
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -89,21 +86,17 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		#region Navi
-		private void SplitViewFrame_OnNavigated(object sender, NavigationEventArgs e)
+		private void Window_Closed(object sender, EventArgs e)
 		{
-			HamburgerMenuControl.Content = e.Content;
-		}
-
-		private void HamburgerMenuControl_OnItemClick(object sender, ItemClickEventArgs e)
-		{
-			if (e.ClickedItem is ViewShowMenuItem menuItem && menuItem.IsNavigation)
+			if (WindowState != WindowState.Maximized)
 			{
-				Navigation.Navigation.Navigate(menuItem.NavigationDestination);
-				HamburgerMenuControl.IsPaneOpen = false;
+				AppGlobal.Settings.Windows["ViewShow"].Width = Width;
+				AppGlobal.Settings.Windows["ViewShow"].Height = Height;
 			}
+
+			AppGlobal.Settings.Windows["ViewShow"].Maximized = WindowState == WindowState.Maximized;
+			AppGlobal.Settings.Save();
 		}
-		#endregion
 		#endregion
 
 		#region Startup
@@ -111,44 +104,75 @@ namespace SeriesTracker.Windows
 		{
 			SetupDirectories();
 
-			await GetWatchedEpisodes();
+			HamburgerListBox.SelectedIndex = 0;
+
+			await LoadBannerAsync();
 		}
 
 		private void SetupDirectories()
 		{
-			if (!Directory.Exists(ViewingShow.LocalImagesActorsPath)) Directory.CreateDirectory(ViewingShow.LocalImagesActorsPath);
-			if (!Directory.Exists(ViewingShow.LocalImagesEpisodesPath)) Directory.CreateDirectory(ViewingShow.LocalImagesEpisodesPath);
-			if (!Directory.Exists(ViewingShow.LocalImagesPostersPath)) Directory.CreateDirectory(ViewingShow.LocalImagesPostersPath);
-			if (!Directory.Exists(ViewingShow.LocalImagesBannersPath)) Directory.CreateDirectory(ViewingShow.LocalImagesBannersPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesActorsPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesActorsPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesEpisodesPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesEpisodesPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesPostersPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesPostersPath);
+			if (!Directory.Exists(MyViewModel.MyShow.LocalImagesBannersPath)) Directory.CreateDirectory(MyViewModel.MyShow.LocalImagesBannersPath);
 		}
 
-		private async Task GetWatchedEpisodes()
+		private async Task LoadBannerAsync()
 		{
-			SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchListAsync(ViewingShow);
-
-			ViewingShow.EpisodesWatched = result.ListData;
-
-			foreach (Episode episode in ViewingShow.Episodes)
+			try
 			{
-				UserShowWatch watch = ViewingShow.EpisodesWatched.SingleOrDefault(x => x.SeasonNo == episode.AiredSeason && x.EpisodeNo == episode.AiredEpisodeNumber);
-
-				if (watch != null)
+				Models.Image banner = MyViewModel.MyShow.Banners.First();
+				if (!File.Exists(MyViewModel.MyShow.LocalBannerPath) && !File.Exists(banner.LocalImagePath))
 				{
-					episode.Watched = true;
+					using (WebClient client = new WebClient())
+					{
+						await client.DownloadFileTaskAsync(new Uri(banner.OnlineImageUrl), banner.LocalImagePath);
+					}
+
+					if (File.Exists(MyViewModel.MyShow.LocalBannerPath))
+						File.Delete(MyViewModel.MyShow.LocalBannerPath);
+
+					File.Copy(banner.LocalImagePath, MyViewModel.MyShow.LocalBannerPath);
+
+					MyViewModel.RefreshBanner();
 				}
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
 			}
 		}
 		#endregion
 
-		#region General
-		public async Task SetShow(Show show)
+		#region HamburgerListBox
+		private void HamburgerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			return;
-			ViewingShow = show;
+			if (HamburgerListBox.SelectedItem == null) return;
 
-			MyViewModel.SetShow(show);
+			var selected = HamburgerListBox.SelectedItem as HamburgerMenuItem;
+			switch (selected.Id)
+			{
+				case "Overview": break;
+				case "Seasons": break;
+				case "Gallery": break;
+				default:
+					break;
+			}
 
-			await Startup();
+			// Close drawer
+			MenuToggleButton.IsChecked = false;
+		}
+		#endregion
+
+		#region Triple Dots
+		private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			var sampleMessageDialog = new SampleMessageDialog
+			{
+				Message = { Text = "Hello" }
+			};
+
+			await DialogHost.Show(sampleMessageDialog, "ViewShowRootDialog");
 		}
 		#endregion
 	}

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -13,31 +15,26 @@ namespace SeriesTracker.Core
 	{
 		#region Variables
 		// Layouts
-		[XmlElement(ElementName="Layout1")]
-		public LayoutSettings LayoutMain { get; set; }
-		[XmlElement(ElementName="Layout2")]
-		public LayoutSettings LayoutViewShow { get; set; }
+		public Dictionary<string, LayoutSettings> Windows { get; set; }
 
-		// List view settings
+		// General Tab
 		public bool IgnoreBracketsInNames { get; set; }
 		public bool UseListedName { get; set; }
+		public bool StartOnWindowsStart { get; set; }
+
+		public string DateFormat { get; set; }
 		public string DefaultSortColumn { get; set; }
 		public ListSortDirection DefaultSortDirection { get; set; }
 
-		// General
-		public string DateFormat { get; set; }
-		public string Theme { get; set; }
-		public string Accent { get; set; }
+		public Theme Theme { get; set; }
 
-		// Columns
-		[XmlArrayItem("Column")]
+		// Extra Tab
+		public string LocalSeriesFolder { get; set; }
+		public List<Series> LocalSeriesPaths { get; set; }
+
+		// Extras
 		public List<ColumnSetting> ColumnSettings { get; set; }
 		#endregion
-
-		// Local Series
-		public string LocalSeriesFolder { get; set; }
-		[XmlArrayItem("Path")]
-		public List<Series> LocalSeriesPaths { get; set; }
 
 		public AppSettings() { }
 
@@ -54,18 +51,8 @@ namespace SeriesTracker.Core
 			// Sort before saving
 			LocalSeriesPaths = LocalSeriesPaths.OrderBy(x => x.Id).ToList();
 
-			try
-			{
-				using (StreamWriter sw = new StreamWriter(AppGlobal.Paths.SettingsFile))
-				{
-					XmlSerializer xmls = new XmlSerializer(typeof(AppSettings));
-					xmls.Serialize(sw, this);
-				}
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
+			string jsonFormatted = JToken.Parse(JsonConvert.SerializeObject(this)).ToString(Formatting.Indented);
+			File.WriteAllText(AppGlobal.Paths.SettingsFile, jsonFormatted);
 		}
 
 		public static AppSettings Read()
@@ -73,11 +60,8 @@ namespace SeriesTracker.Core
 			AppSettings settings;
 			try
 			{
-				using (StreamReader sw = new StreamReader(AppGlobal.Paths.SettingsFile))
-				{
-					XmlSerializer xmls = new XmlSerializer(typeof(AppSettings));
-					settings = xmls.Deserialize(sw) as AppSettings;
-				}
+				string jsonData = File.ReadAllText(AppGlobal.Paths.SettingsFile);
+				settings = JsonConvert.DeserializeObject<AppSettings>(jsonData);
 			}
 			catch (Exception)
 			{
@@ -127,20 +111,10 @@ namespace SeriesTracker.Core
 
 		private void LoadDefaults()
 		{
-			// Layouts
-			LayoutMain = new LayoutSettings()
+			Windows = new Dictionary<string, LayoutSettings>
 			{
-				For = "Main",
-				Width = 1024,
-				Height = 576,
-				Maximized = false
-			};
-			LayoutViewShow = new LayoutSettings()
-			{
-				For = "ViewShow",
-				Width = 1024,
-				Height = 576,
-				Maximized = false
+				["Main"] = new LayoutSettings(1024, 576, false),
+				["ViewShow"] = new LayoutSettings(1024, 576, false)
 			};
 
 			// View Settings
@@ -151,8 +125,14 @@ namespace SeriesTracker.Core
 
 			// General
 			DateFormat = "dd/MM/yyyy";
-			Theme = "BaseDark";
-			Accent = "Blue";
+
+			Theme = new Theme
+			{
+				Type = "SeriesTracker",
+				IsDark = true,
+				Primary = "bluegrey",
+				Accent = "green"
+			};
 
 			// Columns
 			ColumnSettings = new List<ColumnSetting>();
@@ -167,30 +147,37 @@ namespace SeriesTracker.Core
 
 	public class LayoutSettings
 	{
-		[XmlAttribute]
-		public string For { get; set; }
-
 		public double Width { get; set; }
 		public double Height { get; set; }
 
 		public bool Maximized { get; set; }
+
+		public LayoutSettings(double width, double height, bool maximized)
+		{
+			Width = width;
+			Height = height;
+			Maximized = maximized;
+		}
+	}
+
+	public class Theme
+	{
+		public string Type { get; set; }
+		public bool IsDark { get; set; }
+		public string Primary { get; set; }
+		public string Accent { get; set; }
 	}
 
 	public class Series
 	{
-		[XmlAttribute]
 		public int Id { get; set; }
-		[XmlAttribute]
 		public string Path { get; set; }
 	}
 
 	public class ColumnSetting
 	{
-		[XmlAttribute]
 		public string Name { get; set; }
-		[XmlAttribute]
 		public int Width { get; set; }
-		[XmlAttribute]
 		public bool Visible { get; set; }
 	}
 }

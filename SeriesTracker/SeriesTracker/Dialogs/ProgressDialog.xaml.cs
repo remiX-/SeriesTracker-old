@@ -13,11 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SeriesTracker.Views
+namespace SeriesTracker.Dialogs
 {
-    public partial class PageTwo : Page
+    /// <summary>
+    /// Interaction logic for ProgressDialog.xaml
+    /// </summary>
+    public partial class ProgressDialog : UserControl
     {
-        public PageTwo()
+        public ProgressDialog()
         {
             InitializeComponent();
         }

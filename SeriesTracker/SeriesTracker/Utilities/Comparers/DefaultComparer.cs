@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 
-namespace SeriesTracker.Comparers
+namespace SeriesTracker.Utilities.Comparers
 {
 	public class DefaultComparer : IComparer
 	{

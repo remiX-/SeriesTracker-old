@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
@@ -15,31 +14,40 @@ using System.Windows.Media.Animation;
 
 namespace SeriesTracker.Views
 {
-	public partial class Seasons : Page
+	public partial class Seasons : UserControl
 	{
+		#region Variables
 		private ViewShowViewModel MyViewModel;
 
 		private bool busy = false;
+		private bool cancel = false;
 
 		private bool treeViewOpen = false;
-		private int viewingSeason = 1;
 
-		#region Page Events
+		private bool loaded = false;
+		#endregion
+
+		#region UserControl Events
 		public Seasons()
 		{
 			InitializeComponent();
 		}
 
-		private async void Page_Loaded(object sender, RoutedEventArgs e)
+		private async void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			if (loaded) return;
+			loaded = true;
+
 			MyViewModel = DataContext as ViewShowViewModel;
 
 			LoadEpisodeTreeView();
 
-			await ReloadEpisodeViewAsync();
+			await RefreshEpisodeView();
+			await GetWatchedEpisodes();
 		}
 		#endregion
 
+		#region Startup
 		private void LoadEpisodeTreeView()
 		{
 			tv_Seasons.Items.Clear();
@@ -74,36 +82,33 @@ namespace SeriesTracker.Views
 			}
 		}
 
-		private async Task ReloadEpisodeViewAsync()
+		private async Task GetWatchedEpisodes()
+		{
+			SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchListAsync(MyViewModel.MyShow);
+
+			MyViewModel.MyShow.EpisodesWatched = result.ListData;
+
+			foreach (Episode episode in MyViewModel.MyShow.Episodes)
+			{
+				UserShowWatch watch = MyViewModel.MyShow.EpisodesWatched.SingleOrDefault(x => x.SeasonNo == episode.AiredSeason && x.EpisodeNo == episode.AiredEpisodeNumber);
+
+				if (watch != null)
+				{
+					episode.Watched = true;
+				}
+			}
+		}
+		#endregion
+
+		#region Season View
+		private void Btn_TreeViewToggle_Click(object sender, RoutedEventArgs e)
 		{
 			try
 			{
-				MyViewModel.Episodes = MyViewModel.MyShow.GetEpisodesBySeason(viewingSeason);
+				treeViewOpen = !treeViewOpen;
 
-				foreach (Episode episode in MyViewModel.Episodes)
-				{
-					if (File.Exists(episode.LocalImagePath))
-						continue;
-
-					try
-					{
-						using (WebClient client = new WebClient())
-						{
-							await client.DownloadFileTaskAsync(new Uri(episode.OnlineImageUrl), episode.LocalImagePath);
-
-							episode.ImageText = "Loaded";
-						}
-					}
-					catch (WebException ex)
-					{
-						if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
-						{
-							File.Delete(episode.LocalImagePath);
-						}
-
-						episode.ImageText = "Not Available";
-					}
-				}
+				btn_TreeViewToggle.Content = treeViewOpen ? "Collapse" : "Expand";
+				SeasonTreeView.Width = new GridLength(treeViewOpen ? 300 : 140);
 			}
 			catch (Exception ex)
 			{
@@ -113,61 +118,55 @@ namespace SeriesTracker.Views
 
 		private async void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
+			if (busy)
+			{
+				cancel = true;
+
+				while (busy)
+				{
+					await Task.Delay(250);
+				}
+			}
+
+			busy = true;
+			TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
+			if (item == null) return;
+
+			string[] split = item.Header.ToString().Split(' ');
+
+			if (split[0] != "Season") return;
+
+			int newSeason = int.Parse(split[1]);
+			if (MyViewModel.ViewingSeason == newSeason) return;
+
+			MyViewModel.ViewingSeason = newSeason;
+			await RefreshEpisodeView();
+
+			busy = false;
+			cancel = false;
+		}
+
+		private async void CM_MarkEpisodeWatched_Click(object sender, RoutedEventArgs e)
+		{
 			TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
 			if (item == null)
 				return;
 
 			string[] split = item.Header.ToString().Split(' ');
+			string type = split[0];
+			int number = int.Parse(split[1]);
 
-			if (split[0] != "Season")
-				return;
-
-			int newSeason = int.Parse(split[1]);
-			if (viewingSeason == newSeason)
-				return;
-
-			viewingSeason = newSeason;
-			await ReloadEpisodeViewAsync();
-		}
-
-		private void TreeViewToggle_Click(object sender, RoutedEventArgs e)
-		{
-			try
+			if (type == "Season")
 			{
-				treeViewOpen = !treeViewOpen;
 
-				btn_TreeViewToggle.Content = treeViewOpen ? "Collapse" : "Expand";
-
-				Storyboard sb = Core.FindResource(treeViewOpen ? "OpenMenu" : "CloseMenu") as Storyboard;
-				sb.Begin();
 			}
-			catch (Exception ex)
+			else
 			{
-				ErrorMethods.LogError(ex.Message);
+				await EpisodeWatchedToggle(number);
 			}
 		}
 
-		private async void CM_MarkEpisodeWatched_Click(object sender, RoutedEventArgs e)
-		{
-			//TreeViewItem item = (TreeViewItem)tv_Seasons.SelectedItem;
-			//if (item == null)
-			//	return;
-
-			//string[] split = item.Header.ToString().Split(' ');
-			//string type = split[0];
-			//int number = int.Parse(split[1]);
-
-			//if (type == "Season")
-			//{
-
-			//}
-			//else
-			//{
-			//	await ToggleEpisodeWatched(number);
-			//}
-		}
-
-		private async void EpisodeEyeToggle_Click(object sender, RoutedEventArgs e)
+		private async void Btn_EpisodeEyeToggle_Click(object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -177,7 +176,7 @@ namespace SeriesTracker.Views
 				busy = true;
 
 				ToggleButton m = (ToggleButton)sender;
-				Grid p = m.TryFindParent<Grid>();
+				Grid p = m.Parent as Grid;
 
 				m.IsHitTestVisible = false;
 
@@ -193,38 +192,6 @@ namespace SeriesTracker.Views
 			}
 		}
 
-		private async Task<bool> EpisodeWatchedToggle(int episodeNumber)
-		{
-			try
-			{
-				UserShowWatch record = MyViewModel.MyShow
-					.EpisodesWatched
-					.SingleOrDefault(x => x.SeasonNo == viewingSeason && x.EpisodeNo == episodeNumber);
-
-				if (record == null)
-				{
-					UserShowWatch newRecord = new UserShowWatch { UserShowID = MyViewModel.MyShow.UserShowID, SeasonNo = viewingSeason, EpisodeNo = episodeNumber };
-					SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchAddAsync(newRecord);
-
-					MyViewModel.MyShow.EpisodesWatched.Add(result.Data);
-				}
-				else
-				{
-					SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchDeleteAsync(record);
-
-					MyViewModel.MyShow.EpisodesWatched.Remove(record);
-				}
-
-				return true;
-			}
-			catch (Exception ex)
-			{
-				ErrorMethods.LogError(ex.Message);
-			}
-
-			return false;
-		}
-
 		private void Btn_WatchEpisode_Click(object sender, RoutedEventArgs e)
 		{
 			bool found = false;
@@ -235,11 +202,11 @@ namespace SeriesTracker.Views
 				if (!Directory.Exists(MyViewModel.MyShow.LocalSeriesPath)) return;
 
 				Button m = (Button)sender;
-				Grid p = m.TryFindParent<Grid>();
+				Panel p = (m.Parent as Panel).Parent as Panel;
 
 				int episodeNumber = int.Parse(p.Tag.ToString());
 
-				string seasonPath = Path.Combine(MyViewModel.MyShow.LocalSeriesPath, "Season " + viewingSeason);
+				string seasonPath = Path.Combine(MyViewModel.MyShow.LocalSeriesPath, "Season " + MyViewModel.ViewingSeason);
 				var dir = new DirectoryInfo(seasonPath);
 
 				if (!dir.Exists)
@@ -247,7 +214,7 @@ namespace SeriesTracker.Views
 
 				var files = dir.GetFiles();
 
-				Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
+				Episode episode = MyViewModel.MyShow.GetEpisode(MyViewModel.ViewingSeason, episodeNumber);
 				foreach (FileInfo file in files)
 				{
 					if (file.Name.Contains(episode.FullEpisodeString))
@@ -283,10 +250,10 @@ namespace SeriesTracker.Views
 			try
 			{
 				Button m = (Button)sender;
-				Grid p = m.TryFindParent<Grid>();
+				Panel p = (m.Parent as Panel).Parent as Panel;
 
 				int episodeNumber = int.Parse(p.Tag.ToString());
-				Episode episode = MyViewModel.MyShow.GetEpisode(viewingSeason, episodeNumber);
+				Episode episode = MyViewModel.MyShow.GetEpisode(MyViewModel.ViewingSeason, episodeNumber);
 
 				await MethodCollection.DownloadEpisode(MyViewModel.MyShow, episode);
 			}
@@ -295,5 +262,86 @@ namespace SeriesTracker.Views
 				ErrorMethods.LogError(ex.Message);
 			}
 		}
+
+		private async Task RefreshEpisodeView()
+		{
+			Console.WriteLine(DateTime.Now.TimeOfDay);
+			MyViewModel.Episodes = MyViewModel.MyShow.GetEpisodesBySeason(MyViewModel.ViewingSeason);
+
+			foreach (Episode episode in MyViewModel.Episodes)
+			{
+				if (cancel) break;
+
+				FileInfo fi = new FileInfo(episode.LocalImagePath);
+
+				if (!fi.Exists || fi.Length == 0)
+				{
+					try
+					{
+						using (WebClient client = new WebClient())
+						{
+							await client.DownloadFileTaskAsync(new Uri(episode.OnlineImageUrl), episode.LocalImagePath);
+
+							episode.ImageText = "Done";
+						}
+					}
+					catch (WebException ex)
+					{
+						if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
+						{
+							File.Delete(episode.LocalImagePath);
+						}
+
+						episode.ImageText = "Not Available";
+					}
+					catch (Exception ex)
+					{
+						ErrorMethods.LogError(ex.Message);
+					}
+				}
+
+				episode.RefreshImage();
+			}
+
+			Console.WriteLine(DateTime.Now.TimeOfDay);
+		}
+
+		private async Task<bool> EpisodeWatchedToggle(int episodeNumber)
+		{
+			try
+			{
+				UserShowWatch record = MyViewModel.MyShow
+					.EpisodesWatched
+					.SingleOrDefault(x => x.SeasonNo == MyViewModel.ViewingSeason && x.EpisodeNo == episodeNumber);
+
+				if (record == null)
+				{
+					UserShowWatch newRecord = new UserShowWatch
+					{
+						UserShowID = MyViewModel.MyShow.UserShowID,
+						SeasonNo = MyViewModel.ViewingSeason,
+						EpisodeNo = episodeNumber
+					};
+					SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchAddAsync(newRecord);
+
+					MyViewModel.MyShow.EpisodesWatched.Add(result.Data);
+				}
+				else
+				{
+					SeriesResult<UserShowWatch> result = await AppGlobal.Db.UserShowWatchDeleteAsync(record);
+
+					MyViewModel.MyShow.EpisodesWatched.Remove(record);
+				}
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				ErrorMethods.LogError(ex.Message);
+			}
+
+			return false;
+		}
+		#endregion
 	}
 }

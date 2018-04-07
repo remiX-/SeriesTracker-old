@@ -1,6 +1,6 @@
-﻿using MahApps.Metro.Controls;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,9 +9,12 @@ using System.Windows.Media;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowLogin : MetroWindow
+	public partial class WindowLogin : Window
 	{
 		#region Variables
+		// ViewModel
+		private LoginViewModel MyViewModel;
+
 		private WindowLoggingIn window_LoggedIn;
 		#endregion
 
@@ -61,7 +64,12 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void MetroWindow_MouseDown(object sender, MouseButtonEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			MyViewModel = DataContext as LoginViewModel;
+		}
+
+		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left)
 				DragMove();
@@ -206,7 +214,7 @@ namespace SeriesTracker.Windows
 
 			window_LoggedIn.Close();
 
-			WindowMain Main = new WindowMain();
+			Window Main = new WindowMainNew();
 			Main.Show();
 			Application.Current.MainWindow = Main;
 

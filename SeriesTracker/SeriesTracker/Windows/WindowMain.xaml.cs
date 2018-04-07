@@ -1,11 +1,8 @@
-﻿using MahApps.Metro;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SeriesTracker.Comparers;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.Utilities.Comparers;
 using SeriesTracker.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,7 +21,7 @@ using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowMain : MetroWindow
+	public partial class WindowMainOld : Window
 	{
 		#region Variables
 		// ViewModel
@@ -60,7 +57,7 @@ namespace SeriesTracker.Windows
 
 		#region Main window
 		#region Window Events
-		public WindowMain()
+		public WindowMainOld()
 		{
 			InitializeComponent();
 		}
@@ -69,31 +66,31 @@ namespace SeriesTracker.Windows
 		{
 			await Startup();
 
-			if (AppGlobal.User.Shows.Count == 0)
-			{
-				var result = await this.ShowMessageAsync("Hello!", "Your list looks a bit empty there!\nWould you like to add your first series now?",
-					MessageDialogStyle.AffirmativeAndNegative,
-					new MetroDialogSettings
-					{
-						AffirmativeButtonText = "Yes please!",
-						NegativeButtonText = "Maybe later",
-						ColorScheme = MetroDialogColorScheme.Theme,
-						AnimateHide = false,
-						DefaultButtonFocus = MessageDialogResult.Affirmative
-					});
+			//if (AppGlobal.User.Shows.Count == 0)
+			//{
+			//	var result = await this.ShowMessageAsync("Hello!", "Your list looks a bit empty there!\nWould you like to add your first series now?",
+			//		MessageDialogStyle.AffirmativeAndNegative,
+			//		new MetroDialogSettings
+			//		{
+			//			AffirmativeButtonText = "Yes please!",
+			//			NegativeButtonText = "Maybe later",
+			//			ColorScheme = MetroDialogColorScheme.Theme,
+			//			AnimateHide = false,
+			//			DefaultButtonFocus = MessageDialogResult.Affirmative
+			//		});
 
-				if (result == MessageDialogResult.Affirmative)
-				{
-					Menu_Series_AddShow_Click(null, null);
-				}
-			}
+			//	if (result == MessageDialogResult.Affirmative)
+			//	{
+			//		Menu_Series_AddShow_Click(null, null);
+			//	}
+			//}
 		}
 
 		private void Window_Activated(object sender, EventArgs e)
 		{
 			if (!windowHasInit)
 			{
-				WindowState = AppGlobal.Settings.LayoutMain.Maximized ? WindowState.Maximized : WindowState.Normal;
+				WindowState = AppGlobal.Settings.Windows["Main"].Maximized ? WindowState.Maximized : WindowState.Normal;
 
 				windowHasInit = true;
 			}
@@ -103,14 +100,12 @@ namespace SeriesTracker.Windows
 		{
 			if (WindowState != WindowState.Maximized)
 			{
-				AppGlobal.Settings.LayoutMain.Width = Width;
-				AppGlobal.Settings.LayoutMain.Height = Height;
+				AppGlobal.Settings.Windows["Main"].Width = Width;
+				AppGlobal.Settings.Windows["Main"].Height = Height;
 			}
 
-			AppGlobal.Settings.LayoutMain.Maximized = WindowState == WindowState.Maximized;
-
+			AppGlobal.Settings.Windows["Main"].Maximized = WindowState == WindowState.Maximized;
 			AppGlobal.Settings.SaveColumnSetting(view_DataGridView.Columns.ToList(), false);
-
 			AppGlobal.Settings.Save();
 
 			if (WindowViewShow != null && WindowViewShow.IsLoaded)
@@ -212,7 +207,7 @@ namespace SeriesTracker.Windows
 
 			if (changes.Contains("UpdateTheme"))
 			{
-				ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
+				//ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
 			}
 		}
 		#endregion
@@ -220,8 +215,8 @@ namespace SeriesTracker.Windows
 		#region Action events
 		private void ClearFilter_Click(object sender, RoutedEventArgs e)
 		{
-			txt_FilterText.Text = string.Empty;
-			txt_FilterText.Focus();
+			//txt_FilterText.Text = string.Empty;
+			//txt_FilterText.Focus();
 		}
 
 		private void Image_List_MouseDown(object sender, MouseButtonEventArgs e)
@@ -297,12 +292,12 @@ namespace SeriesTracker.Windows
 			WindowAddShow win = new WindowAddShow();
 			win.ShowDialog();
 
-			if (win.selectedShow == null)
+			if (win.SelectedShow == null)
 				return;
 
-			SetViewOverlayText("Loading data for {0}", win.selectedShow.SeriesName);
+			SetViewOverlayText("Loading data for {0}", win.SelectedShow.SeriesName);
 
-			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.selectedShow.Id);
+			Show show = await MethodCollection.RetrieveTvdbDataForSeriesAsync(win.SelectedShow.Id);
 
 			// Add to database
 			SeriesResult<Show> result = await AppGlobal.Db.UserShowAddAsync(show);
@@ -427,18 +422,18 @@ namespace SeriesTracker.Windows
 
 		private void DataGrid_ContextMenu_Opened(object sender, RoutedEventArgs e)
 		{
-			ContextMenu cm = (ContextMenu)sender;
+			//ContextMenu cm = (ContextMenu)sender;
 
-			if (view_DataGridView.SelectedItems.Count == 1)
-			{
-				cm.FindChild<MenuItem>("View").Visibility = Visibility.Visible;
-				cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Visible;
-			}
-			else if (view_DataGridView.SelectedItems.Count > 1)
-			{
-				cm.FindChild<MenuItem>("View").Visibility = Visibility.Collapsed;
-				cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Collapsed;
-			}
+			//if (view_DataGridView.SelectedItems.Count == 1)
+			//{
+			//	cm.FindChild<MenuItem>("View").Visibility = Visibility.Visible;
+			//	cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Visible;
+			//}
+			//else if (view_DataGridView.SelectedItems.Count > 1)
+			//{
+			//	cm.FindChild<MenuItem>("View").Visibility = Visibility.Collapsed;
+			//	cm.FindChild<MenuItem>("SetCategory").Visibility = Visibility.Collapsed;
+			//}
 		}
 
 		private void DataGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
@@ -449,7 +444,7 @@ namespace SeriesTracker.Windows
 			CM_View_Click(null, null);
 		}
 
-		private async void CM_View_Click(object sender, RoutedEventArgs e)
+		private void CM_View_Click(object sender, RoutedEventArgs e)
 		{
 			if (view_DataGridView.SelectedItem != null)
 			{
@@ -461,7 +456,7 @@ namespace SeriesTracker.Windows
 				}
 				else
 				{
-					await WindowViewShow.SetShow((Show)view_DataGridView.SelectedItem);
+					//await WindowViewShow.SetShow((Show)view_DataGridView.SelectedItem);
 				}
 			}
 		}
@@ -650,28 +645,28 @@ namespace SeriesTracker.Windows
 		#region Detail View
 		private void DetailView_OpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-			Button b = (Button)sender;
-			Grid p = b.TryFindParent<Grid>();
+			//Button b = (Button)sender;
+			//Grid p = b.TryFindParent<Grid>();
 
-			int userShowID = int.Parse(p.Tag.ToString());
-			Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
+			//int userShowID = int.Parse(p.Tag.ToString());
+			//Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
 
-			OpenSeriesFolder(show);
+			//OpenSeriesFolder(show);
 		}
 
-		private async void DetailView_DownloadLatest_Click(object sender, RoutedEventArgs e)
+		private void DetailView_DownloadLatest_Click(object sender, RoutedEventArgs e)
 		{
-			Button b = (Button)sender;
-			Grid p = b.TryFindParent<Grid>();
+			//Button b = (Button)sender;
+			//Grid p = b.TryFindParent<Grid>();
 
-			int userShowID = int.Parse(p.Tag.ToString());
-			Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
+			//int userShowID = int.Parse(p.Tag.ToString());
+			//Show show = AppGlobal.User.Shows.Single(s => s.UserShowID == userShowID);
 
-			bool success = await MethodCollection.DownloadEpisode(show, show.LatestEpisode);
-			if (!success)
-			{
-				MessageBox.Show("Failed to find last episode for " + show.SeriesName);
-			}
+			//bool success = await MethodCollection.DownloadEpisode(show, show.LatestEpisode);
+			//if (!success)
+			//{
+			//	MessageBox.Show("Failed to find last episode for " + show.SeriesName);
+			//}
 		}
 		#endregion
 
@@ -714,8 +709,8 @@ namespace SeriesTracker.Windows
 			view_DetailView.Visibility = currentView == SeriesView.Detail ? Visibility.Visible : Visibility.Hidden;
 			view_GridView.Visibility = currentView == SeriesView.Grid ? Visibility.Visible : Visibility.Hidden;
 
-			Width = AppGlobal.Settings.LayoutMain.Width;
-			Height = AppGlobal.Settings.LayoutMain.Height;
+			Width = AppGlobal.Settings.Windows["Main"].Width;
+			Height = AppGlobal.Settings.Windows["Main"].Height;
 			Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
 			Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
 
@@ -794,7 +789,7 @@ namespace SeriesTracker.Windows
 
 			commands.Add(Key.C, CM_Copy_Click);
 
-			commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
+			//commands.Add(Key.F, delegate { txt_FilterText.Focus(); });
 
 			foreach (var kvp in commands)
 			{
@@ -822,17 +817,17 @@ namespace SeriesTracker.Windows
 
 			try
 			{
-				TvdbAPI data = new TvdbAPI
-				{
-					Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjEzOTE4MjMsImlkIjoiIiwib3JpZ19pYXQiOjE1MjEzMDU0MjN9.NSjcWGyXbKtejG6aw07yr2xVtY1GKeBsZi1VO-vxScTl9-Dtjn1Fw30wlakP333yjcnxV2e_h_P7MWAls3NXaqiBv5fxfhX2kRyB5kG3mra9AVTEkIZ26LndeUcyTDtyHGldmPWRNyWCa3mHQlC2k7zQcqm2KzddA-HGMAIyjw9n0PBhbba6ZFAgJLFdFdXYL8OeZqRTojxUr-3vVPlSFMEwspzzzLohSlt2XLeUBcgY866k3Qhx9bdUFiK456-Y-kLzG0gkewknBC84bw35AO1r2mDKWX5uCqebWnlgsbzK6Kae3qcm4v-xLju_T-kCJvIp4xT9EoCmESeqKu6cuA"
-				};
+				//TvdbAPI data = new TvdbAPI
+				//{
+				//	Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjEzOTE4MjMsImlkIjoiIiwib3JpZ19pYXQiOjE1MjEzMDU0MjN9.NSjcWGyXbKtejG6aw07yr2xVtY1GKeBsZi1VO-vxScTl9-Dtjn1Fw30wlakP333yjcnxV2e_h_P7MWAls3NXaqiBv5fxfhX2kRyB5kG3mra9AVTEkIZ26LndeUcyTDtyHGldmPWRNyWCa3mHQlC2k7zQcqm2KzddA-HGMAIyjw9n0PBhbba6ZFAgJLFdFdXYL8OeZqRTojxUr-3vVPlSFMEwspzzzLohSlt2XLeUBcgY866k3Qhx9bdUFiK456-Y-kLzG0gkewknBC84bw35AO1r2mDKWX5uCqebWnlgsbzK6Kae3qcm4v-xLju_T-kCJvIp4xT9EoCmESeqKu6cuA"
+				//};
 
-				JObject jObject = new JObject { ["apikey"] = AppGlobal.thetvAPIKey };
-				data = await Request.ExecuteAndDeserializeAsync("POST", "https://api.thetvdb.com/login", jObject.ToString());
+				JObject jObject = new JObject { ["apikey"] = AppPrivate.thetvdbAPIKey };
+				ReturnResult<TvdbAPI> data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
-				if (data != null && !string.IsNullOrEmpty(data.Token))
+				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
 				{
-					AppGlobal.thetvdbToken = data.Token;
+					AppGlobal.thetvdbToken = data.Result.Token;
 				}
 				else
 				{
@@ -1018,11 +1013,11 @@ namespace SeriesTracker.Windows
 
 			// Check for show updates
 			string url = string.Format("https://api.thetvdb.com/updated/query?fromTime={0}", Properties.Settings.Default.TvdbUpdateEpochTime);
-			TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync("GET", url);
+			ReturnResult<TvdbAPI> jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
 
-			if (jsonData.Data != null)
+			if (jsonData.Result.Data != null)
 			{
-				List<TvdbUpdate> tvdbUpdates = JsonConvert.DeserializeObject<List<TvdbUpdate>>(jsonData.Data.ToString());
+				List<TvdbUpdate> tvdbUpdates = JsonConvert.DeserializeObject<List<TvdbUpdate>>(jsonData.Result.Data.ToString());
 
 				string _s = "Need to update {0} shows:";
 				List<Show> updates = new List<Show>();
@@ -1260,8 +1255,8 @@ namespace SeriesTracker.Windows
 
 		private void Btn_Test1_Click(object sender, RoutedEventArgs e)
 		{
-			Window w = new WindowTest();
-			w.ShowDialog();
+			//Window w = new WindowTestMD();
+			//w.ShowDialog();
 		}
 
 		private void Btn_Test2_Click(object sender, RoutedEventArgs e)

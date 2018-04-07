@@ -1,0 +1,30 @@
+﻿<UserControl
+	x:Class="SeriesTracker.Dialogs.AboutDialog"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	Width="400" Height="Auto"
+	Style="{StaticResource STUserControl}">
+	<DockPanel Margin="16">
+		<Button DockPanel.Dock="Bottom"
+				IsCancel="True"
+				Style="{DynamicResource MaterialDesignFlatButton}"
+				Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+				Content="Close"
+				HorizontalAlignment="Right" />
+
+		<TextBlock DockPanel.Dock="Top" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding ProductName}" HorizontalAlignment="Center" />
+		<TextBlock DockPanel.Dock="Top" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding Version}" HorizontalAlignment="Center" />
+		<TextBlock DockPanel.Dock="Top" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding Copyright}" HorizontalAlignment="Center" />
+		<TextBlock DockPanel.Dock="Top" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding CompanyName}" HorizontalAlignment="Center" />
+
+		<TextBlock DockPanel.Dock="Top"
+				   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+				   Margin="0 10 0 0"
+				   TextWrapping="Wrap"
+				   VerticalAlignment="Top"
+				   HorizontalAlignment="Center"
+				   Padding="25 0"
+				   Text="{Binding Description}" />
+	</DockPanel>
+</UserControl>

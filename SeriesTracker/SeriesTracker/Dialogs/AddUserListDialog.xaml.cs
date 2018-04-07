@@ -13,13 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SeriesTracker.Views
+namespace SeriesTracker.Dialogs
 {
-    public partial class PageOne : Page
-    {
-        public PageOne()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for AddUserListDialog.xaml
+	/// </summary>
+	public partial class AddUserListDialog : UserControl
+	{
+		public AddUserListDialog()
+		{
+			InitializeComponent();
+		}
+	}
 }

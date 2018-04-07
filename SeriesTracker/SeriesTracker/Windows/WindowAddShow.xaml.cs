@@ -1,7 +1,7 @@
-﻿using MahApps.Metro.Controls;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,15 +14,15 @@ using System.Windows.Media;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowAddShow : MetroWindow
+	public partial class WindowAddShow : Window
 	{
 		#region Variables
-		//private ObservableCollection<Show> allShows = new ObservableCollection<Show>();
-		public ObservableCollection<Show> SearchResults { get; set; } = new ObservableCollection<Show>();
+		// ViewModel
+		private AddShowViewModel MyViewModel;
 
 		private bool busySearching = false;
 
-		public Show selectedShow { get; private set; }
+		public Show SelectedShow { get; private set; }
 		#endregion
 
 		#region Window
@@ -34,22 +34,21 @@ namespace SeriesTracker.Windows
 			WindowStartupLocation = WindowStartupLocation.CenterOwner;
 		}
 
-		private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			DataContext = this;
+			MyViewModel = DataContext as AddShowViewModel;
 
 			txt_Search.Focus();
 		}
 		#endregion
 
 		#region Searching
-		private async void btn_Search_Click(object sender, RoutedEventArgs e)
+		private async void Btn_Search_Click(object sender, RoutedEventArgs e)
 		{
-			if (busySearching)
-				return;
+			if (busySearching) return;
 
 			string searchString = txt_Search.Text;
-			if (string.IsNullOrEmpty(searchString))
+			if (string.IsNullOrWhiteSpace(searchString))
 			{
 				txt_Search.Focus();
 				SystemSounds.Beep.Play();
@@ -61,33 +60,31 @@ namespace SeriesTracker.Windows
 			{
 				busySearching = true;
 
-				SearchResults.Clear();
+				MyViewModel.SearchResults.Clear();
 				btn_Accept.IsEnabled = false;
 
-				lbl_Info.Foreground = Brushes.Yellow;
-				lbl_Info.Content = "Searching ...";
+				MyViewModel.SetStatus("Searching...", Brushes.Yellow);
 
-				string url = string.Format("https://api.thetvdb.com/search/series?name={0}", Uri.EscapeUriString(searchString));
-				TvdbAPI jsonData = await Request.ExecuteAndDeserializeAsync("GET", url);
+				string url = $"https://api.thetvdb.com/search/series?name={Uri.EscapeUriString(searchString)}";
+				ReturnResult<TvdbAPI> jsonData = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("GET", url);
 
-				if (jsonData.Error == null)
+				if (jsonData.Result.Error == null)
 				{
-					List<Show> results = JsonConvert.DeserializeObject<List<Show>>(jsonData.Data.ToString())
-						.Where(x => !x.SeriesName.Contains("Series Not Permitted")).ToList();
+					List<Show> results = JsonConvert.DeserializeObject<List<Show>>(jsonData.Result.Data.ToString())
+						.Where(x => !x.SeriesName.Contains("Series Not Permitted"))
+						.ToList();
 					results.ForEach(s => s.SetupVariables());
 
-					SearchResults.AddRange(results.OrderByDescending(x => x.YearDisplay == "Unknown" ? "1" : x.YearDisplay).ThenBy(x => x.SeriesName));
+					MyViewModel.SearchResults.AddRange(results.OrderByDescending(x => x.YearDisplay == "Unknown" ? "1" : x.YearDisplay).ThenBy(x => x.SeriesName));
 
-					lbl_Info.Foreground = Brushes.LimeGreen;
-					lbl_Info.Content = string.Format("{0} results found", SearchResults.Count);
+					MyViewModel.SetStatus($"{MyViewModel.SearchResults.Count} results found", Brushes.LimeGreen);
 				}
 				else
 				{
 					txt_Search.Focus();
 					txt_Search.SelectAll();
 
-					lbl_Info.Foreground = Brushes.Red;
-					lbl_Info.Content = "No results found";
+					MyViewModel.SetStatus("No results found", Brushes.Red);
 				}
 
 				SystemSounds.Beep.Play();
@@ -100,17 +97,17 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void txt_Search_KeyUp(object sender, KeyEventArgs e)
+		private void Txt_Search_KeyUp(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter)
 			{
-				btn_Search_Click(null, null);
+				Btn_Search_Click(null, null);
 			}
 
 			e.Handled = true;
 		}
 
-		private void lv_SearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (!btn_Accept.IsEnabled)
 				btn_Accept.IsEnabled = true;
@@ -118,7 +115,7 @@ namespace SeriesTracker.Windows
 		#endregion
 
 		#region Submit, Cancel
-		private void btn_Accept_Click(object sender, RoutedEventArgs e)
+		private void Btn_Accept_Click(object sender, RoutedEventArgs e)
 		{
 			Show show = (Show)lv_SearchResults.SelectedItem;
 
@@ -126,7 +123,7 @@ namespace SeriesTracker.Windows
 			{
 				if (AppGlobal.User.Shows.SingleOrDefault(x => x.Id == show.Id) == null)
 				{
-					selectedShow = show;
+					SelectedShow = show;
 
 					Close();
 				}
@@ -137,7 +134,7 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void btn_Cancel_Click(object sender, RoutedEventArgs e)
+		private void Btn_Cancel_Click(object sender, RoutedEventArgs e)
 		{
 			Close();
 		}

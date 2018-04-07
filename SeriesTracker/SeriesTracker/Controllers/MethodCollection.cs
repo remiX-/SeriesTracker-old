@@ -1,5 +1,6 @@
 ﻿using SeriesTracker.Core;
 using SeriesTracker.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SeriesTracker
@@ -51,10 +52,10 @@ namespace SeriesTracker
 			return await _repository.ShowRepository.DownloadEpisode(show, episode);
 		}
 
-		//public static async Task<string> GetMagnet(string url, Episode episode, bool getHD)
-		//{
-		//	return await _repository.ShowRepository.GetMagnetForEpisode(url, episode, getHD);
-		//}
+		public static async Task<List<EztvTorrent>> GetEpisodeTorrentList(Show show, Episode episode)
+		{
+			return await _repository.ShowRepository.GetEpisodeTorrentList(show, episode);
+		}
 		#endregion
 	}
 }
