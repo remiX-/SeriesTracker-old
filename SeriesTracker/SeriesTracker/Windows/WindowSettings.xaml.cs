@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.Windows
 {
@@ -80,6 +78,8 @@ namespace SeriesTracker.Windows
 
 			AppGlobal.Settings.IgnoreBracketsInNames = MyViewModel.IgnoreBrackets;
 			AppGlobal.Settings.UseListedName = MyViewModel.UseListedName;
+			AppGlobal.Settings.StartOnWindowsStart = MyViewModel.StartOnWindowsStart;
+
 			AppGlobal.Settings.DateFormat = MyViewModel.DateFormat;
 			AppGlobal.Settings.DefaultSortColumn = MyViewModel.DefaultSort;
 			AppGlobal.Settings.DefaultSortDirection = MyViewModel.DefaultSortDirection;
