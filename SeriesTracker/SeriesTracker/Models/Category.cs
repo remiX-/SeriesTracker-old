@@ -38,7 +38,9 @@ namespace SeriesTracker.Models
 
 		public override bool Equals(object obj)
 		{
-			return obj is Category ? CategoryID == (obj as Category).CategoryID : base.Equals(obj);
+			return obj is Category compareTo
+				? CategoryID == compareTo.CategoryID && Name == compareTo.Name
+				: base.Equals(obj);
 		}
 
 		public override int GetHashCode()
