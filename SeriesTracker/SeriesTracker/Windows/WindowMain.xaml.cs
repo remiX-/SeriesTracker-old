@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SeriesTracker.Comparers;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
+using SeriesTracker.Utilities.Comparers;
 using SeriesTracker.ViewModels;
 using System;
 using System.Collections.Generic;

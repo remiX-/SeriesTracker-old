@@ -137,14 +137,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Comparers\DefaultComparer.cs" />
+    <Compile Include="Utilities\Comparers\DefaultComparer.cs" />
     <Compile Include="Controllers\ModelMethods\UserMethods.cs" />
     <Compile Include="Controllers\Repositories\IUserRepository.cs" />
-    <Compile Include="Controls\BadCharsValidationRule.cs" />
-    <Compile Include="Controls\BoolToInverseBoolConverter.cs" />
-    <Compile Include="Controls\NotEmptyValidationRule.cs" />
-    <Compile Include="Controls\VisibilityToBoolConverter.cs" />
-    <Compile Include="Controls\WPFCommandImplementation.cs" />
+    <Compile Include="Utilities\ValidationRules\BadCharsValidationRule.cs" />
+    <Compile Include="Utilities\Converters\BoolToInverseBoolConverter.cs" />
+    <Compile Include="Utilities\ValidationRules\NotEmptyValidationRule.cs" />
+    <Compile Include="Utilities\Converters\VisibilityToBoolConverter.cs" />
+    <Compile Include="Utilities\Commands\WPFCommandImplementation.cs" />
     <Compile Include="Core\AppGlobal.cs" />
     <Compile Include="Core\AppPrivate.cs" />
     <Compile Include="Core\CommonMethods.cs" />
@@ -183,13 +183,13 @@
     <Compile Include="Controllers\RepositorySession.cs" />
     <Compile Include="Core\Database.cs" />
     <Compile Include="Controllers\ModelMethods\ErrorMethods.cs" />
-    <Compile Include="ProgressDialog\ProgressDialog.xaml.cs">
+    <Compile Include="Dialogs\ProgressDialog\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProgressDialog\ProgressDialogCancellationExcpetion.cs" />
-    <Compile Include="ProgressDialog\ProgressDialogContext.cs" />
-    <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
-    <Compile Include="ProgressDialog\ProgressDialogSettings.cs" />
+    <Compile Include="Dialogs\ProgressDialog\ProgressDialogCancellationExcpetion.cs" />
+    <Compile Include="Dialogs\ProgressDialog\ProgressDialogContext.cs" />
+    <Compile Include="Dialogs\ProgressDialog\ProgressDialogResult.cs" />
+    <Compile Include="Dialogs\ProgressDialog\ProgressDialogSettings.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="ViewModels\AddShowViewModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
@@ -243,7 +243,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProgressDialog\ProgressDialog.xaml">
+    <Page Include="Dialogs\ProgressDialog\ProgressDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

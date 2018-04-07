@@ -2,7 +2,7 @@
 	x:Class="SeriesTracker.Windows.WindowMainOld"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="clr-namespace:SeriesTracker"
+	xmlns:converters="clr-namespace:SeriesTracker.Utilities.Converters"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	Title="{Binding MyTitle}"
 	Icon="../Resources/mainIcon.ico"
@@ -10,7 +10,7 @@
 	Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" Closed="Window_Closed" StateChanged="Window_StateChanged" Activated="Window_Activated"
 	Style="{StaticResource STWindow}">
 	<Window.Resources>
-		<local:VisibilityToBoolConverter x:Key="VisibilityToBoolConv"/>
+		<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConv"/>
 	</Window.Resources>
 	<!--
 	<Window.RightWindowCommands>

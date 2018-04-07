@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace SeriesTracker.Controls
+namespace SeriesTracker.Utilities.Converters
 {
 	public class BoolToInverseBoolConverter : IValueConverter
 	{

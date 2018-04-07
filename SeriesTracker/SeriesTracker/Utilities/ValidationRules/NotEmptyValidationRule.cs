@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
 
-namespace SeriesTracker.Controls
+namespace SeriesTracker.Utilities.ValidationRules
 {
 	public class NotEmptyValidationRule : ValidationRule
 	{

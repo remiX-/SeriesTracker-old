@@ -1,16 +1,11 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Prism.Commands;
 using Prism.Mvvm;
-using SeriesTracker.Controls;
 using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
-using SeriesTracker.Windows;
-using System;
+using SeriesTracker.Utilities.Commands;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 

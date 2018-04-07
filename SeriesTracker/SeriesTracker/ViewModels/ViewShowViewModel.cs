@@ -3,7 +3,6 @@ using Prism.Mvvm;
 using SeriesTracker.Models;
 using SeriesTracker.Views;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace SeriesTracker.ViewModels
 {

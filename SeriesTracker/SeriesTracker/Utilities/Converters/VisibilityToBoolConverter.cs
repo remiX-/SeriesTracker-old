@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace SeriesTracker
+namespace SeriesTracker.Utilities.Converters
 {
 	[ValueConversion(typeof(Visibility), typeof(bool))]
 	public class VisibilityToBoolConverter : IValueConverter

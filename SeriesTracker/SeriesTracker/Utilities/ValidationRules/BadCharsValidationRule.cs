@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
-namespace SeriesTracker.Controls
+namespace SeriesTracker.Utilities.ValidationRules
 {
 	public class BadCharsValidationRule : ValidationRule
 	{
