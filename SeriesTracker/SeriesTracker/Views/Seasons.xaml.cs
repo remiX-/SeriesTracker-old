@@ -108,7 +108,7 @@ namespace SeriesTracker.Views
 				treeViewOpen = !treeViewOpen;
 
 				btn_TreeViewToggle.Content = treeViewOpen ? "Collapse" : "Expand";
-				SeasonTreeView.Width = new GridLength(treeViewOpen ? 300 : 140);
+				SeasonTreeView.Width = new GridLength(treeViewOpen ? 300 : 150);
 			}
 			catch (Exception ex)
 			{
@@ -122,10 +122,7 @@ namespace SeriesTracker.Views
 			{
 				cancel = true;
 
-				while (busy)
-				{
-					await Task.Delay(250);
-				}
+				return;
 			}
 
 			busy = true;
@@ -266,6 +263,8 @@ namespace SeriesTracker.Views
 		private async Task RefreshEpisodeView()
 		{
 			Console.WriteLine(DateTime.Now.TimeOfDay);
+
+			// TODO this causes some lag while it updates via MVVM
 			MyViewModel.Episodes = MyViewModel.MyShow.GetEpisodesBySeason(MyViewModel.ViewingSeason);
 
 			foreach (Episode episode in MyViewModel.Episodes)
@@ -280,7 +279,8 @@ namespace SeriesTracker.Views
 					{
 						using (WebClient client = new WebClient())
 						{
-							await client.DownloadFileTaskAsync(new Uri(episode.OnlineImageUrl), episode.LocalImagePath);
+							// TODO disable imagine loading for now
+							//await client.DownloadFileTaskAsync(new Uri(episode.OnlineImageUrl), episode.LocalImagePath);
 
 							episode.ImageText = "Done";
 						}

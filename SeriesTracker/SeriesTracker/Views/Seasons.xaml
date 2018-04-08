@@ -16,7 +16,7 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition x:Name="SeasonTreeView" Width="140" />
+			<ColumnDefinition x:Name="SeasonTreeView" Width="150" />
 			<ColumnDefinition Width="10" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
