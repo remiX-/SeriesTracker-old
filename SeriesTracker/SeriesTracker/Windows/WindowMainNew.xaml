@@ -15,12 +15,13 @@
 	</Window.DataContext>
 	<Window.Resources>
 		<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConv"/>
+		<converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"/>
 	</Window.Resources>
 
 	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<materialDesign:DrawerHost.LeftDrawerContent>
-				<DockPanel MinWidth="230">
+				<DockPanel MinWidth="230" Background="{StaticResource MaterialDesignCardBackground}">
 					<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
 								  DockPanel.Dock="Top"
 								  HorizontalAlignment="Right" Margin="16"
@@ -29,11 +30,19 @@
 						<ListBox.ItemTemplate>
 							<DataTemplate DataType="ViewModels:HamburgerMenuItem">
 								<Grid>
-									<StackPanel Orientation="Horizontal" Margin="16 10">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition />
+									</Grid.ColumnDefinitions>
+
+									<Rectangle Grid.Column="0"
+											   Width="6"
+											   Fill="{DynamicResource SecondaryAccentBrush}"
+											   Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConv}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
+									<StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12 10">
 										<materialDesign:PackIcon Kind="{Binding Icon}" Height="30" Width="30" />
 										<TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="16 0 0 0" />
 									</StackPanel>
-									<Separator VerticalAlignment="Bottom" />
 								</Grid>
 							</DataTemplate>
 						</ListBox.ItemTemplate>
@@ -178,53 +187,51 @@
 										  materialDesign:ShadowAssist.ShadowDepth="Depth2">
 					<DockPanel>
 						<materialDesign:PopupBox DockPanel.Dock="Right" Margin="20 0 0 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-							<StackPanel>
+							<StackPanel MinWidth="200">
 								<TextBlock Margin="15" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" TextTrimming="CharacterEllipsis" Text="{Binding Username}"/>
 								<Separator Margin="4,0" />
-								<MenuItem ToolTip="View" Header="View">
+								<MenuItem ToolTip="View" Header="View" Command="{Binding ViewProfileCommand}">
 									<MenuItem.Icon>
-										<materialDesign:PackIcon Kind="Account" Opacity="1" />
+										<materialDesign:PackIcon Kind="Account" />
 									</MenuItem.Icon>
 								</MenuItem>
-								<!--<Button Content="DataGridView" Click="MenuPopupButton_OnClick"/>
-								<Button Content="GridView" Click="MenuPopupButton_OnClick"/>
 								<Separator />
-								<Button Content="Test 1" Click="MenuPopupButton_Test_OnClick"/>-->
+								<MenuItem ToolTip="View" Header="Sound" Click="MenuPopupButton_Test_OnClick">
+									<MenuItem.Icon>
+										<materialDesign:PackIcon Kind="BookmarkMusic" />
+									</MenuItem.Icon>
+								</MenuItem>
 							</StackPanel>
 						</materialDesign:PopupBox>
 						
 						<materialDesign:ColorZone Mode="PrimaryDark"
 												  DockPanel.Dock="Right"
-												  Padding="0"
+												  Padding="10"
 												  Margin="16 0 0 0"
 												  CornerRadius="2"
-												  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+												  materialDesign:ShadowAssist.ShadowDepth="Depth1"
 												  VerticalAlignment="Stretch">
 							<Grid>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="8" />
 									<ColumnDefinition Width="Auto" />
 								</Grid.ColumnDefinitions>
-								<Button Style="{DynamicResource MaterialDesignToolButton}" Grid.Column="0">
-									<materialDesign:PackIcon Kind="Magnify" Opacity=".6" />
-								</Button>
-								<TextBox Grid.Column="1"
+								<TextBox Grid.Column="0"
 										 x:Name="txt_FilterText"
-										 Margin="8 0 0 0"
 										 Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}"
 										 materialDesign:HintAssist.Hint="Search"
-										 MinWidth="200"
+										 MinWidth="225"
 										 VerticalAlignment="Center" />
-								<Button Style="{DynamicResource MaterialDesignToolButton}" Grid.Column="2" Click="ClearFilter_Click">
-									<materialDesign:PackIcon Kind="Close" Opacity=".6" Margin="0 0 0 0" />
+								<Button Grid.Column="2" Style="{DynamicResource MaterialDesignToolButton}" Padding="0" Click="ClearFilter_Click" Height="Auto">
+									<materialDesign:PackIcon Kind="Close" Opacity=".6" Foreground="White" />
 								</Button>
 							</Grid>
 						</materialDesign:ColorZone>
 
 						<materialDesign:ColorZone Mode="PrimaryDark"
 												  DockPanel.Dock="Right"
-												  Padding="8 0"
+												  Padding="10"
 												  CornerRadius="2"
 												  materialDesign:ShadowAssist.ShadowDepth="Depth2"
 												  VerticalAlignment="Stretch">
