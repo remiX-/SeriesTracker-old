@@ -140,6 +140,7 @@
     <Compile Include="Utilities\Comparers\DefaultComparer.cs" />
     <Compile Include="Controllers\ModelMethods\UserMethods.cs" />
     <Compile Include="Controllers\Repositories\IUserRepository.cs" />
+    <Compile Include="Utilities\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Utilities\ValidationRules\BadCharsValidationRule.cs" />
     <Compile Include="Utilities\Converters\BoolToInverseBoolConverter.cs" />
     <Compile Include="Utilities\ValidationRules\NotEmptyValidationRule.cs" />
