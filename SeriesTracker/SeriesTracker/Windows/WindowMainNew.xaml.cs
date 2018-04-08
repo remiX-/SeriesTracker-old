@@ -318,8 +318,8 @@ namespace SeriesTracker.Windows
 				//	Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NjAzMTIsImlkIjoiIiwib3JpZ19pYXQiOjE1MjE0NzM5MTJ9.2EJfa2BaDK6HELVqIiBp05os-bnvqdpNcVK-GkO2YM-cAxU3RXhHTBkvZUD02Bk9Zsby6NTxc-Tgqc3y5ftuL198BIAP5iZf_bdI9P262vBhrVwUL0a2zKhUZue3pTrNMOEiXiwu8ZOrOMuNF0qVFXd8HIO-Ax2S3K1lD4TZmujg6KGo4sW0DtSvN40spNID7DRw1cvJ7ye8xfznz1jnqg_H5Rxef1U7ASavuACX-puDZ29fADwR27ZYrb67oYqCywRhiNXuJskuFBeMuXkzofQEo9tygEN3L_cYS5S8UUxngI8InXSlNRw0_d1B7QSIYXxN7YEE5zEYO5nTpprKAg"
 				//};
 
-				PopupNotification("Failed to contact theTVDB api!");
-				return;
+				//PopupNotification("Failed to contact theTVDB api!");
+				//return;
 
 				JObject jObject = new JObject { ["apikey"] = AppPrivate.thetvdbAPIKey };
 				ReturnResult<TvdbAPI> data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
@@ -908,6 +908,21 @@ namespace SeriesTracker.Windows
 		#endregion
 
 		#region HamburgerMenu
+		private async void AppMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (AppMenuListBox.SelectedItem == null) return;
+
+			// Close drawer
+			MenuToggleButton.IsChecked = false;
+
+			var selected = AppMenuListBox.SelectedItem as HamburgerMenuItem;
+			// Do action
+			await DoAppMenuAction(selected.Id);
+
+			// Deselect item
+			AppMenuListBox.SelectedItem = null;
+		}
+
 		private async Task AddSeries()
 		{
 			// 257655 - arrow
@@ -1009,35 +1024,11 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void ViewProfile()
-		{
-			WindowMyAccount about = new WindowMyAccount();
-			if ((bool)about.ShowDialog())
-			{
-				Logout();
-			}
-		}
-
 		private void OpenSettings()
 		{
 			WindowSettings win = new WindowSettings() { Owner = this };
 			win.CloseHandler += SettingsClosedHandler;
 			win.ShowDialog();
-		}
-
-		private async void AppMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (AppMenuListBox.SelectedItem == null) return;
-
-			// Close drawer
-			MenuToggleButton.IsChecked = false;
-
-			var selected = AppMenuListBox.SelectedItem as HamburgerMenuItem;
-			// Do action
-			await DoAppMenuAction(selected.Id);
-
-			// Deselect item
-			AppMenuListBox.SelectedItem = null;
 		}
 
 		private async Task DoAppMenuAction(string selected)
@@ -1051,8 +1042,6 @@ namespace SeriesTracker.Windows
 				case "CheckUpdates": await CheckForUpdates(); break;
 				case "NewEpisodes": await CheckForNewEpisodes(); break;
 				case "DetectLocalSeries": DetectLocalSeriesPaths(); break;
-
-				case "Profile": ViewProfile(); break;
 				case "Settings": OpenSettings(); break;
 				case "Exit": Close(); break;
 				default: break;
@@ -1105,30 +1094,13 @@ namespace SeriesTracker.Windows
 			//	//ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AppGlobal.Settings.Accent), ThemeManager.GetAppTheme(AppGlobal.Settings.Theme));
 			//}
 		}
-
-		private void Logout()
-		{
-			AppGlobal.User = null;
-
-			Properties.Settings.Default.UserEmail = string.Empty;
-			Properties.Settings.Default.UserPassword = string.Empty;
-			Properties.Settings.Default.UserRemember = false;
-			Properties.Settings.Default.Save();
-
-			//Window m = new WindowLogin();
-			//m.Show();
-			//Application.Current.MainWindow = m;
-			Application.Current.MainWindow = new WindowLogin();
-			Application.Current.MainWindow.Show();
-
-			Close();
-		}
 		#endregion
 
 		#region Test
 		private async void MenuPopupButton_Test_OnClick(object sender, RoutedEventArgs e)
 		{
-			await StartProgress();
+			CommonMethods.PlayNotification();
+			//await StartProgress();
 		}
 
 		private async Task StartProgress()

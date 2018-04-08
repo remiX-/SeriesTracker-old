@@ -1,14 +1,13 @@
-﻿<Window
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
-	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-	x:Class="SeriesTracker.Windows.WindowAddShow"
-	Title="Add a show"
-	Height="350" Width="610"
-	ShowInTaskbar="False"
-	Loaded="Window_Loaded"
-	Style="{StaticResource STWindowNoResize}">
+﻿<Window x:Class="SeriesTracker.Windows.WindowAddShow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+		Title="{Binding MyTitle}"
+		Height="350" Width="610"
+		ShowInTaskbar="False"
+		Loaded="Window_Loaded"
+		Style="{StaticResource STWindowNoResize}">
 	<Window.DataContext>
 		<ViewModels:AddShowViewModel/>
 	</Window.DataContext>

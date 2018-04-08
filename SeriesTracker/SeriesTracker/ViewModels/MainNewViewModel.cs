@@ -1,11 +1,14 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Prism.Commands;
 using Prism.Mvvm;
 using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
 using SeriesTracker.Utilities.Commands;
+using SeriesTracker.Windows;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -78,6 +81,7 @@ namespace SeriesTracker.ViewModels
 		public string Product { get; }
 
 		public ICommand HelpCommand => new WPFCommandImplementation(ShowWindowAboutDialog);
+		public ICommand ViewProfileCommand => new DelegateCommand(ViewProfile);
 		#endregion
 		#endregion
 
@@ -90,7 +94,6 @@ namespace SeriesTracker.ViewModels
 				new HamburgerMenuItem("CheckUpdates", "Check for Updates", PackIconKind.Update),
 				new HamburgerMenuItem("NewEpisodes", "Check for New Episodes", PackIconKind.OpenInNew),
 				new HamburgerMenuItem("DetectLocalSeries", "Detect local series paths", PackIconKind.FileFind),
-				new HamburgerMenuItem("Profile", PackIconKind.Account),
 				new HamburgerMenuItem("Settings", PackIconKind.Settings),
 				new HamburgerMenuItem("Exit", PackIconKind.ExitToApp)
 			};
@@ -163,6 +166,32 @@ namespace SeriesTracker.ViewModels
 			Status = status;
 		}
 
+		#region Commands
+		private void ViewProfile()
+		{
+			WindowMyAccount about = new WindowMyAccount();
+			if ((bool)about.ShowDialog())
+			{
+				Logout();
+			}
+		}
+
+		private void Logout()
+		{
+			AppGlobal.User = null;
+
+			Properties.Settings.Default.UserEmail = string.Empty;
+			Properties.Settings.Default.UserPassword = string.Empty;
+			Properties.Settings.Default.UserRemember = false;
+			Properties.Settings.Default.Save();
+
+			Application.Current.MainWindow.Close();
+			Application.Current.MainWindow = new WindowLogin();
+			Application.Current.MainWindow.Show();
+
+			//Close();
+		}
+
 		private async void ShowWindowAboutDialog(object o)
 		{
 			var view = new AboutDialog();
@@ -170,6 +199,7 @@ namespace SeriesTracker.ViewModels
 			//show the dialog
 			var result = await DialogHost.Show(view, "RootDialog");
 		}
+		#endregion
 	}
 
 	public class HamburgerMenuItem : BindableBase
