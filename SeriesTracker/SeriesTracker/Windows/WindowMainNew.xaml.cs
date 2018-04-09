@@ -65,8 +65,6 @@ namespace SeriesTracker.Windows
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
-
 			await Startup();
 
 			AppMenuListBox.SelectionChanged += AppMenuListBox_SelectionChanged;
@@ -1111,6 +1109,7 @@ namespace SeriesTracker.Windows
 		private async void OpenedEventHandler(object sender, DialogOpenedEventArgs eventArgs)
 		{
 			await Task.Delay(3000);
+			MainSnackbar.MessageQueue.Enqueue("Welcome to Material Design In XAML Tookit");
 
 			eventArgs.Session.Close(false);
 			//Task.Delay(TimeSpan.FromSeconds(3))

@@ -47,8 +47,18 @@
 				</DockPanel>
 			</materialDesign:DrawerHost.LeftDrawerContent>
 
-			<DockPanel>
-				<materialDesign:ColorZone Mode="Standard" Padding="16" DockPanel.Dock="Top">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				
+				<ContentControl Grid.Row="1" Content="{Binding ElementName=HamburgerListBox, Path=SelectedItem.Content}" />
+				
+				<materialDesign:ColorZone Grid.Row="0"
+										  Mode="Standard"
+										  Padding="16"
+										  materialDesign:ShadowAssist.ShadowDepth="Depth2">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
@@ -73,10 +83,8 @@
 					</Grid>
 				</materialDesign:ColorZone>
 
-				<ContentControl Content="{Binding ElementName=HamburgerListBox, Path=SelectedItem.Content}" />
-				
-				<!--<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />-->
-			</DockPanel>
+				<materialDesign:Snackbar Grid.Row="1" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
+			</Grid>
 		</materialDesign:DrawerHost>
 	</materialDesign:DialogHost>
 </Window>

@@ -19,8 +19,6 @@ namespace SeriesTracker.Windows
 		private ViewShowViewModel MyViewModel;
 		private Show ViewingShow;
 
-		private bool hasWindowInit = false;
-
 		private int[,] actorResize = { { 1050, 2 }, { 1250, 3 }, { 1450, 4 }, { 0, 5 } };
 		#endregion
 
@@ -30,11 +28,6 @@ namespace SeriesTracker.Windows
 			InitializeComponent();
 
 			ViewingShow = show;
-		}
-
-		private void Window_Initialized(object sender, EventArgs e)
-		{
-
 		}
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -158,6 +151,8 @@ namespace SeriesTracker.Windows
 				default:
 					break;
 			}
+
+			MainSnackbar.MessageQueue.Enqueue(selected.Id);
 
 			// Close drawer
 			MenuToggleButton.IsChecked = false;
