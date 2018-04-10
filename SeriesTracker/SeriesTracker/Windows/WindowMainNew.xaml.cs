@@ -170,6 +170,8 @@ namespace SeriesTracker.Windows
 				SetupNetChange();
 				//SetupShowTimer();
 
+				await Task.Delay(1000);
+
 				await SetupTvdbAPI();
 				await SetupStructure();
 				await CheckForMissingLocalData();
@@ -193,6 +195,7 @@ namespace SeriesTracker.Windows
 		private void LoadWindowSettings()
 		{
 			MyViewModel = DataContext as MainNewViewModel;
+			MyViewModel.SetStatus("Starting up");
 
 			// Setup events
 			StateChanged += Window_StateChanged;
@@ -311,19 +314,22 @@ namespace SeriesTracker.Windows
 
 			try
 			{
-				//TvdbAPI data = new TvdbAPI
-				//{
-				//	Token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NjAzMTIsImlkIjoiIiwib3JpZ19pYXQiOjE1MjE0NzM5MTJ9.2EJfa2BaDK6HELVqIiBp05os-bnvqdpNcVK-GkO2YM-cAxU3RXhHTBkvZUD02Bk9Zsby6NTxc-Tgqc3y5ftuL198BIAP5iZf_bdI9P262vBhrVwUL0a2zKhUZue3pTrNMOEiXiwu8ZOrOMuNF0qVFXd8HIO-Ax2S3K1lD4TZmujg6KGo4sW0DtSvN40spNID7DRw1cvJ7ye8xfznz1jnqg_H5Rxef1U7ASavuACX-puDZ29fADwR27ZYrb67oYqCywRhiNXuJskuFBeMuXkzofQEo9tygEN3L_cYS5S8UUxngI8InXSlNRw0_d1B7QSIYXxN7YEE5zEYO5nTpprKAg"
-				//};
-
-				//PopupNotification("Failed to contact theTVDB api!");
-				//return;
+				TimeSpan diff = DateTime.Now.Subtract(Properties.Settings.Default.TvdbTokenTime);
+				if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.TvdbToken) && diff.TotalHours < 20)
+				{
+					AppGlobal.thetvdbToken = Properties.Settings.Default.TvdbToken;
+					return;
+				}
 
 				JObject jObject = new JObject { ["apikey"] = AppPrivate.thetvdbAPIKey };
 				ReturnResult<TvdbAPI> data = await Request.ExecuteAndDeserializeAsync<TvdbAPI>("POST", "https://api.thetvdb.com/login", jObject.ToString());
 
 				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
 				{
+					Properties.Settings.Default.TvdbTokenTime = DateTime.Now;
+					Properties.Settings.Default.TvdbToken = data.Result.Token;
+					Properties.Settings.Default.Save();
+
 					AppGlobal.thetvdbToken = data.Result.Token;
 				}
 				else
@@ -348,10 +354,10 @@ namespace SeriesTracker.Windows
 				// Check local series folder directory
 				if (!string.IsNullOrEmpty(AppGlobal.Paths.LocalSeriesDirectory) && !Directory.Exists(AppGlobal.Paths.LocalSeriesDirectory))
 				{
+					MessageBox.Show($"Series path '{AppGlobal.Paths.LocalSeriesDirectory}' does not exist or cannot be read. Please set a new path.");
+
 					AppGlobal.Settings.LocalSeriesFolder = "";
 					AppGlobal.Settings.Save();
-
-					MessageBox.Show("Series path '" + AppGlobal.Paths.LocalSeriesDirectory + "' does not exist or cannot be read. Please set a new path.");
 				}
 
 				// Check for files
