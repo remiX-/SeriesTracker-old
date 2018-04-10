@@ -3,6 +3,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
+using SeriesTracker.Enums;
 using SeriesTracker.Models;
 using SeriesTracker.Utilities.Commands;
 using SeriesTracker.Windows;
@@ -29,7 +30,12 @@ namespace SeriesTracker.ViewModels
 		private List<Category> categories;
 		private Category filterCategory;
 		private string filterText;
+
+		private ViewType currentView = ViewType.None;
+		private bool dataGridViewVisible;
+		private bool gridViewVisible;
 		private int gridViewColumnCount;
+
 
 		private string status;
 		#endregion
@@ -44,6 +50,11 @@ namespace SeriesTracker.ViewModels
 		public string UserEmail { get; }
 		public string Username { get; }
 
+		public List<Category> Categories
+		{
+			get => categories;
+			set => SetProperty(ref categories, value);
+		}
 		public Category FilterCategory
 		{
 			get => filterCategory;
@@ -53,11 +64,6 @@ namespace SeriesTracker.ViewModels
 				if (value != null)
 					RefreshView();
 			}
-		}
-		public List<Category> Categories
-		{
-			get => categories;
-			set => SetProperty(ref categories, value);
 		}
 
 		public string FilterText
@@ -71,6 +77,22 @@ namespace SeriesTracker.ViewModels
 			get => gridViewColumnCount;
 			set => SetProperty(ref gridViewColumnCount, value);
 		}
+
+		public ViewType CurrentView
+		{
+			get => currentView;
+			set
+			{
+				if (currentView == value) return;
+
+				SetProperty(ref currentView, value);
+
+				DataGridViewVisible = currentView == ViewType.DataGrid;
+				GridViewVisible = currentView == ViewType.Grid;
+			}
+		}
+		public bool DataGridViewVisible { get => dataGridViewVisible; set => SetProperty(ref dataGridViewVisible, value); }
+		public bool GridViewVisible { get => gridViewVisible; set => SetProperty(ref gridViewVisible, value); }
 
 		public string Status
 		{
@@ -98,7 +120,7 @@ namespace SeriesTracker.ViewModels
 				new HamburgerMenuItem("Exit", PackIconKind.ExitToApp)
 			};
 
-			MyTitle = AppGlobal.User.Username;
+			MyTitle = AppGlobal.User.Username ?? "test";
 			UserEmail = AppGlobal.User.Email;
 			Username = AppGlobal.User.Username;
 

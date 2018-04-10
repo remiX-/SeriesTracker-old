@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
+using SeriesTracker.Enums;
 using SeriesTracker.Models;
 using SeriesTracker.Utilities.Comparers;
 using SeriesTracker.ViewModels;
@@ -46,15 +47,7 @@ namespace SeriesTracker.Windows
 		private Dictionary<Key, ExecutedRoutedEventHandler> commands = new Dictionary<Key, ExecutedRoutedEventHandler>();
 
 		// Grid view settings
-		private SeriesView currentView = SeriesView.List;
 		private int[,] gridResize = { { 1300, 4 }, { 1500, 5 }, { 0, 6 } };
-
-		public enum SeriesView
-		{
-			List,
-			Detail,
-			Grid
-		}
 		#endregion
 
 		#region Window Events
@@ -202,9 +195,7 @@ namespace SeriesTracker.Windows
 			SizeChanged += Window_SizeChanged;
 			Closed += Window_Closed;
 
-			view_DataGridView.Visibility = currentView == SeriesView.List ? Visibility.Visible : Visibility.Hidden;
-			//view_DetailView.Visibility = currentView == SeriesView.Detail ? Visibility.Visible : Visibility.Hidden;
-			view_GridView.Visibility = currentView == SeriesView.Grid ? Visibility.Visible : Visibility.Hidden;
+			MyViewModel.CurrentView = ViewType.DataGrid;
 
 			Width = AppGlobal.Settings.Windows["Main"].Width;
 			Height = AppGlobal.Settings.Windows["Main"].Height;
@@ -317,6 +308,7 @@ namespace SeriesTracker.Windows
 				TimeSpan diff = DateTime.Now.Subtract(Properties.Settings.Default.TvdbTokenTime);
 				if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.TvdbToken) && diff.TotalHours < 20)
 				{
+					MainSnackbar.MessageQueue.Enqueue("No new token", "XD", () => { MessageBox.Show("HI"); });
 					AppGlobal.thetvdbToken = Properties.Settings.Default.TvdbToken;
 					return;
 				}
@@ -326,6 +318,7 @@ namespace SeriesTracker.Windows
 
 				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
 				{
+					MainSnackbar.MessageQueue.Enqueue("New token");
 					Properties.Settings.Default.TvdbTokenTime = DateTime.Now;
 					Properties.Settings.Default.TvdbToken = data.Result.Token;
 					Properties.Settings.Default.Save();
@@ -1054,25 +1047,15 @@ namespace SeriesTracker.Windows
 
 		private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
 		{
-			Button btn = sender as Button;
+			var obj = sender as MenuItem;
 
-			if (btn.Content.ToString() == "DataGridView")
+			if (obj.Header.ToString() == "DataGridView")
 			{
-				if (currentView == SeriesView.List) return;
-
-				currentView = SeriesView.List;
-
-				view_DataGridView.Visibility = Visibility.Visible;
-				view_GridView.Visibility = Visibility.Hidden;
+				MyViewModel.CurrentView = ViewType.DataGrid;
 			}
 			else
 			{
-				if (currentView == SeriesView.Grid) return;
-
-				currentView = SeriesView.Grid;
-
-				view_DataGridView.Visibility = Visibility.Hidden;
-				view_GridView.Visibility = Visibility.Visible;
+				MyViewModel.CurrentView = ViewType.Grid;
 			}
 		}
 

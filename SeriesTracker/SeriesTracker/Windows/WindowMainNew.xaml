@@ -58,9 +58,9 @@
 
 				<DataGrid Grid.Row="1"
 						  x:Name="view_DataGridView" 
-						  ItemsSource="{Binding Collection.View}" 
+						  ItemsSource="{Binding Collection.View}"
 						  Sorting="DataGrid_Sorting"
-						  Visibility="Hidden"
+						  Visibility="{Binding DataGridViewVisible, Converter={StaticResource BoolToVisibilityConv}}"
 						  VirtualizingPanel.IsVirtualizing="True"
 						  MouseDoubleClick="DataGrid_RowDoubleClick">
 					<DataGrid.Resources>
@@ -127,7 +127,7 @@
 
 				<ScrollViewer Grid.Row="1"
 							  x:Name="view_GridView"
-							  Visibility="Hidden">
+							  Visibility="{Binding GridViewVisible, Converter={StaticResource BoolToVisibilityConv}}">
 					<ItemsControl x:Name="view_GridViewItems"
 								  ItemsSource="{Binding Collection.View}"
 								  Background="{x:Null}"
@@ -193,6 +193,17 @@
 								<MenuItem ToolTip="View" Header="View" Command="{Binding ViewProfileCommand}">
 									<MenuItem.Icon>
 										<materialDesign:PackIcon Kind="Account" />
+									</MenuItem.Icon>
+								</MenuItem>
+								<Separator />
+								<MenuItem ToolTip="View" Header="DataGridView" Click="MenuPopupButton_OnClick">
+									<MenuItem.Icon>
+										<materialDesign:PackIcon Kind="FormatListChecks" />
+									</MenuItem.Icon>
+								</MenuItem>
+								<MenuItem ToolTip="View" Header="GridView" Click="MenuPopupButton_OnClick">
+									<MenuItem.Icon>
+										<materialDesign:PackIcon Kind="GridLarge" />
 									</MenuItem.Icon>
 								</MenuItem>
 								<Separator />

@@ -137,6 +137,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\ViewType.cs" />
     <Compile Include="Utilities\Comparers\DefaultComparer.cs" />
     <Compile Include="Controllers\ModelMethods\UserMethods.cs" />
     <Compile Include="Controllers\Repositories\IUserRepository.cs" />
