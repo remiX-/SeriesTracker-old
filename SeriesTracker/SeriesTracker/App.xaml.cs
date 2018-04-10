@@ -1,7 +1,9 @@
-﻿using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
-using SeriesTracker.Core;
+﻿using SeriesTracker.Core;
+using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 
@@ -21,6 +23,7 @@ namespace SeriesTracker
 			AppMutex = new Mutex(true, AppGlobal.AssemblyTitle, out bool aIsNewInstance);
 			if (!aIsNewInstance)
 			{
+				GiveSpecifiedAppTheFocus();
 				Current.Shutdown();
 			}
 
@@ -43,6 +46,32 @@ namespace SeriesTracker
 			new SeriesTrackerPaletteHelper().SetLightDark(AppGlobal.Settings.Theme.Type, AppGlobal.Settings.Theme.IsDark);
 			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Theme.Primary);
 			new SeriesTrackerPaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Theme.Accent);
+		}
+
+		[DllImport("user32.dll")]
+		private static extern bool ShowWindow(IntPtr hWnd, uint windowStyle);
+
+		[DllImport("user32.dll")]
+		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
+
+		[DllImport("user32.dll")]
+		private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		private static void GiveSpecifiedAppTheFocus()
+		{
+			try
+			{
+				Process p = Process.GetProcessesByName(AppGlobal.AssemblyTitle).FirstOrDefault();
+
+				//ShowWindow(p.MainWindowHandle, 1);
+				SetWindowPos(p.MainWindowHandle, new IntPtr(0), 0, 0, 0, 0, 3);
+
+				//SetForegroundWindow(p.MainWindowHandle);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 	}
 }
