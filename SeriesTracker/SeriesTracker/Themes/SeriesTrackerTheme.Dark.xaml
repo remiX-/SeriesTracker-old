@@ -3,13 +3,11 @@
                     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
 
 	<Color x:Key="ValidationErrorColor">#f44336</Color>
-	<SolidColorBrush x:Key="ValidationErrorBrush" Color="{StaticResource ValidationErrorColor}"/>
+	<SolidColorBrush x:Key="ValidationErrorBrush" Color="{StaticResource ValidationErrorColor}" po:Freeze="True" />
 
 	<SolidColorBrush x:Key="MaterialDesignBackground" Color="#FF000000" po:Freeze="True" />
 	<SolidColorBrush x:Key="MaterialDesignPaper" Color="#FF000000" po:Freeze="True" />
-	<!--<SolidColorBrush x:Key="MaterialDesignPaper" Color="#FF303030" po:Freeze="True" />-->
 	<SolidColorBrush x:Key="MaterialDesignCardBackground" Color="#FF101010" po:Freeze="True" />
-	<!--<SolidColorBrush x:Key="MaterialDesignCardBackground" Color="#FF424242" po:Freeze="True" />-->
 	<SolidColorBrush x:Key="MaterialDesignToolBarBackground" Color="#FF212121" po:Freeze="True" />
 	<SolidColorBrush x:Key="MaterialDesignBody" Color="#DDFFFFFF" po:Freeze="True" />
 	<SolidColorBrush x:Key="MaterialDesignBodyLight" Color="#89FFFFFF" po:Freeze="True" />
@@ -30,7 +28,8 @@
 
 	<SolidColorBrush x:Key="MaterialDesignToolTipBackground" Color="#757575" po:Freeze="True" />
 	<SolidColorBrush x:Key="MaterialDesignChipBackground" Color="#FF2E3C43" po:Freeze="True" />
-	<SolidColorBrush x:Key="MaterialDesignSnackbarBackground" Color="#FFCDCDCD" po:Freeze="True" />
+	<SolidColorBrush x:Key="MaterialDesignSnackbarBackground" Color="#FF101010" po:Freeze="True" />
+	<!--<SolidColorBrush x:Key="MaterialDesignSnackbarBackground" Color="#FFCDCDCD" po:Freeze="True" />-->
 	<SolidColorBrush x:Key="MaterialDesignSnackbarMouseOver" Color="#FFB9B9BD" po:Freeze="True" />
 	<SolidColorBrush x:Key="MaterialDesignSnackbarRipple" Color="#FF494949" po:Freeze="True" />
 

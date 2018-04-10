@@ -12,10 +12,10 @@
 	<DropShadowEffect x:Key="MaterialDesignShadowDepth4" BlurRadius="25" ShadowDepth="8" Direction="270" Color="{StaticResource MaterialDesignShadow}" Opacity=".42" RenderingBias="Performance" po:Freeze="False" />
 	<DropShadowEffect x:Key="MaterialDesignShadowDepth5" BlurRadius="35" ShadowDepth="13" Direction="270" Color="{StaticResource MaterialDesignShadow}" Opacity=".42" RenderingBias="Performance" po:Freeze="False" />-->
 
-	<SolidColorBrush x:Key="MaterialDesignLightBackground" Color="#FFFAFAFA"/>
+	<!--<SolidColorBrush x:Key="MaterialDesignLightBackground" Color="#FFFAFAFA"/>
 	<SolidColorBrush x:Key="MaterialDesignLightForeground" Color="#DD000000"/>
 	<SolidColorBrush x:Key="MaterialDesignDarkBackground" Color="#FF303030"/>
 	<SolidColorBrush x:Key="MaterialDesignDarkForeground" Color="#FFFAFAFA"/>
 	<SolidColorBrush x:Key="MaterialDesignDarkSeparatorBackground" Color="#1F000000" />
-	<SolidColorBrush x:Key="MaterialDesignLightSeparatorBackground" Color="#1FFFFFFF" />
+	<SolidColorBrush x:Key="MaterialDesignLightSeparatorBackground" Color="#1FFFFFFF" />-->
 </ResourceDictionary>
