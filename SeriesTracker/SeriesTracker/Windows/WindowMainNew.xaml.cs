@@ -308,7 +308,6 @@ namespace SeriesTracker.Windows
 				TimeSpan diff = DateTime.Now.Subtract(Properties.Settings.Default.TvdbTokenTime);
 				if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.TvdbToken) && diff.TotalHours < 20)
 				{
-					MainSnackbar.MessageQueue.Enqueue("No new token", "XD", () => { MessageBox.Show("HI"); });
 					AppGlobal.thetvdbToken = Properties.Settings.Default.TvdbToken;
 					return;
 				}
@@ -318,7 +317,6 @@ namespace SeriesTracker.Windows
 
 				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
 				{
-					MainSnackbar.MessageQueue.Enqueue("New token");
 					Properties.Settings.Default.TvdbTokenTime = DateTime.Now;
 					Properties.Settings.Default.TvdbToken = data.Result.Token;
 					Properties.Settings.Default.Save();
