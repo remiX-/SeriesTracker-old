@@ -26,6 +26,13 @@ namespace SeriesTracker.Windows
 
 		private async void Window_Initialized(object sender, System.EventArgs e)
 		{
+
+		}
+
+		private async void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			MyViewModel = DataContext as LoginViewModel;
+
 			txt_Login_UsernameOrEmail.Focus();
 
 			lbl_Login_Info.Content = "";
@@ -35,10 +42,10 @@ namespace SeriesTracker.Windows
 
 			if (hasNet)
 			{
-				//Properties.Settings.Default.UserEmail = "testuser";
-				//Properties.Settings.Default.UserPassword = "tester";
-				//Properties.Settings.Default.UserRemember = true;
-				//Properties.Settings.Default.Save();
+				Properties.Settings.Default.UserEmail = "remix";
+				Properties.Settings.Default.UserPassword = "test";
+				Properties.Settings.Default.UserRemember = true;
+				Properties.Settings.Default.Save();
 
 				//Properties.Settings.Default.UserEmail = string.Empty;
 				//Properties.Settings.Default.UserPassword = string.Empty;
@@ -64,11 +71,6 @@ namespace SeriesTracker.Windows
 			}
 		}
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			MyViewModel = DataContext as LoginViewModel;
-		}
-
 		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left)
@@ -83,21 +85,21 @@ namespace SeriesTracker.Windows
 			lbl_Login_Info.Content = "";
 
 			// Validation checks
-			if (string.IsNullOrEmpty(txt_Login_UsernameOrEmail.Text))
-			{
-				lbl_Login_Info.Content = "Username/Email is required";
-				txt_Login_UsernameOrEmail.Focus();
+			//if (string.IsNullOrEmpty(txt_Login_UsernameOrEmail.Text))
+			//{
+			//	lbl_Login_Info.Content = "Username/Email is required";
+			//	txt_Login_UsernameOrEmail.Focus();
 
-				return;
-			}
+			//	return;
+			//}
 
-			if (string.IsNullOrEmpty(txt_Login_Password.Password))
-			{
-				lbl_Login_Info.Content = "Password is required";
-				txt_Login_Password.Focus();
+			//if (string.IsNullOrEmpty(txt_Login_Password.Password))
+			//{
+			//	lbl_Login_Info.Content = "Password is required";
+			//	txt_Login_Password.Focus();
 
-				return;
-			}
+			//	return;
+			//}
 
 			string UsernameOrEmail = txt_Login_UsernameOrEmail.Text;
 			string Password = txt_Login_Password.Password;
