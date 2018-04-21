@@ -10,8 +10,9 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<!-- Material Design -->
-				<ResourceDictionary Source="Themes/SeriesTrackerTheme.Light.xaml" />
+				<ResourceDictionary Source="Themes/SeriesTrackerTheme.Dark.xaml" />
 
+				<!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />-->
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
@@ -28,13 +29,13 @@
 			<!--#region Windows-->
 			<Style x:Key="STWindow" TargetType="{x:Type Window}">
 				<Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+				<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 				<Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
 				<Setter Property="TextElement.FontWeight" Value="Regular" />
 				<Setter Property="TextElement.FontSize" Value="13" />
 				<Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
 				<Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
-				<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 			</Style>
 
 			<Style x:Key="STWindowNoBorder" TargetType="{x:Type Window}" BasedOn="{StaticResource STWindow}">
@@ -43,11 +44,25 @@
 				<Setter Property="AllowsTransparency" Value="True" />
 				<Setter Property="BorderThickness" Value="1" />
 				<Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+				<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
+				<Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
+				<Setter Property="TextElement.FontWeight" Value="Regular" />
+				<Setter Property="TextElement.FontSize" Value="13" />
+				<Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+				<Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
 			</Style>
 
 			<Style x:Key="STWindowNoResize" TargetType="{x:Type Window}" BasedOn="{StaticResource STWindow}">
 				<Setter Property="ResizeMode" Value="NoResize" />
 				<Setter Property="ShowInTaskbar" Value="False" />
+				<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
+				<Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
+				<Setter Property="TextElement.FontWeight" Value="Regular" />
+				<Setter Property="TextElement.FontSize" Value="13" />
+				<Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+				<Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
 			</Style>
 			<!--#endregion-->
 
@@ -177,6 +192,7 @@
 
 			<!--#region Textboxes-->
 			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+				<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
 				<Setter Property="VerticalAlignment" Value="Top" />
 				<Setter Property="HorizontalAlignment" Value="Left" />
 				<Setter Property="Height" Value="26" />
@@ -184,6 +200,7 @@
 			</Style>
 
 			<Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
+				<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
 				<Setter Property="VerticalAlignment" Value="Top" />
 				<Setter Property="HorizontalAlignment" Value="Left" />
 				<Setter Property="Height" Value="26" />
