@@ -317,6 +317,8 @@ namespace SeriesTracker.Windows
 
 				if (data.Result != null && !string.IsNullOrEmpty(data.Result.Token))
 				{
+					MainSnackbar.MessageQueue.Enqueue("New TVDb Token :-D");
+
 					Properties.Settings.Default.TvdbTokenTime = DateTime.Now;
 					Properties.Settings.Default.TvdbToken = data.Result.Token;
 					Properties.Settings.Default.Save();
@@ -354,6 +356,8 @@ namespace SeriesTracker.Windows
 				// Check for files
 				if (!File.Exists(AppGlobal.Paths.EztvIDFile) || DateTime.Now > Properties.Settings.Default.EztvLastUpdate.AddDays(7))
 				{
+					MyViewModel.SetStatus("Updating Eztv data");
+
 					await MethodCollection.UpdateEztvShowFileAsync();
 
 					Properties.Settings.Default.EztvLastUpdate = DateTime.Now;

@@ -267,7 +267,7 @@
 				</materialDesign:ColorZone>
 
 				<materialDesign:ColorZone Grid.Row="2"
-										  Mode="Standard"
+										  Mode="PrimaryDark"
 										  Padding="16 8"
 										  materialDesign:ShadowAssist.ShadowDepth="Depth2"
 										  materialDesign:ShadowAssist.ShadowEdges="Top">

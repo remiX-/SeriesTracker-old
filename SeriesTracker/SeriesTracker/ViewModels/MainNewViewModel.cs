@@ -36,7 +36,6 @@ namespace SeriesTracker.ViewModels
 		private bool gridViewVisible;
 		private int gridViewColumnCount;
 
-
 		private string status;
 		#endregion
 
