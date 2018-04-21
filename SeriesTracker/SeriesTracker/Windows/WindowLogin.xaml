@@ -8,34 +8,33 @@
 		Title="Login or Register"
 		Icon="../Resources/mainIcon.ico"
 		Height="350" Width="500"
-		Loaded="Window_Loaded" Initialized="Window_Initialized" MouseDown="Window_MouseDown"
-		WindowStartupLocation="CenterScreen" Visibility="Visible"
-		Style="{StaticResource STWindow}">
+		Initialized="Window_Initialized" Loaded="Window_Loaded" MouseDown="Window_MouseDown"
+		WindowStartupLocation="CenterScreen" Visibility="Hidden"
+		Style="{StaticResource STWindowNoResize}">
 	<Window.DataContext>
 		<viewModels:LoginViewModel />
 	</Window.DataContext>
-	<Grid Margin="10">
+	<Grid Margin="0">
 		<dragablz:TabablzControl x:Name="tc" FixedHeaderCount="2">
 			<dragablz:TabablzControl.InterTabController>
 				<dragablz:InterTabController />
 			</dragablz:TabablzControl.InterTabController>
 			<TabItem Header="Login">
-				<Grid>
+				<Grid Margin="10" HorizontalAlignment="Center">
 					<Grid.RowDefinitions>
-						<RowDefinition Height="10" />
 						<RowDefinition Height="35" />
 						<RowDefinition Height="35" />
-						<RowDefinition Height="25" />
+						<RowDefinition Height="35" />
 						<RowDefinition />
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="135" />
+						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="20" />
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
-					<Label Grid.Row="1" Grid.Column="0" Content="Username/Email" VerticalAlignment="Center" HorizontalAlignment="Right" />
-					<TextBox Grid.Row="1" Grid.Column="2"
+					<Label Grid.Row="0" Grid.Column="0" Style="{StaticResource lbl-default-center-right}" Content="Username/Email" />
+					<TextBox Grid.Row="0" Grid.Column="2"
 							 x:Name="txt_Login_UsernameOrEmail"
 							 KeyDown="Login_KeyPress"
 							 VerticalAlignment="Center">
@@ -49,14 +48,19 @@
 						</TextBox.Text>
 					</TextBox>
 
-					<Label Grid.Row="2" Grid.Column="0" Content="Password" HorizontalAlignment="Right" VerticalAlignment="Center" />
-					<PasswordBox Grid.Row="2" Grid.Column="2" x:Name="txt_Login_Password" KeyDown="Login_KeyPress" VerticalAlignment="Center" />
+					<Label Grid.Row="1" Grid.Column="0" Style="{StaticResource lbl-default-center-right}" Content="Password" />
+					<PasswordBox Grid.Row="1" Grid.Column="2" x:Name="txt_Login_Password"
+								 KeyDown="Login_KeyPress"
+								 VerticalAlignment="Center"
+								 PasswordChanged="Password_PasswordChanged" />
 
-					<CheckBox Grid.Row="3" Grid.Column="2" x:Name="cb_RememberMe" Content="Remember me" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="CB_RememberMe_CheckChange" Unchecked="CB_RememberMe_CheckChange" />
+					<CheckBox Grid.Row="2" Grid.Column="2" x:Name="cb_RememberMe"
+							  Content="Remember me"
+							  Checked="CB_RememberMe_CheckChange" Unchecked="CB_RememberMe_CheckChange" />
 
-					<StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-						<Label x:Name="lbl_Login_Info" Content="Label" Margin="0,0,0,10" HorizontalAlignment="Center" />
-						<Button x:Name="btn_Login" Style="{StaticResource btn-default-bottom-center}" Content="Login" Click="Btn_Login_Click" />
+					<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+						<Label Margin="0,0,0,10" Content="{Binding StatusInfo}" Foreground="{Binding StatusBrush}" HorizontalAlignment="Center" />
+						<Button x:Name="btn_Login" Style="{StaticResource btn-default-center-center}" Content="Login" Click="Btn_Login_Click" />
 					</StackPanel>
 				</Grid>
 			</TabItem>

@@ -1,24 +1,33 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
-using SeriesTracker.Core;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class LoginViewModel : BindableBase
+	internal class LoginViewModel : BindableBase, IViewModelBase
 	{
 		#region Vars
 		#region Fields
+		private bool isBusy;
+
 		private string username;
 		private string password;
+
+		private Brush statusBrush;
+		private string statusInfo;
 		#endregion
 
 		#region Properties
+		public bool IsBusy
+		{
+			get => isBusy;
+			set
+			{
+				SetProperty(ref isBusy, value);
+				LoginCommand.RaiseCanExecuteChanged();
+			}
+		}
+
 		public string Username
 		{
 			get => username;
@@ -29,6 +38,17 @@ namespace SeriesTracker.ViewModels
 			get => password;
 			set => SetProperty(ref password, value);
 		}
+
+		public Brush StatusBrush
+		{
+			get => statusBrush;
+			set => SetProperty(ref statusBrush, value);
+		}
+		public string StatusInfo
+		{
+			get => statusInfo;
+			set => SetProperty(ref statusInfo, value);
+		}
 		#endregion
 
 		// Commands
@@ -38,11 +58,26 @@ namespace SeriesTracker.ViewModels
 
 		public LoginViewModel()
 		{
+			//LoginCommand = new DelegateCommand(Login, () => !IsBusy && Username.IsNotBlank() && Password.IsNotBlank());
+		}
 
+		public void SetLoginStatus(Brush brush, string status)
+		{
+			StatusBrush = brush;
+			StatusInfo = status;
 		}
 
 		#region Login
 
+		/*
+		private async void Login()
+		{
+			bool goodLogin = await CheckLogin(Username, Password);
+			if (goodLogin)
+			{
+				await CompleteLogin();
+			}
+		}
 
 		private async Task<bool> CheckLogin(string UsernameOrEmail, string Password)
 		{
@@ -89,6 +124,29 @@ namespace SeriesTracker.ViewModels
 				return false;
 			}
 		}
+
+		private async Task CompleteLogin()
+		{
+			if (window_LoggedIn == null)
+			{
+				Hide();
+
+				window_LoggedIn = new WindowLoggingIn();
+				window_LoggedIn.Show();
+			}
+
+			AppGlobal.User.Shows = (await AppGlobal.Db.UserShowListAsync()).ListData;
+			AppGlobal.User.Categories = (await AppGlobal.Db.UserCategoryListAsync()).ListData;
+
+			window_LoggedIn.Close();
+
+			Window Main = new WindowMainNew();
+			Main.Show();
+			Application.Current.MainWindow = Main;
+
+			Close();
+		}
+		*/
 		#endregion
 	}
 }

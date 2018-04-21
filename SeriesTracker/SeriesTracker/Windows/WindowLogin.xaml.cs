@@ -4,6 +4,7 @@ using SeriesTracker.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -16,6 +17,9 @@ namespace SeriesTracker.Windows
 		private LoginViewModel MyViewModel;
 
 		private WindowLoggingIn window_LoggedIn;
+
+		private bool hasNet;
+		//private bool failedLogin;
 		#endregion
 
 		#region Window Events
@@ -26,49 +30,78 @@ namespace SeriesTracker.Windows
 
 		private async void Window_Initialized(object sender, System.EventArgs e)
 		{
+			//Properties.Settings.Default.UserEmail = "remix";
+			//Properties.Settings.Default.UserPassword = "test";
+			//Properties.Settings.Default.UserRemember = true;
+			//Properties.Settings.Default.Save();
 
-		}
+			//Properties.Settings.Default.UserEmail = string.Empty;
+			//Properties.Settings.Default.UserPassword = string.Empty;
+			//Properties.Settings.Default.UserRemember = false;
+			//Properties.Settings.Default.Save();
 
-		private async void Window_Loaded(object sender, RoutedEventArgs e)
-		{
 			MyViewModel = DataContext as LoginViewModel;
 
 			txt_Login_UsernameOrEmail.Focus();
 
-			lbl_Login_Info.Content = "";
+			MyViewModel.StatusInfo = "";
 			lbl_Register_Info.Content = "";
 
-			bool hasNet = await CommonMethods.HasInternetConnectionAsync();
-
+			hasNet = await CommonMethods.HasInternetConnectionAsync();
 			if (hasNet)
 			{
-				Properties.Settings.Default.UserEmail = "remix";
-				Properties.Settings.Default.UserPassword = "test";
-				Properties.Settings.Default.UserRemember = true;
-				Properties.Settings.Default.Save();
-
-				//Properties.Settings.Default.UserEmail = string.Empty;
-				//Properties.Settings.Default.UserPassword = string.Empty;
-				//Properties.Settings.Default.UserRemember = false;
-				//Properties.Settings.Default.Save();
-
 				if (Properties.Settings.Default.UserRemember)
-					await CheckAutomaticLogin();
+				{
+					if (!await CheckAutomaticLogin())
+					{
+						MyViewModel.SetLoginStatus(Brushes.Red, "Automatic login failed");
+						btn_Login.IsEnabled = false;
+					}
+				}
 				else
+				{
 					Show();
+				}
 			}
 			else
 			{
 				Show();
 
-				lbl_Login_Info.Foreground = Brushes.Red;
-				lbl_Login_Info.Content = "No internet connection";
+				MyViewModel.SetLoginStatus(Brushes.Red, "No internet connection");
 				btn_Login.IsEnabled = false;
 
 				lbl_Register_Info.Foreground = Brushes.Red;
 				lbl_Register_Info.Content = "No internet connection";
 				btn_Register.IsEnabled = false;
 			}
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			//MyViewModel = DataContext as LoginViewModel;
+
+			//txt_Login_UsernameOrEmail.Focus();
+
+			//MyViewModel.StatusInfo = "";
+			//lbl_Register_Info.Content = "";
+
+			//if (hasNet)
+			//{
+			//	if (failedLogin)
+			//	{
+			//		MyViewModel.SetLoginStatus(Brushes.Red, "Automatic login failed");
+			//		btn_Login.IsEnabled = false;
+			//	}
+			//}
+			//else
+			//{
+			//	MyViewModel.SetLoginStatus(Brushes.Red, "No internet connection");
+			//	btn_Login.IsEnabled = false;
+
+			//	lbl_Register_Info.Foreground = Brushes.Red;
+			//	lbl_Register_Info.Content = "No internet connection";
+			//	btn_Register.IsEnabled = false;
+			//}
 		}
 
 		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -81,30 +114,26 @@ namespace SeriesTracker.Windows
 		#region Login
 		private async void Btn_Login_Click(object sender, RoutedEventArgs e)
 		{
-			lbl_Login_Info.Foreground = Brushes.Red;
-			lbl_Login_Info.Content = "";
+			MyViewModel.SetLoginStatus(Brushes.Red, string.Empty);
 
 			// Validation checks
-			//if (string.IsNullOrEmpty(txt_Login_UsernameOrEmail.Text))
-			//{
-			//	lbl_Login_Info.Content = "Username/Email is required";
-			//	txt_Login_UsernameOrEmail.Focus();
+			if (string.IsNullOrEmpty(txt_Login_UsernameOrEmail.Text))
+			{
+				MyViewModel.StatusInfo = "Username/Email is required";
+				txt_Login_UsernameOrEmail.Focus();
 
-			//	return;
-			//}
+				return;
+			}
 
-			//if (string.IsNullOrEmpty(txt_Login_Password.Password))
-			//{
-			//	lbl_Login_Info.Content = "Password is required";
-			//	txt_Login_Password.Focus();
+			if (string.IsNullOrEmpty(txt_Login_Password.Password))
+			{
+				MyViewModel.StatusInfo = "Password is required";
+				txt_Login_Password.Focus();
 
-			//	return;
-			//}
+				return;
+			}
 
-			string UsernameOrEmail = txt_Login_UsernameOrEmail.Text;
-			string Password = txt_Login_Password.Password;
-
-			bool goodLogin = await CheckLogin(UsernameOrEmail, Password);
+			bool goodLogin = await CheckLogin(MyViewModel.Username, MyViewModel.Password);
 			if (goodLogin)
 			{
 				await CompleteLogin();
@@ -126,39 +155,38 @@ namespace SeriesTracker.Windows
 			Properties.Settings.Default.Save();
 		}
 
-		private async Task CheckAutomaticLogin()
+		private async Task<bool> CheckAutomaticLogin()
 		{
 			window_LoggedIn = new WindowLoggingIn();
 			window_LoggedIn.Show();
 
 			//return;
-			//await Task.Delay(5000);
+			await Task.Delay(1000);
 
 			bool goodLogin = await CheckLogin(Properties.Settings.Default.UserEmail, Properties.Settings.Default.UserPassword);
 			if (goodLogin)
 			{
 				await CompleteLogin();
+
+				return true;
 			}
 			else
 			{
 				window_LoggedIn.Close();
-
 				Show();
-				lbl_Login_Info.Foreground = Brushes.Red;
-				lbl_Login_Info.Content = "Automatic login failed";
-				btn_Login.IsEnabled = false;
 
 				Properties.Settings.Default.UserEmail = string.Empty;
 				Properties.Settings.Default.UserPassword = string.Empty;
 				Properties.Settings.Default.UserRemember = false;
 				Properties.Settings.Default.Save();
+
+				return false;
 			}
 		}
 
 		private async Task<bool> CheckLogin(string UsernameOrEmail, string Password)
 		{
-			lbl_Login_Info.Foreground = Brushes.Orange;
-			lbl_Login_Info.Content = "Logging in...";
+			MyViewModel.SetLoginStatus(Brushes.Orange, "Logging in...");
 			btn_Login.IsEnabled = false;
 
 			LoginResult result = await MethodCollection.UserLoginAsync(UsernameOrEmail, Password);
@@ -173,8 +201,7 @@ namespace SeriesTracker.Windows
 				}
 				Properties.Settings.Default.Save();
 
-				lbl_Login_Info.Foreground = Brushes.Green;
-				lbl_Login_Info.Content = "Logged in!";
+				MyViewModel.SetLoginStatus(Brushes.Green, "Logged in!");
 
 				return true;
 			}
@@ -182,19 +209,19 @@ namespace SeriesTracker.Windows
 			{
 				txt_Login_UsernameOrEmail.IsEnabled = true;
 				txt_Login_Password.IsEnabled = true;
+				btn_Login.IsEnabled = true;
 
 				txt_Login_UsernameOrEmail.Focus();
 				txt_Login_UsernameOrEmail.SelectAll();
 
-				btn_Login.IsEnabled = true;
-				lbl_Login_Info.Foreground = Brushes.Red;
+				MyViewModel.StatusBrush = Brushes.Red;
 				if (result.Result == SQLResult.BadLogin)
 				{
-					lbl_Login_Info.Content = "Incorrect login details";
+					MyViewModel.StatusInfo = "Incorrect login details";
 				}
 				else if (result.Result == SQLResult.ErrorHasOccured)
 				{
-					lbl_Login_Info.Content = "An unexpected error has occured";
+					MyViewModel.StatusInfo = "An unexpected error has occured";
 				}
 
 				return false;
@@ -221,6 +248,11 @@ namespace SeriesTracker.Windows
 			Application.Current.MainWindow = Main;
 
 			Close();
+		}
+
+		private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+		{
+			MyViewModel.Password = ((PasswordBox)sender).Password;
 		}
 		#endregion
 
@@ -293,8 +325,8 @@ namespace SeriesTracker.Windows
 			{
 				lbl_Register_Info.Foreground = Brushes.Green;
 				lbl_Register_Info.Content = "Registration successful!";
-				lbl_Login_Info.Foreground = Brushes.Green;
-				lbl_Login_Info.Content = "Registration successful!";
+
+				MyViewModel.SetLoginStatus(Brushes.Green, "Registration successful!");
 
 				txt_Register_Username.Text = "";
 				txt_Register_Name.Text = "";
