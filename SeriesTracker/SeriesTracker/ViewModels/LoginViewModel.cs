@@ -1,10 +1,10 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class LoginViewModel : BindableBase, IViewModelBase
+	internal class LoginViewModel : ViewModelBase, IViewModelBase
 	{
 		#region Vars
 		#region Fields
@@ -23,7 +23,7 @@ namespace SeriesTracker.ViewModels
 			get => isBusy;
 			set
 			{
-				SetProperty(ref isBusy, value);
+				Set(ref isBusy, value);
 				LoginCommand.RaiseCanExecuteChanged();
 			}
 		}
@@ -31,34 +31,34 @@ namespace SeriesTracker.ViewModels
 		public string Username
 		{
 			get => username;
-			set => SetProperty(ref username, value);
+			set => Set(ref username, value);
 		}
 		public string Password
 		{
 			get => password;
-			set => SetProperty(ref password, value);
+			set => Set(ref password, value);
 		}
 
 		public Brush StatusBrush
 		{
 			get => statusBrush;
-			set => SetProperty(ref statusBrush, value);
+			set => Set(ref statusBrush, value);
 		}
 		public string StatusInfo
 		{
 			get => statusInfo;
-			set => SetProperty(ref statusInfo, value);
+			set => Set(ref statusInfo, value);
 		}
 		#endregion
 
 		// Commands
-		public DelegateCommand LoginCommand { get; }
-		public DelegateCommand RegisterCommand { get; }
+		public RelayCommand LoginCommand { get; }
+		public RelayCommand RegisterCommand { get; }
 		#endregion
 
 		public LoginViewModel()
 		{
-			//LoginCommand = new DelegateCommand(Login, () => !IsBusy && Username.IsNotBlank() && Password.IsNotBlank());
+			//LoginCommand = new RelayCommand(Login, () => !IsBusy && Username.IsNotBlank() && Password.IsNotBlank());
 		}
 
 		public void SetLoginStatus(Brush brush, string status)

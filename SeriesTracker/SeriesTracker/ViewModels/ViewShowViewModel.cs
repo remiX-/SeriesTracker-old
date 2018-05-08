@@ -1,12 +1,12 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Prism.Mvvm;
+using GalaSoft.MvvmLight;
 using SeriesTracker.Models;
 using SeriesTracker.Views;
 using System.Collections.Generic;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class ViewShowViewModel : BindableBase
+	internal class ViewShowViewModel : ViewModelBase
 	{
 		public Show MyShow { get; set; }
 
@@ -40,92 +40,92 @@ namespace SeriesTracker.ViewModels
 		public string MyTitle
 		{
 			get => myTitle;
-			set => SetProperty(ref myTitle, value);
+			set => Set(ref myTitle, value);
 		}
 		public string BannerPath
 		{
 			get => bannerPath;
-			set => SetProperty(ref bannerPath, value);
+			set => Set(ref bannerPath, value);
 		}
 		public string Overview
 		{
 			get => overview;
-			set => SetProperty(ref overview, value);
+			set => Set(ref overview, value);
 		}
 		public string Network
 		{
 			get => network;
-			set => SetProperty(ref network, value);
+			set => Set(ref network, value);
 		}
 		public string Genre
 		{
 			get => genre;
-			set => SetProperty(ref genre, value);
+			set => Set(ref genre, value);
 		}
 		public string Status
 		{
 			get => status;
-			set => SetProperty(ref status, value);
+			set => Set(ref status, value);
 		}
 		public string FirstAired
 		{
 			get => firstAired;
-			set => SetProperty(ref firstAired, value);
+			set => Set(ref firstAired, value);
 		}
 		public string LatestEpisode
 		{
 			get => latestEpisode;
-			set => SetProperty(ref latestEpisode, value);
+			set => Set(ref latestEpisode, value);
 		}
 		public string AirTime
 		{
 			get => airTime;
-			set => SetProperty(ref airTime, value);
+			set => Set(ref airTime, value);
 		}
 		public string Runtime
 		{
 			get => runtime;
-			set => SetProperty(ref runtime, value);
+			set => Set(ref runtime, value);
 		}
 		public string ImdbId
 		{
 			get => imdbId;
-			set => SetProperty(ref imdbId, value);
+			set => Set(ref imdbId, value);
 		}
 		public string ImdbUrl
 		{
 			get => imdbUrl;
-			set => SetProperty(ref imdbUrl, value);
+			set => Set(ref imdbUrl, value);
 		}
 
 		public List<Actor> ShowCast
 		{
 			get => showCast;
-			set => SetProperty(ref showCast, value);
+			set => Set(ref showCast, value);
 		}
 
 		public int CastColumnCount
 		{
 			get => castColumnCount;
-			set => SetProperty(ref castColumnCount, value);
+			set => Set(ref castColumnCount, value);
 		}
 
 		public List<Episode> Episodes
 		{
 			get => episodes;
-			set => SetProperty(ref episodes, value);
+			set => Set(ref episodes, value);
 		}
 
 		public int EpisodeColumnCount
 		{
 			get => episodeColumnCount;
-			set => SetProperty(ref episodeColumnCount, value);
+			set => Set(ref episodeColumnCount, value);
 		}
 
 		public int ViewingSeason
 		{
 			get => viewingSeason;
-			set => SetProperty(ref viewingSeason, value);
+			set => Set(ref viewingSeason, value);
 		}
 		#endregion
 		#endregion

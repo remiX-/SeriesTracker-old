@@ -1,8 +1,8 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class MyAccountViewModel : BindableBase
+	internal class MyAccountViewModel : ViewModelBase
 	{
 		#region Variables
 
@@ -16,7 +16,7 @@ namespace SeriesTracker.ViewModels
 		public string MyTitle
 		{
 			get { return myTitle; }
-			set { SetProperty(ref myTitle, value); }
+			set { Set(ref myTitle, value); }
 		}
 		#endregion
 		#endregion

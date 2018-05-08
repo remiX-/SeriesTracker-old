@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Prism.Mvvm;
+using GalaSoft.MvvmLight;
 using SeriesTracker.Core;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Net;
 
 namespace SeriesTracker.Models
 {
-	public class Show : BindableBase
+	public class Show : ViewModelBase
 	{
 		#region Variables
 		[JsonIgnore] public int UserShowID { get; set; }
@@ -72,7 +72,7 @@ namespace SeriesTracker.Models
 		public bool Updating
 		{
 			get { return updating; }
-			set { SetProperty(ref updating, value); RaisePropertyChanged("DisplayName"); }
+			set { Set(ref updating, value); RaisePropertyChanged("DisplayName"); }
 		}
 
 		[JsonIgnore]
@@ -113,7 +113,7 @@ namespace SeriesTracker.Models
 		public string LocalSeriesPath
 		{
 			get { return localSeriesPath; }
-			set { SetProperty(ref localSeriesPath, value); }
+			set { Set(ref localSeriesPath, value); }
 		}
 
 		[JsonIgnore] public string LocalDataPath { get; private set; }

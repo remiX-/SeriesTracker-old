@@ -1,10 +1,10 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 using System;
 using System.Linq;
 
 namespace SeriesTracker.Models
 {
-	public sealed class ShowViewModel : BindableBase
+	public sealed class ShowViewModel : ViewModelBase
 	{
 		public int Id { get; }
 		public string SeriesName { get; }

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Prism.Mvvm;
+using GalaSoft.MvvmLight;
 using SeriesTracker.Core;
 using System;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace SeriesTracker.Models
 {
-	public class Actor : BindableBase
+	public class Actor : ViewModelBase
 	{
 		#region Variables
 		private int id;

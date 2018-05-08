@@ -4,7 +4,6 @@ using SeriesTracker.Models;
 using SeriesTracker.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Media;
 using System.Windows;
@@ -75,7 +74,8 @@ namespace SeriesTracker.Windows
 						.ToList();
 					results.ForEach(s => s.SetupVariables());
 
-					MyViewModel.SearchResults.AddRange(results.OrderByDescending(x => x.YearDisplay == "Unknown" ? "1" : x.YearDisplay).ThenBy(x => x.SeriesName));
+					// TODO FIX
+					//MyViewModel.SearchResults.AddRange(results.OrderByDescending(x => x.YearDisplay == "Unknown" ? "1" : x.YearDisplay).ThenBy(x => x.SeriesName));
 
 					MyViewModel.SetStatus($"{MyViewModel.SearchResults.Count} results found", Brushes.LimeGreen);
 				}

@@ -1,4 +1,4 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class MainViewModel : BindableBase
+	internal class MainViewModel : ViewModelBase, IMainViewModel
 	{
 		#region Variables
 		public CollectionViewSource Collection { get; } = new CollectionViewSource();
@@ -23,7 +23,7 @@ namespace SeriesTracker.ViewModels
 		public string MyTitle
 		{
 			get { return myTitle; }
-			set { SetProperty(ref myTitle, $"{AppGlobal.AssemblyTitle} - {value}"); }
+			set { Set(ref myTitle, $"{AppGlobal.AssemblyTitle} - {value}"); }
 		}
 
 		public string UserEmail { get; }
@@ -32,7 +32,7 @@ namespace SeriesTracker.ViewModels
 		public Category FilterCategory
 		{
 			get { return filterCategory; }
-			set { SetProperty(ref filterCategory, value); RefreshView(); }
+			set { Set(ref filterCategory, value); RefreshView(); }
 		}
 		public List<Category> Categories
 		{
@@ -47,13 +47,13 @@ namespace SeriesTracker.ViewModels
 		public string FilterText
 		{
 			get { return filterText; }
-			set { SetProperty(ref filterText, value); RefreshView(); }
+			set { Set(ref filterText, value); RefreshView(); }
 		}
 
 		public int GridViewColumnCount
 		{
 			get { return gridViewColumnCount; }
-			set { SetProperty(ref gridViewColumnCount, value); }
+			set { Set(ref gridViewColumnCount, value); }
 		}
 
 		public string Product { get; }

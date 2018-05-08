@@ -1,7 +1,7 @@
-﻿using MaterialDesignColors;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
-using Prism.Commands;
-using Prism.Mvvm;
 using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
 using SeriesTracker.Models;
@@ -18,7 +18,7 @@ using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.ViewModels
 {
-	public class SettingsViewModel : BindableBase
+	public class SettingsViewModel : ViewModelBase, ISettingsViewModel
 	{
 		#region Variables
 		#region Fields
@@ -71,17 +71,17 @@ namespace SeriesTracker.ViewModels
 			get => dateFormat;
 			set
 			{
-				SetProperty(ref dateFormat, value);
+				Set(ref dateFormat, value);
 
 				ExampleDate = CommonMethods.ConvertDateTimeToString(DateTime.Now, dateFormat);
 			}
 		}
 
-		public string ExampleDate { get => exampleDate; set => SetProperty(ref exampleDate, value); }
+		public string ExampleDate { get => exampleDate; set => Set(ref exampleDate, value); }
 
 		public string[] ColumnHeadings { get; }
 
-		public string DefaultSort { get => defaultSort; set => SetProperty(ref defaultSort, value); }
+		public string DefaultSort { get => defaultSort; set => Set(ref defaultSort, value); }
 
 		public ListSortDirection DefaultSortDirection
 		{
@@ -99,27 +99,27 @@ namespace SeriesTracker.ViewModels
 			set => DefaultSortDirection = value ? ListSortDirection.Descending : ListSortDirection.Ascending;
 		}
 
-		public string Theme { get => theme; set { SetProperty(ref theme, value); ApplyBase(); } }
-		public bool IsDark { get => isDark; set { SetProperty(ref isDark, value); ApplyBase(); } }
-		public string Primary { get => primary; set { SetProperty(ref primary, value); ApplyPrimary(); } }
-		public string Accent { get => accent; set { SetProperty(ref accent, value); ApplyAccent(); }  }
+		public string Theme { get => theme; set { Set(ref theme, value); ApplyBase(); } }
+		public bool IsDark { get => isDark; set { Set(ref isDark, value); ApplyBase(); } }
+		public string Primary { get => primary; set { Set(ref primary, value); ApplyPrimary(); } }
+		public string Accent { get => accent; set { Set(ref accent, value); ApplyAccent(); }  }
 
 		public string[] Themes { get; }
 		public IEnumerable<Swatch> Swatches { get; }
 		public string[] SwatchesString { get; }
 		public string[] SwatchesAccent { get; }
 
-		public ObservableCollection<Category> Categories { get => categories; set => SetProperty(ref categories, value); }
+		public ObservableCollection<Category> Categories { get => categories; set => Set(ref categories, value); }
 		public Category Category
 		{
 			get => category;
-			set => SetProperty(ref category, value);
+			set => Set(ref category, value);
 		}
 
-		public ICommand BrowseSeriesFolderCommand => new DelegateCommand(BrowseSeriesFolder);
+		public ICommand BrowseSeriesFolderCommand => new RelayCommand(BrowseSeriesFolder);
 
-		public ICommand UserListAddCommand => new DelegateCommand(UserListAdd);
-		public ICommand UserListRemoveCommand => new DelegateCommand(UserListRemove);
+		public ICommand UserListAddCommand => new RelayCommand(UserListAdd);
+		public ICommand UserListRemoveCommand => new RelayCommand(UserListRemove);
 
 		public string NewUserList { get; set; }
 		#endregion
@@ -139,7 +139,7 @@ namespace SeriesTracker.ViewModels
 					value = string.Empty;
 				}
 
-				SetProperty(ref localSeriesFolder, value);
+				Set(ref localSeriesFolder, value);
 			}
 		}
 		#endregion

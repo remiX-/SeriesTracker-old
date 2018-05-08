@@ -1,9 +1,9 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 using System.ComponentModel;
 
 namespace SeriesTracker.Models
 {
-	public class Category : BindableBase
+	public class Category : ViewModelBase
 	{
 		#region Variables
 		private bool isChecked;
@@ -16,7 +16,7 @@ namespace SeriesTracker.Models
 		public bool IsChecked
 		{
 			get => isChecked;
-			set => SetProperty(ref isChecked, value);
+			set => Set(ref isChecked, value);
 		}
 		#endregion
 

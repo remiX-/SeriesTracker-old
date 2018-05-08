@@ -1,6 +1,6 @@
-﻿using MaterialDesignThemes.Wpf;
-using Prism.Commands;
-using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using MaterialDesignThemes.Wpf;
 using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
 using SeriesTracker.Enums;
@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class MainNewViewModel : BindableBase
+	internal class MainNewViewModel : ViewModelBase
 	{
 		#region Variables
 		public HamburgerMenuItem[] AppMenu { get; }
@@ -43,7 +43,7 @@ namespace SeriesTracker.ViewModels
 		public string MyTitle
 		{
 			get => myTitle;
-			set => SetProperty(ref myTitle, $"{AppGlobal.AssemblyTitle} - {value}");
+			set => Set(ref myTitle, $"{AppGlobal.AssemblyTitle} - {value}");
 		}
 
 		public string UserEmail { get; }
@@ -52,14 +52,14 @@ namespace SeriesTracker.ViewModels
 		public List<Category> Categories
 		{
 			get => categories;
-			set => SetProperty(ref categories, value);
+			set => Set(ref categories, value);
 		}
 		public Category FilterCategory
 		{
 			get => filterCategory;
 			set
 			{
-				SetProperty(ref filterCategory, value);
+				Set(ref filterCategory, value);
 				if (value != null)
 					RefreshView();
 			}
@@ -68,13 +68,13 @@ namespace SeriesTracker.ViewModels
 		public string FilterText
 		{
 			get => filterText;
-			set { SetProperty(ref filterText, value); RefreshView(); }
+			set { Set(ref filterText, value); RefreshView(); }
 		}
 
 		public int GridViewColumnCount
 		{
 			get => gridViewColumnCount;
-			set => SetProperty(ref gridViewColumnCount, value);
+			set => Set(ref gridViewColumnCount, value);
 		}
 
 		public ViewType CurrentView
@@ -84,25 +84,25 @@ namespace SeriesTracker.ViewModels
 			{
 				if (currentView == value) return;
 
-				SetProperty(ref currentView, value);
+				Set(ref currentView, value);
 
 				DataGridViewVisible = currentView == ViewType.DataGrid;
 				GridViewVisible = currentView == ViewType.Grid;
 			}
 		}
-		public bool DataGridViewVisible { get => dataGridViewVisible; set => SetProperty(ref dataGridViewVisible, value); }
-		public bool GridViewVisible { get => gridViewVisible; set => SetProperty(ref gridViewVisible, value); }
+		public bool DataGridViewVisible { get => dataGridViewVisible; set => Set(ref dataGridViewVisible, value); }
+		public bool GridViewVisible { get => gridViewVisible; set => Set(ref gridViewVisible, value); }
 
 		public string Status
 		{
 			get => status;
-			private set => SetProperty(ref status, value);
+			private set => Set(ref status, value);
 		}
 
 		public string Product { get; }
 
-		public ICommand HelpCommand => new WPFCommandImplementation(ShowWindowAboutDialog);
-		public ICommand ViewProfileCommand => new DelegateCommand(ViewProfile);
+		public RelayCommand HelpCommand => new RelayCommand(ShowWindowAboutDialog);
+		public RelayCommand ViewProfileCommand => new RelayCommand(ViewProfile);
 		#endregion
 		#endregion
 
@@ -213,7 +213,7 @@ namespace SeriesTracker.ViewModels
 			//Close();
 		}
 
-		private async void ShowWindowAboutDialog(object o)
+		private async void ShowWindowAboutDialog()
 		{
 			var view = new AboutDialog();
 
@@ -223,7 +223,7 @@ namespace SeriesTracker.ViewModels
 		#endregion
 	}
 
-	public class HamburgerMenuItem : BindableBase
+	public class HamburgerMenuItem : ViewModelBase
 	{
 		private string id;
 		private string description;
@@ -234,26 +234,26 @@ namespace SeriesTracker.ViewModels
 		public string Id
 		{
 			get => id;
-			set => SetProperty(ref id, value);
+			set => Set(ref id, value);
 		}
 
 		public string Description
 		{
 			get => description;
-			set => SetProperty(ref description, value);
+			set => Set(ref description, value);
 		}
 
 		public PackIconKind Icon
 		{
 			get => icon;
-			set => SetProperty(ref icon, value);
+			set => Set(ref icon, value);
 		}
 
 
 		public object Content
 		{
 			get => content;
-			set => SetProperty(ref content, value);
+			set => Set(ref content, value);
 		}
 
 		public HamburgerMenuItem(string id, string description, PackIconKind icon)

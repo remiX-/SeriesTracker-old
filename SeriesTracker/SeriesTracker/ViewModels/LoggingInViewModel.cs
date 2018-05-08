@@ -1,8 +1,8 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class LoggingInViewModel : BindableBase
+	internal class LoggingInViewModel : ViewModelBase
 	{
 		#region Variables
 		#region Fields
@@ -13,7 +13,7 @@ namespace SeriesTracker.ViewModels
 		public string LoginText
 		{
 			get => loginText;
-			set => SetProperty(ref loginText, value);
+			set => Set(ref loginText, value);
 		}
 		#endregion
 		#endregion

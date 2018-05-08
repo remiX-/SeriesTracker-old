@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Prism.Mvvm;
+using GalaSoft.MvvmLight;
 using SeriesTracker.Core;
 using System;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace SeriesTracker.Models
 {
-	public class Episode : BindableBase
+	public class Episode : ViewModelBase
 	{
 		#region Variables
 		#region Tvdb Variables
@@ -100,14 +100,14 @@ namespace SeriesTracker.Models
 		public string ImageText
 		{
 			get => imageText;
-			set { SetProperty(ref imageText, value); /*RaisePropertyChanged("LocalImagePath");*/ }
+			set { Set(ref imageText, value); /*RaisePropertyChanged("LocalImagePath");*/ }
 		}
 
 		[JsonIgnore]
 		public bool Watched
 		{
 			get => watched;
-			set => SetProperty(ref watched, value);
+			set => Set(ref watched, value);
 		}
 		#endregion
 

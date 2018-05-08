@@ -1,11 +1,11 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 using SeriesTracker.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class AddShowViewModel : BindableBase
+	internal class AddShowViewModel : ViewModelBase
 	{
 		#region Variables
 		public ObservableCollection<Show> SearchResults { get; set; } = new ObservableCollection<Show>();
@@ -21,18 +21,18 @@ namespace SeriesTracker.ViewModels
 		public string MyTitle
 		{
 			get => myTitle;
-			set => SetProperty(ref myTitle, value);
+			set => Set(ref myTitle, value);
 		}
 
 		public string Status
 		{
 			get => status;
-			set => SetProperty(ref status, value);
+			set => Set(ref status, value);
 		}
 		public Brush StatusForeground
 		{
 			get => statusForeground;
-			set => SetProperty(ref statusForeground, value);
+			set => Set(ref statusForeground, value);
 		}
 		#endregion
 		#endregion

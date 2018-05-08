@@ -1,4 +1,4 @@
-﻿using Prism.Mvvm;
+﻿using GalaSoft.MvvmLight;
 using SeriesTracker.Core;
 using SeriesTracker.Models;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SeriesTracker.ViewModels
 {
-	public class SetCategoryViewModel : BindableBase
+	public class SetCategoryViewModel : ViewModelBase
 	{
 		#region Variables
 		#region Fields
