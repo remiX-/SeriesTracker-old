@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeriesTracker.ViewModels
 {
-	public interface IMainViewModel
+	public interface IAboutViewModel
 	{
 	}
 }

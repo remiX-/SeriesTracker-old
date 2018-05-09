@@ -127,6 +127,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -213,17 +217,22 @@
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="ViewModels\AddShowViewModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\ISettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IAboutViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IAddShowViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ILoggingInViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ILoginViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IMyAccountViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISetCategoryViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IViewShowViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IMainViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainNewViewModel.cs" />
     <Compile Include="ViewModels\MyAccountViewModel.cs" />
     <Compile Include="ViewModels\SetCategoryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ShowViewModel.cs" />
     <Compile Include="ViewModels\LoggingInViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ViewShowViewModel.cs" />
     <Compile Include="Views\Seasons.xaml.cs">
       <DependentUpon>Seasons.xaml</DependentUpon>
@@ -231,8 +240,8 @@
     <Compile Include="Views\Overview.xaml.cs">
       <DependentUpon>Overview.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WindowMainNew.xaml.cs">
-      <DependentUpon>WindowMainNew.xaml</DependentUpon>
+    <Compile Include="Windows\WindowMain.xaml.cs">
+      <DependentUpon>WindowMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WindowMyAccount.xaml.cs">
       <DependentUpon>WindowMyAccount.xaml</DependentUpon>
@@ -302,10 +311,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\WindowMain.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -320,11 +325,7 @@
     <Compile Include="Windows\WindowLogin.xaml.cs">
       <DependentUpon>WindowLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WindowMain.xaml.cs">
-      <DependentUpon>WindowMain.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Windows\WindowMainNew.xaml">
+    <Page Include="Windows\WindowMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
