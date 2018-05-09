@@ -28,7 +28,7 @@ namespace SeriesTracker.Windows
 	{
 		#region Variables
 		// ViewModel
-		private MainNewViewModel MyViewModel;
+		private MainViewModel MyViewModel;
 
 		// Windows
 		private WindowViewShow WindowViewShow;
@@ -187,7 +187,7 @@ namespace SeriesTracker.Windows
 
 		private void LoadWindowSettings()
 		{
-			MyViewModel = DataContext as MainNewViewModel;
+			MyViewModel = DataContext as MainViewModel;
 			MyViewModel.SetStatus("Starting up");
 
 			// Setup events

@@ -227,7 +227,7 @@
     <Compile Include="ViewModels\Interfaces\IMainViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainNewViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MyAccountViewModel.cs" />
     <Compile Include="ViewModels\SetCategoryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />

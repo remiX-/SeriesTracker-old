@@ -13,7 +13,7 @@ using System.Windows.Data;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class MainNewViewModel : ViewModelBase, IMainViewModel
+	internal class MainViewModel : ViewModelBase, IMainViewModel
 	{
 		#region Variables
 		public HamburgerMenuItem[] AppMenu { get; }
@@ -104,7 +104,7 @@ namespace SeriesTracker.ViewModels
 		#endregion
 		#endregion
 
-		public MainNewViewModel()
+		public MainViewModel()
 		{
 			AppMenu = new[]
 			{
@@ -117,16 +117,16 @@ namespace SeriesTracker.ViewModels
 				new HamburgerMenuItem("Exit", PackIconKind.ExitToApp)
 			};
 
-			MyTitle = AppGlobal.User.Username ?? "test";
-			UserEmail = AppGlobal.User.Email;
-			Username = AppGlobal.User.Username;
+			//MyTitle = AppGlobal.User.Username ?? "test";
+			//UserEmail = AppGlobal.User.Email;
+			//Username = AppGlobal.User.Username;
 
-			RefreshCategory(false);
+			//RefreshCategory(false);
 
-			status = "Ready";
-			Product = $"Made by {AppGlobal.AssemblyCompany} v{AppGlobal.AssemblyVersion}";
+			//status = "Ready";
+			//Product = $"Made by {AppGlobal.AssemblyCompany} v{AppGlobal.AssemblyVersion}";
 
-			Collection.Filter += Filter;
+			//Collection.Filter += Filter;
 		}
 
 		public void RefreshView()

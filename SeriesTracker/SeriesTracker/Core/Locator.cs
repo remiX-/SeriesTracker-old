@@ -36,7 +36,7 @@ namespace SeriesTracker.Core
 			SimpleIoc.Default.Register<IAddShowViewModel, AddShowViewModel>(true);
 			SimpleIoc.Default.Register<ILoggingInViewModel, LoggingInViewModel>(true);
 			SimpleIoc.Default.Register<ILoginViewModel, LoginViewModel>(true);
-			SimpleIoc.Default.Register<IMainViewModel, MainNewViewModel>(true);
+			SimpleIoc.Default.Register<IMainViewModel, MainViewModel>(true);
 			SimpleIoc.Default.Register<IMyAccountViewModel, MyAccountViewModel>(true);
 			SimpleIoc.Default.Register<ISetCategoryViewModel, SetCategoryViewModel>(true);
 			SimpleIoc.Default.Register<ISettingsViewModel, SettingsViewModel>(true);

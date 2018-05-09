@@ -46,6 +46,8 @@ namespace SeriesTracker
 			new SeriesTrackerPaletteHelper().SetLightDark(AppGlobal.Settings.Theme.Type, AppGlobal.Settings.Theme.IsDark);
 			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Theme.Primary);
 			new SeriesTrackerPaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Theme.Accent);
+
+			Locator.Init();
 		}
 
 		[DllImport("user32.dll")]
