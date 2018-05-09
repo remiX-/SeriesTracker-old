@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
+using SeriesTracker.Services;
 using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
@@ -7,6 +8,8 @@ namespace SeriesTracker.ViewModels
 	internal class LoginViewModel : ViewModelBase, ILoginViewModel
 	{
 		#region Vars
+		private readonly ISettingsService _settingsService;
+
 		#region Fields
 		private bool isBusy;
 
@@ -24,7 +27,7 @@ namespace SeriesTracker.ViewModels
 			set
 			{
 				Set(ref isBusy, value);
-				LoginCommand.RaiseCanExecuteChanged();
+				//LoginCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -52,12 +55,17 @@ namespace SeriesTracker.ViewModels
 		#endregion
 
 		// Commands
-		public RelayCommand LoginCommand { get; }
-		public RelayCommand RegisterCommand { get; }
+		public RelayCommand ViewLoadedCommand { get; }
+
+		//public RelayCommand LoginCommand { get; }
+		//public RelayCommand RegisterCommand { get; }
 		#endregion
 
-		public LoginViewModel()
+		public LoginViewModel(ISettingsService settingsService)
 		{
+			_settingsService = settingsService;
+
+			ViewLoadedCommand = new RelayCommand(ViewLoaded);
 			//LoginCommand = new RelayCommand(Login, () => !IsBusy && Username.IsNotBlank() && Password.IsNotBlank());
 		}
 
@@ -65,6 +73,11 @@ namespace SeriesTracker.ViewModels
 		{
 			StatusBrush = brush;
 			StatusInfo = status;
+		}
+
+		private void ViewLoaded()
+		{
+			_settingsService.Load();
 		}
 
 		#region Login
