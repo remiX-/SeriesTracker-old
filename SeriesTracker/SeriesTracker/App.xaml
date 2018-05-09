@@ -4,6 +4,7 @@
 			 xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
 			 xmlns:core="clr-namespace:SeriesTracker.Core"
 			 xmlns:converters="clr-namespace:SeriesTracker.Utilities.Converters"
+			 xmlns:validators="clr-namespace:SeriesTracker.Utilities.ValidationRules"
 			 Startup="Application_Startup"
 			 StartupUri="Windows/WindowLogin.xaml">
 	<Application.Resources>
@@ -21,6 +22,9 @@
 				<!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.xaml" />-->
 
 				<ResourceDictionary Source="Themes/SeriesTrackerTheme.Overrides.xaml" />
+
+				<!-- Include the Dragablz Material Design style -->
+				<ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MaterialDesign.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 			
 			<!--#region Windows-->
@@ -234,9 +238,13 @@
 			<Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
 
 			<!--  Converters  -->
+			<converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
 			<converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-			<!--<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />-->
-			<!--<converters:FileSizeToStringConverter x:Key="FileSizeToStringConverter" />-->
+			<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter" />
+
+			<!--  Validators  -->
+			<validators:BadCharsValidationRule x:Key="BadCharsValidationRule" />
+			<validators:NotEmptyValidationRule x:Key="NotEmptyValidationRule" />
 
 			<!--  Locator  -->
 			<core:Locator x:Key="Locator" />
