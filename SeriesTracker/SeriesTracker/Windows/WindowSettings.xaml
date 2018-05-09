@@ -1,17 +1,12 @@
-﻿<Window
-	x:Class="SeriesTracker.Windows.WindowSettings"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-	xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
-	Title="Settings"
-	Width="740" Height="550"
-	Loaded="Window_Loaded"
-	Style="{StaticResource STWindow}">
-	<Window.DataContext>
-		<ViewModels:SettingsViewModel/>
-	</Window.DataContext>
-
+﻿<Window x:Class="SeriesTracker.Windows.WindowSettings"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		DataContext="{Binding SettingsViewModel, Source={StaticResource Locator}}"
+		Title="Settings"
+		Style="{StaticResource STWindow}"
+		Width="740" Height="550"
+		Loaded="Window_Loaded">
 	<materialDesign:DialogHost Identifier="SettingsDialog">
 		<DockPanel Margin="10">
 			<StackPanel DockPanel.Dock="Bottom" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >

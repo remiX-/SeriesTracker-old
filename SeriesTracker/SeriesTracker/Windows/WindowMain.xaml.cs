@@ -24,7 +24,7 @@ using WinForms = System.Windows.Forms;
 
 namespace SeriesTracker.Windows
 {
-	public partial class WindowMainNew : Window
+	public partial class WindowMain : Window
 	{
 		#region Variables
 		// ViewModel
@@ -51,7 +51,7 @@ namespace SeriesTracker.Windows
 		#endregion
 
 		#region Window Events
-		public WindowMainNew()
+		public WindowMain()
 		{
 			InitializeComponent();
 		}

@@ -3,14 +3,12 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:ViewModels="clr-namespace:SeriesTracker.ViewModels"
 		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+		DataContext="{Binding AddShowViewModel, Source={StaticResource Locator}}"
 		Title="{Binding MyTitle}"
+		Style="{StaticResource STWindowNoResize}"
 		Height="350" Width="610"
 		ShowInTaskbar="False"
-		Loaded="Window_Loaded"
-		Style="{StaticResource STWindowNoResize}">
-	<Window.DataContext>
-		<ViewModels:AddShowViewModel/>
-	</Window.DataContext>
+		Loaded="Window_Loaded">
 	<DockPanel Margin="10">
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
 			<TextBox x:Name="txt_Search"

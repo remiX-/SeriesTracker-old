@@ -243,7 +243,7 @@ namespace SeriesTracker.Windows
 
 			window_LoggedIn.Close();
 
-			Window Main = new WindowMainNew();
+			Window Main = new WindowMain();
 			Main.Show();
 			Application.Current.MainWindow = Main;
 

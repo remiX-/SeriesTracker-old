@@ -2,18 +2,14 @@
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-		xmlns:viewModels="clr-namespace:SeriesTracker.ViewModels"
 		xmlns:validators="clr-namespace:SeriesTracker.Utilities.ValidationRules"
-		xmlns:converters="clr-namespace:SeriesTracker.Utilities.Converters"
+		DataContext="{Binding LoginViewModel, Source={StaticResource Locator}}"
 		Title="Login or Register"
+		Style="{StaticResource STWindowNoResize}"
 		Icon="../Resources/mainIcon.ico"
 		Height="350" Width="500"
 		Initialized="Window_Initialized" Loaded="Window_Loaded" MouseDown="Window_MouseDown"
-		WindowStartupLocation="CenterScreen" Visibility="Hidden"
-		Style="{StaticResource STWindowNoResize}">
-	<Window.DataContext>
-		<viewModels:LoginViewModel />
-	</Window.DataContext>
+		WindowStartupLocation="CenterScreen" Visibility="Hidden">
 	<Grid Margin="0">
 		<dragablz:TabablzControl x:Name="tc" FixedHeaderCount="2">
 			<dragablz:TabablzControl.InterTabController>
