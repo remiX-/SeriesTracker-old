@@ -2,7 +2,7 @@
 
 namespace SeriesTracker.ViewModels
 {
-	internal class MyAccountViewModel : ViewModelBase
+	internal class MyAccountViewModel : ViewModelBase, IMyAccountViewModel
 	{
 		#region Variables
 

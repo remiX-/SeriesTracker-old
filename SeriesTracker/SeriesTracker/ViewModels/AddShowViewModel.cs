@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class AddShowViewModel : ViewModelBase
+	internal class AddShowViewModel : ViewModelBase, IAddShowViewModel
 	{
 		#region Variables
 		public ObservableCollection<Show> SearchResults { get; set; } = new ObservableCollection<Show>();

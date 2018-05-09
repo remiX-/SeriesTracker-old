@@ -167,7 +167,7 @@ namespace SeriesTracker.ViewModels
 			};
 			DateFormat = GetSelectedItem(DateFormats, AppGlobal.Settings.DateFormat);
 
-			ColumnHeadings = WindowMainNew.ColumnHeadings.ToArray();
+			ColumnHeadings = WindowMain.ColumnHeadings.ToArray();
 			defaultSortDirection = AppGlobal.Settings.DefaultSortDirection;
 			defaultSort = GetSelectedItem(ColumnHeadings, AppGlobal.Settings.DefaultSortColumn);
 

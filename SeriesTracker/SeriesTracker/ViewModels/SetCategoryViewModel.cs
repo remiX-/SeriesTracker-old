@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SeriesTracker.ViewModels
 {
-	public class SetCategoryViewModel : ViewModelBase
+	public class SetCategoryViewModel : ViewModelBase, ISetCategoryViewModel
 	{
 		#region Variables
 		#region Fields

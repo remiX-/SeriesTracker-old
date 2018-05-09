@@ -2,7 +2,7 @@
 
 namespace SeriesTracker.ViewModels
 {
-	internal class LoggingInViewModel : ViewModelBase
+	internal class LoggingInViewModel : ViewModelBase, ILoggingInViewModel
 	{
 		#region Variables
 		#region Fields

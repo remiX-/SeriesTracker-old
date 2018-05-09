@@ -5,17 +5,15 @@ using SeriesTracker.Core;
 using SeriesTracker.Dialogs;
 using SeriesTracker.Enums;
 using SeriesTracker.Models;
-using SeriesTracker.Utilities.Commands;
 using SeriesTracker.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class MainNewViewModel : ViewModelBase
+	internal class MainNewViewModel : ViewModelBase, IMainViewModel
 	{
 		#region Variables
 		public HamburgerMenuItem[] AppMenu { get; }

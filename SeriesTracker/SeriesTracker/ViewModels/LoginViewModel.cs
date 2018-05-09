@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class LoginViewModel : ViewModelBase, IViewModelBase
+	internal class LoginViewModel : ViewModelBase, ILoginViewModel
 	{
 		#region Vars
 		#region Fields

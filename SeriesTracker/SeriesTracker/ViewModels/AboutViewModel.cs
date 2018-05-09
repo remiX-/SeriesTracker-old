@@ -1,6 +1,8 @@
-﻿namespace SeriesTracker.ViewModels
+﻿using GalaSoft.MvvmLight;
+
+namespace SeriesTracker.ViewModels
 {
-	internal class AboutViewModel
+	internal class AboutViewModel : ViewModelBase, IAboutViewModel
 	{
 
 	}

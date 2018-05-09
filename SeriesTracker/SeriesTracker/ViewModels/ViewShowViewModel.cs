@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SeriesTracker.ViewModels
 {
-	internal class ViewShowViewModel : ViewModelBase
+	internal class ViewShowViewModel : ViewModelBase, IViewShowViewModel
 	{
 		public Show MyShow { get; set; }
 
