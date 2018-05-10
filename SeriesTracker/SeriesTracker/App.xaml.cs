@@ -38,14 +38,14 @@ namespace SeriesTracker
 				Directory.CreateDirectory(AppGlobal.Paths.SeriesDirectory);
 
 			// Load settings file
-			if (File.Exists(AppGlobal.Paths.SettingsFile))
-				AppGlobal.Settings = AppSettings.Read();
-			else
-				AppGlobal.Settings = new AppSettings(true);
+			//if (File.Exists(AppGlobal.Paths.SettingsFile))
+			//	AppGlobal.Settings = AppSettings.Read();
+			//else
+			//	AppGlobal.Settings = new AppSettings(true);
 
-			new SeriesTrackerPaletteHelper().SetLightDark(AppGlobal.Settings.Theme.Type, AppGlobal.Settings.Theme.IsDark);
-			new SeriesTrackerPaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Theme.Primary);
-			new SeriesTrackerPaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Theme.Accent);
+			//new SeriesTrackerPaletteHelper().SetLightDark(AppGlobal.Settings.Theme.Type, AppGlobal.Settings.Theme.IsDark);
+			//new SeriesTrackerPaletteHelper().ReplacePrimaryColor(AppGlobal.Settings.Theme.Primary);
+			//new SeriesTrackerPaletteHelper().ReplaceAccentColor(AppGlobal.Settings.Theme.Accent);
 
 			Locator.Init();
 		}

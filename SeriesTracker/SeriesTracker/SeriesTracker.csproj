@@ -156,8 +156,12 @@
     </ApplicationDefinition>
     <Compile Include="Core\Locator.cs" />
     <Compile Include="Enums\ViewType.cs" />
+    <Compile Include="Services\GlobalService.cs" />
+    <Compile Include="Services\IGlobalService.cs" />
+    <Compile Include="Services\IPathService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IUpdateService.cs" />
+    <Compile Include="Services\PathService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Utilities\Comparers\DefaultComparer.cs" />

@@ -44,13 +44,13 @@ namespace SeriesTracker.Services
 		public bool IsAutoUpdateEnabled { get; set; }
 		#endregion
 
-		public SettingsService()
+		public SettingsService(IPathService pathService)
 		{
 			IsSaved = false;
 
 			Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
 			Configuration.SubDirectoryPath = ".SeriesTracker";
-			Configuration.FileName = "config";
+			Configuration.FileName = pathService.SettingsFile;
 			Configuration.ThrowIfCannotLoad = true;
 			Configuration.ThrowIfCannotSave = true;
 		}

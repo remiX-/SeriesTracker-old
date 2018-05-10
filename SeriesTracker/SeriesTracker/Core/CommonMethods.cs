@@ -253,7 +253,8 @@ namespace SeriesTracker.Core
 
 		public static string GetDateTimeAsFormattedString(DateTime? dateTime)
 		{
-			return dateTime.Value.ToString(AppGlobal.Settings.DateFormat);
+			// TODO FIX
+			return dateTime.Value.ToString("dd/MM/yyyy");
 		}
 
 		/// <summary>

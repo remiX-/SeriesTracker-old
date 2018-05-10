@@ -11,7 +11,7 @@ namespace SeriesTracker.Core
 		public string FilesDirectory { get; }
 		public string SeriesDirectory { get; }
 
-		public string LocalSeriesDirectory { get { return AppGlobal.Settings.LocalSeriesFolder; } }
+		public string LocalSeriesDirectory { get { return ""; } }
 
 		// Files
 		public string SettingsFile { get; }

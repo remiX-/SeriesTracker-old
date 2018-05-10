@@ -13,7 +13,6 @@ namespace SeriesTracker.Core
 		public static int thetvdbTimezone = -4;
 
 		// App settings
-		public static AppSettings Settings;
 		public static AppPaths Paths = new AppPaths();
 
 		// App links
